@@ -17,7 +17,6 @@ public interface LogMapper {
 
 	int updateByPrimaryKey(Log record);
 
-	// ---------------------------------
 	void createTable(@Param("tableName") String tableName);
 
 	List<String> getAllLogTableNames();
