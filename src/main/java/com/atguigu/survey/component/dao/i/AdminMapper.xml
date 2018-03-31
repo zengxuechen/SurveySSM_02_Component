@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.AdminMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.manager.Admin">
+		<id column="ADMIN_ID" property="adminId" jdbcType="INTEGER" />
+		<result column="ADMIN_NAME" property="adminName" jdbcType="VARCHAR" />
+		<result column="ADMIN_PWD" property="adminPwd" jdbcType="VARCHAR" />
+		<result column="CODE_ARR_STR" property="codeArrStr" jdbcType="VARCHAR" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		manager_admin
+		where ADMIN_ID = #{adminId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.manager.Admin">
+		insert into manager_admin
+		(ADMIN_ID, ADMIN_NAME, ADMIN_PWD,
+		CODE_ARR_STR)
+		values
+		(#{adminId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR},
+		#{adminPwd,jdbcType=VARCHAR},
+		#{codeArrStr,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.manager.Admin">
+		update
+		manager_admin
+		set ADMIN_NAME = #{adminName,jdbcType=VARCHAR},
+		ADMIN_PWD
+		= #{adminPwd,jdbcType=VARCHAR},
+		CODE_ARR_STR =
+		#{codeArrStr,jdbcType=VARCHAR}
+		where ADMIN_ID =
+		#{adminId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select ADMIN_ID, ADMIN_NAME, ADMIN_PWD, CODE_ARR_STR
+		from manager_admin
+		where ADMIN_ID = #{adminId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select ADMIN_ID, ADMIN_NAME,
+		ADMIN_PWD, CODE_ARR_STR
+		from manager_admin
+	</select>
+
+
+
+	<select id="loginForAdmin" parameterType="com.atguigu.survey.entities.manager.Admin"
+		resultMap="BaseResultMap">
+		select ADMIN_ID, ADMIN_NAME, ADMIN_PWD, CODE_ARR_STR
+		from
+		manager_admin where admin_name=#{adminName} and admin_pwd=#{adminPwd}
+	</select>
+
+	<select id="checkAdminNameExists" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*) from manager_admin
+		where
+		admin_name=#{adminName}
+	</select>
+
+
+	<select id="getCurrentRoleList" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select role_id from inner_admin_role where
+		admin_id=#{adminId}
+	</select>
+
+	<resultMap id="deeplyRoleSet" type="Role">
+		<id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+		<result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+		<collection property="authSet" ofType="Auth">
+			<id column="AUTH_ID" property="authId" jdbcType="INTEGER" />
+			<result column="AUTH_NAME" property="authName" jdbcType="VARCHAR" />
+			<collection property="resSet" ofType="Res">
+				<id column="RES_ID" property="resId" jdbcType="INTEGER" />
+				<!-- <result column="SERVLET_PATH" property="servletPath" jdbcType="VARCHAR" 
+					/> -->
+				<result column="PUBLIC_RES" property="publicRes" jdbcType="BIT" />
+				<result column="RES_CODE" property="resCode" jdbcType="INTEGER" />
+				<result column="RES_POS" property="resPos" jdbcType="INTEGER" />
+			</collection>
+		</collection>
+	</resultMap>
+	<select id="getDeeplyRoleSet" parameterType="integer" resultMap="deeplyRoleSet">
+		SELECT
+		inner_admin_role.`ADMIN_ID`,
+		manager_role.`ROLE_ID`,
+		manager_role.`ROLE_NAME` ,
+		manager_auth.`AUTH_ID`,manager_auth.`AUTH_NAME`,
+		manager_res.`RES_ID`,manager_res.`PUBLIC_RES`,manager_res.`RES_CODE`,manager_res.`RES_POS`
+		FROM inner_admin_role
+		LEFT JOIN manager_role ON
+		inner_admin_role.`ROLE_ID` =
+		manager_role.`ROLE_ID`
+		LEFT JOIN
+		inner_role_auth ON inner_role_auth.`ROLE_ID` =
+		manager_role.`ROLE_ID`
+		LEFT JOIN manager_auth ON inner_role_auth.`AUTH_ID` =
+		manager_auth.`AUTH_ID`
+		LEFT JOIN inner_auth_res ON
+		inner_auth_res.`AUTH_ID` =
+		manager_auth.`AUTH_ID`
+		LEFT JOIN manager_res
+		ON inner_auth_res.`RES_ID` = manager_res.`RES_ID`
+		WHERE
+		admin_id=#{adminId};
+	</select>
+
+
+	<delete id="removeOldRelationship">
+		delete from inner_admin_role where
+		admin_id=#{adminId}
+	</delete>
+
+	<insert id="saveNewRelationship">
+		insert into inner_admin_role(admin_id,role_id) values
+		<foreach collection="roleIdList" item="roleId" separator=",">
+			(#{adminId},#{roleId})
+		</foreach>
+	</insert>
+
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from manager_admin
+		where admin_id in
+		<foreach collection="list" item="adminId" open="(" close=")"
+			separator=",">
+			#{adminId}
+		</foreach>
+	</delete>
+
+	<update id="updateAdminNameByAdminId" parameterType="com.atguigu.survey.entities.manager.Admin">
+		update
+		manager_admin
+		set ADMIN_NAME = #{adminName,jdbcType=VARCHAR}
+		where
+		ADMIN_ID =
+		#{adminId,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateCodeArrStrByAdminId">
+		update manager_admin set CODE_ARR_STR = #{codeArrStr}
+		where ADMIN_ID = #{adminId}
+	</update>
+
+</mapper>

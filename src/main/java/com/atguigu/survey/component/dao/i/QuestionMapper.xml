@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.QuestionMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.guest.Question">
+		<id column="QUESTION_ID" property="questionId" jdbcType="INTEGER" />
+		<result column="QUESTION_NAME" property="questionName"
+			jdbcType="VARCHAR" />
+		<result column="QUESTION_TYPE" property="questionType"
+			jdbcType="INTEGER" />
+		<result column="OPTIONS" property="options" jdbcType="VARCHAR" />
+		<result column="bag_id" property="bagId" jdbcType="INTEGER" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		guest_question
+		where QUESTION_ID = #{questionId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.guest.Question">
+		insert into guest_question
+		(QUESTION_NAME, QUESTION_TYPE, OPTIONS, BAG_ID)
+		values
+		(#{questionName,jdbcType=VARCHAR},
+		#{questionType,jdbcType=INTEGER},
+		#{options,jdbcType=VARCHAR},
+		#{bagId,jdbcType=INTEGER})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.guest.Question">
+		update
+		guest_question
+		set QUESTION_NAME = #{questionName,jdbcType=VARCHAR},
+		QUESTION_TYPE = #{questionType,jdbcType=INTEGER},
+		OPTIONS =
+		#{options,jdbcType=VARCHAR},
+		BAG_ID = #{bagId,jdbcType=INTEGER}
+		where
+		QUESTION_ID = #{questionId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select QUESTION_ID, QUESTION_NAME, QUESTION_TYPE,
+		OPTIONS, BAG_ID
+		from guest_question
+		where QUESTION_ID =
+		#{questionId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select QUESTION_ID,
+		QUESTION_NAME, QUESTION_TYPE, OPTIONS, BAG_ID
+		from guest_question order
+		by QUESTION_TYPE
+	</select>
+
+	<select id="getQuestionListByBagId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select QUESTION_ID, QUESTION_NAME, QUESTION_TYPE,
+		OPTIONS, BAG_ID
+		from guest_question
+		where bag_id = #{bagId} order by
+		QUESTION_TYPE
+	</select>
+
+	<insert id="batchSaveQuestion" parameterType="java.util.Set">
+		insert into guest_question(QUESTION_NAME, QUESTION_TYPE,
+		OPTIONS,
+		BAG_ID)
+		values
+		<foreach collection="questionSet" item="question" separator=",">
+			(#{question.questionName,jdbcType=VARCHAR},
+			#{question.questionType,jdbcType=INTEGER},
+			#{question.options,jdbcType=VARCHAR},
+			#{question.bagId,jdbcType=INTEGER})
+		</foreach>
+	</insert>
+
+</mapper>

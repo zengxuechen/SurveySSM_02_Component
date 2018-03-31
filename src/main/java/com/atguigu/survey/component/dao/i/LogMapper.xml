@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.LogMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.manager.Log">
+		<id column="LOG_ID" property="logId" jdbcType="INTEGER" />
+		<result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
+		<result column="OPERATE_TIME" property="operateTime" jdbcType="VARCHAR" />
+		<result column="METHOD_NAME" property="methodName" jdbcType="VARCHAR" />
+		<result column="METHOD_TYPE" property="methodType" jdbcType="VARCHAR" />
+		<result column="METHOD_RETURN_VALUE" property="methodReturnValue"
+			jdbcType="VARCHAR" />
+		<result column="METHOD_ARGS" property="methodArgs" jdbcType="VARCHAR" />
+		<result column="EXCEPTION_TYPE" property="exceptionType"
+			jdbcType="VARCHAR" />
+		<result column="EXCEPTION_MESSAGE" property="exceptionMessage"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		manager_log
+		where LOG_ID = #{logId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.manager.Log">
+		insert into manager_log
+		(LOG_ID, OPERATOR, OPERATE_TIME,
+		METHOD_NAME, METHOD_TYPE,
+		METHOD_RETURN_VALUE,
+		METHOD_ARGS, EXCEPTION_TYPE, EXCEPTION_MESSAGE
+		)
+		values (#{logId,jdbcType=INTEGER}, #{operator,jdbcType=VARCHAR},
+		#{operateTime,jdbcType=VARCHAR},
+		#{methodName,jdbcType=VARCHAR},
+		#{methodType,jdbcType=VARCHAR},
+		#{methodReturnValue,jdbcType=VARCHAR},
+		#{methodArgs,jdbcType=VARCHAR}, #{exceptionType,jdbcType=VARCHAR},
+		#{exceptionMessage,jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.manager.Log">
+		update manager_log
+		set OPERATOR = #{operator,jdbcType=VARCHAR},
+		OPERATE_TIME =
+		#{operateTime,jdbcType=VARCHAR},
+		METHOD_NAME =
+		#{methodName,jdbcType=VARCHAR},
+		METHOD_TYPE =
+		#{methodType,jdbcType=VARCHAR},
+		METHOD_RETURN_VALUE =
+		#{methodReturnValue,jdbcType=VARCHAR},
+		METHOD_ARGS =
+		#{methodArgs,jdbcType=VARCHAR},
+		EXCEPTION_TYPE =
+		#{exceptionType,jdbcType=VARCHAR},
+		EXCEPTION_MESSAGE =
+		#{exceptionMessage,jdbcType=VARCHAR}
+		where LOG_ID =
+		#{logId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select LOG_ID, OPERATOR, OPERATE_TIME, METHOD_NAME,
+		METHOD_TYPE,
+		METHOD_RETURN_VALUE,
+		METHOD_ARGS, EXCEPTION_TYPE,
+		EXCEPTION_MESSAGE
+		from manager_log
+		where LOG_ID =
+		#{logId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select LOG_ID, OPERATOR,
+		OPERATE_TIME, METHOD_NAME, METHOD_TYPE,
+		METHOD_RETURN_VALUE,
+		METHOD_ARGS, EXCEPTION_TYPE, EXCEPTION_MESSAGE
+		from manager_log
+	</select>
+
+	<update id="createTable" parameterType="java.lang.String">
+		CREATE TABLE IF NOT
+		EXISTS ${tableName} LIKE survey_main.manager_log
+	</update>
+
+	<select id="getAllLogTableNames" resultType="java.lang.String">
+		SELECT table_name
+		FROM information_schema.tables WHERE table_schema =
+		'survey_log'
+	</select>
+
+	<select id="getCountLog" resultType="java.lang.Integer"
+		parameterType="java.util.List">
+		select count(alias.log_id) from
+		<foreach collection="list" item="tableName" open="(" close=")"
+			separator=" union ">
+			select log_id from ${tableName}
+		</foreach>
+		alias
+	</select>
+
+	<select id="getLimitLogPage" resultMap="BaseResultMap">
+		select alias.LOG_ID, alias.OPERATOR,
+		alias.OPERATE_TIME,
+		alias.METHOD_NAME, alias.METHOD_TYPE,
+		alias.METHOD_RETURN_VALUE,
+		alias.METHOD_ARGS, alias.EXCEPTION_TYPE, alias.EXCEPTION_MESSAGE from
+		<foreach collection="list" item="tableName" open="(" close=")"
+			separator=" union ">
+			select LOG_ID, OPERATOR,
+			OPERATE_TIME, METHOD_NAME,
+			METHOD_TYPE,
+			METHOD_RETURN_VALUE,
+			METHOD_ARGS, EXCEPTION_TYPE,
+			EXCEPTION_MESSAGE from ${tableName}
+		</foreach>
+		alias limit #{startIndex},#{pageSize}
+	</select>
+</mapper>

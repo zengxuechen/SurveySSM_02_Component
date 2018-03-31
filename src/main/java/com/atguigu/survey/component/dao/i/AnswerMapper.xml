@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.AnswerMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.guest.Answer">
+		<id column="ANSWER_ID" property="answerId" jdbcType="INTEGER" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+		<result column="UUID" property="uuid" jdbcType="VARCHAR" />
+		<result column="QUESTION_ID" property="questionId" jdbcType="INTEGER" />
+		<result column="SURVEY_ID" property="surveyId" jdbcType="INTEGER" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		guest_answer
+		where ANSWER_ID = #{answerId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.guest.Answer">
+		insert into guest_answer
+		(ANSWER_ID, CONTENT, UUID,
+		QUESTION_ID, SURVEY_ID)
+		values
+		(#{answerId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR},
+		#{uuid,jdbcType=VARCHAR},
+		#{questionId,jdbcType=INTEGER},
+		#{surveyId,jdbcType=INTEGER})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.guest.Answer">
+		update
+		guest_answer
+		set CONTENT = #{content,jdbcType=VARCHAR},
+		UUID =
+		#{uuid,jdbcType=VARCHAR},
+		QUESTION_ID = #{questionId,jdbcType=INTEGER},
+		SURVEY_ID = #{surveyId,jdbcType=INTEGER}
+		where ANSWER_ID =
+		#{answerId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select ANSWER_ID, CONTENT, UUID, QUESTION_ID, SURVEY_ID
+		from guest_answer
+		where ANSWER_ID = #{answerId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select ANSWER_ID, CONTENT,
+		UUID, QUESTION_ID, SURVEY_ID
+		from guest_answer
+	</select>
+
+	<insert id="batchSaveAnswer" parameterType="java.util.List">
+		insert into guest_answer (ANSWER_ID, CONTENT, UUID,
+		QUESTION_ID,
+		SURVEY_ID)
+		values
+		<foreach collection="list" item="answer" separator=",">
+			(#{answer.answerId,jdbcType=INTEGER},
+			#{answer.content,jdbcType=VARCHAR},
+			#{answer.uuid,jdbcType=VARCHAR},
+			#{answer.questionId,jdbcType=INTEGER},
+			#{answer.surveyId,jdbcType=INTEGER})
+		</foreach>
+	</insert>
+
+
+	<select id="getTextList" parameterType="java.lang.Integer"
+		resultType="java.lang.String">
+		select CONTENT from guest_answer where
+		QUESTION_ID=#{questionId}
+	</select>
+
+
+	<!-- 导出图表 -->
+	<select id="getQuestionEngageCount" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM guest_answer WHERE
+		question_id=#{questionId}
+	</select>
+	<select id="getOptionEngageCount" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM guest_answer WHERE question_id=#{questionId} AND CONCAT(',',
+		content , ',') LIKE '%,${index},%'
+	</select>
+
+	<!-- 导出Excel -->
+	<select id="getSurveyEngageCount" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		SELECT COUNT(DISTINCT UUID) FROM guest_answer WHERE
+		survey_id=#{surveyId}
+	</select>
+
+	<select id="getAnswerListBySurveyId" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select ANSWER_ID, CONTENT, UUID, QUESTION_ID, SURVEY_ID
+		from
+		guest_answer
+		where SURVEY_ID = #{surveyId}
+	</select>
+
+</mapper>

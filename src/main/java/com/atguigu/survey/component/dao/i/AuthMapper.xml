@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.AuthMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.manager.Auth">
+		<id column="AUTH_ID" property="authId" jdbcType="INTEGER" />
+		<result column="AUTH_NAME" property="authName" jdbcType="VARCHAR" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		manager_auth
+		where AUTH_ID = #{authId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.manager.Auth">
+		insert into manager_auth
+		(AUTH_ID, AUTH_NAME)
+		values (#{authId,jdbcType=INTEGER},
+		#{authName,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.manager.Auth">
+		update
+		manager_auth
+		set AUTH_NAME = #{authName,jdbcType=VARCHAR}
+		where AUTH_ID
+		= #{authId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select AUTH_ID, AUTH_NAME
+		from manager_auth
+		where AUTH_ID
+		= #{authId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select AUTH_ID, AUTH_NAME
+		from
+		manager_auth
+	</select>
+
+	<delete id="batchDeleteAuthRes" parameterType="java.util.List">
+		delete from manager_auth_res
+		where AUTH_ID in
+		<foreach collection="list" item="authId" open="(" close=")"
+			separator=",">
+			#{authId}
+		</foreach>
+	</delete>
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from manager_auth
+		where AUTH_ID in
+		<foreach collection="list" item="authId" open="(" close=")"
+			separator=",">
+			#{authId}
+		</foreach>
+	</delete>
+	<select id="getCurrentAuthResList" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select res_id from inner_auth_res where
+		auth_id=#{authId}
+	</select>
+	<delete id="removeOldRelationShip" parameterType="java.lang.Integer">
+		delete from
+		inner_auth_res where auth_id=#{authId}
+	</delete>
+	<insert id="saveNewRelationShip">
+		insert into inner_auth_res(auth_id,res_id) values
+		<foreach collection="resIdList" item="resId" separator=",">
+			(#{authId},#{resId})
+		</foreach>
+	</insert>
+
+</mapper>

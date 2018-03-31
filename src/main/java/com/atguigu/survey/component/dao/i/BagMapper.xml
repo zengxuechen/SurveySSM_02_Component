@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.BagMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.guest.Bag">
+		<id column="BAG_ID" property="bagId" jdbcType="INTEGER" />
+		<result column="BAG_NAME" property="bagName" jdbcType="VARCHAR" />
+		<result column="BAG_ORDER" property="bagOrder" jdbcType="INTEGER" />
+		<result column="survey_id" property="surveyId" jdbcType="INTEGER" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		guest_bag
+		where BAG_ID = #{bagId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.guest.Bag"
+		useGeneratedKeys="true" keyProperty="bagId">
+		insert into guest_bag (BAG_ID,
+		BAG_NAME,
+		BAG_ORDER,
+		SURVEY_ID)
+		values (#{bagId,jdbcType=VARCHAR},
+		#{bagName,jdbcType=VARCHAR},
+		#{bagOrder,jdbcType=INTEGER},
+		#{surveyId,jdbcType=INTEGER})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.guest.Bag">
+		update guest_bag
+		set BAG_NAME = #{bagName,jdbcType=VARCHAR},
+		BAG_ORDER =
+		#{bagOrder,jdbcType=INTEGER},
+		SURVEY_ID =
+		#{surveyId,jdbcType=INTEGER}
+		where BAG_ID =
+		#{bagId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select BAG_ID, BAG_NAME, BAG_ORDER, SURVEY_ID
+		from
+		guest_bag
+		where BAG_ID = #{bagId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select BAG_ID, BAG_NAME,
+		BAG_ORDER, SURVEY_ID
+		from guest_bag
+	</select>
+
+	<select id="getBagListBySurveyId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select BAG_ID, BAG_NAME, BAG_ORDER, b.SURVEY_ID
+		from
+		guest_bag b inner join guest_survey s on b.survey_id=s.survey_id
+		where
+		b.survey_id = #{surveyId} order by BAG_ID
+	</select>
+
+
+	<update id="updateRelationshipByMove">
+		update guest_bag
+		set
+		SURVEY_ID = #{surveyId}
+		where
+		BAG_ID = #{bagId}
+	</update>
+
+	<!-- &allowMultiQueries=true -->
+	<update id="batchUpdateBagOrder" parameterType="java.util.List">
+		<foreach collection="list" item="map" separator=";">
+			update
+			guest_bag set BAG_ORDER = #{map.bagOrder} where BAG_ID = #{map.bagId}
+		</foreach>
+	</update>
+
+	<!-- 深度加载Bag对象 -->
+	<resultMap type="Bag" id="deeplyGetBagResultMap">
+		<id column="bag_id" property="bagId" />
+		<result column="bag_name" property="bagName" />
+		<result column="bag_order" property="bagOrder" />
+		<result column="survey_id" property="surveyId" />
+		<collection property="questionSet" column="bag_id" ofType="Question">
+			<result column="question_id" property="questionId" />
+			<result column="question_name" property="questionName" />
+			<result column="question_type" property="questionType" />
+			<result column="options" property="options" />
+			<result column="bag_id" property="bagId" />
+		</collection>
+	</resultMap>
+
+	<select id="getBagDeeply" resultMap="deeplyGetBagResultMap">
+		SELECT
+		b.bag_id,bag_name,bag_order,survey_id,
+		question_id,question_name,question_type,options
+		FROM
+		guest_bag b
+		LEFT JOIN
+		guest_question q
+		ON b.bag_id=q.bag_id
+		WHERE b.bag_id=#{bagId}
+	</select>
+</mapper>

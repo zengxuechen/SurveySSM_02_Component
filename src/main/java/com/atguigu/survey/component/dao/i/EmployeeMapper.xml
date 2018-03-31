@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.EmployeeMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.guest.Employee">
+		<id column="EMP_ID" property="empId" jdbcType="INTEGER" />
+		<result column="EMP_NAME" property="empName" jdbcType="VARCHAR" />
+		<result column="AGE" property="age" jdbcType="INTEGER" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		guest_employee
+		where EMP_ID = #{empId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.guest.Employee">
+		insert into guest_employee
+		(EMP_ID, EMP_NAME, AGE
+		)
+		values (#{empId,jdbcType=INTEGER},
+		#{empName,jdbcType=VARCHAR},
+		#{age,jdbcType=INTEGER}
+		)
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.guest.Employee">
+		update
+		guest_employee
+		set EMP_NAME = #{empName,jdbcType=VARCHAR},
+		AGE =
+		#{age,jdbcType=INTEGER}
+		where EMP_ID = #{empId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select EMP_ID, EMP_NAME, AGE
+		from guest_employee
+		where
+		EMP_ID = #{empId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select EMP_ID, EMP_NAME, AGE
+		from guest_employee
+	</select>
+</mapper>

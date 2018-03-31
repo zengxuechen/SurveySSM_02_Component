@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.UserMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.guest.User">
+		<id column="USER_ID" property="userId" jdbcType="INTEGER" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="USER_PWD" property="userPwd" jdbcType="VARCHAR" />
+		<result column="COMPANY" property="company" jdbcType="BIT" />
+		<result column="CODE_ARR_STR" property="codeArrStr" jdbcType="VARCHAR" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		guest_user
+		where USER_ID = #{userId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.guest.User"
+		useGeneratedKeys="true" keyProperty="userId">
+		insert into guest_user (USER_ID,
+		USER_NAME, USER_PWD,
+		COMPANY, CODE_ARR_STR)
+		values
+		(#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR},
+		#{userPwd,jdbcType=VARCHAR},
+		#{company,jdbcType=BIT},
+		#{codeArrStr,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.guest.User">
+		update guest_user
+		set USER_NAME = #{userName,jdbcType=VARCHAR},
+		USER_PWD =
+		#{userPwd,jdbcType=VARCHAR},
+		COMPANY = #{company,jdbcType=BIT},
+		CODE_ARR_STR = #{codeArrStr,jdbcType=VARCHAR}
+		where USER_ID =
+		#{userId,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateCodeArrStrByUserId">
+		update guest_user set CODE_ARR_STR = #{codeArrStr}
+		where USER_ID = #{userId}
+	</update>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select USER_ID, USER_NAME, USER_PWD, COMPANY,
+		CODE_ARR_STR
+		from guest_user
+		where USER_ID = #{userId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select USER_ID, USER_NAME,
+		USER_PWD, COMPANY, CODE_ARR_STR
+		from guest_user
+	</select>
+
+	<select id="login" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select USER_ID, USER_NAME, USER_PWD, COMPANY, CODE_ARR_STR
+		from
+		guest_user
+		where USER_NAME = #{userName} AND USER_PWD = #{userPwd}
+	</select>
+
+	<select id="checkUserName" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*) from guest_user where user_name =
+		#{userName}
+	</select>
+
+	<insert id="insertUserRoleRelationship" parameterType="java.util.Map">
+		insert
+		into inner_user_role (USER_ID,ROLE_ID)
+		values (#{userId}, #{roleId})
+	</insert>
+
+
+	<resultMap type="Role" id="getRoleDeeplyResultMap">
+		<id column="role_id" property="roleId" />
+		<result column="role_name" property="roleName" />
+		<collection property="authSet" ofType="Auth">
+			<id column="auth_id" property="authId" />
+			<result column="auth_name" property="authName" />
+			<collection property="resSet" ofType="Res">
+				<id column="res_id" property="resId" />
+				<!-- <result column="servlet_path" property="servletPath"/> -->
+				<result column="res_code" property="resCode" />
+				<result column="res_pos" property="resPos" />
+			</collection>
+		</collection>
+	</resultMap>
+
+	<select id="getRoleSetDeeply" resultMap="getRoleDeeplyResultMap">
+		SELECT
+		inner_user_role.user_id,
+		manager_role.role_id,
+		manager_role.role_name,
+		manager_auth.auth_id,
+		manager_auth.auth_name,
+		manager_res.res_id,
+		manager_res.servlet_path,
+		manager_res.res_code,
+		manager_res.res_pos
+		FROM
+		inner_user_role
+		LEFT JOIN manager_role
+		ON inner_user_role.role_id =
+		manager_role.role_id
+		LEFT JOIN inner_role_auth
+		ON manager_role.role_id =
+		inner_role_auth.role_id
+		LEFT JOIN manager_auth
+		ON
+		inner_role_auth.auth_id = manager_auth.auth_id
+		LEFT JOIN inner_auth_res
+		ON manager_auth.auth_id = inner_auth_res.auth_id
+		LEFT JOIN manager_res
+		ON inner_auth_res.res_id = manager_res.res_id
+		WHERE
+		inner_user_role.user_id = #{userId}
+	</select>
+
+	<insert id="saveRelationship">
+		insert into inner_user_role(user_id,role_id)
+		values(#{userId},#{roleId})
+	</insert>
+
+	<update id="updateUserCodeArr">
+		update guest_user set CODE_ARR_STR=#{codeArr} where
+		user_id=#{userId}
+	</update>
+</mapper>

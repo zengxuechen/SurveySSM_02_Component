@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.SurveyMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.guest.Survey">
+		<id column="SURVEY_ID" property="surveyId" jdbcType="INTEGER" />
+		<result column="SURVEY_NAME" property="surveyName" jdbcType="VARCHAR" />
+		<result column="COMPLETED" property="completed" jdbcType="BIT" />
+		<result column="LOGO_PATH" property="logoPath" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		guest_survey
+		where SURVEY_ID = #{surveyId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.guest.Survey">
+		insert into guest_survey
+		(SURVEY_ID, SURVEY_NAME, COMPLETED,
+		LOGO_PATH, USER_ID)
+		values
+		(#{surveyId,jdbcType=INTEGER}, #{surveyName,jdbcType=VARCHAR},
+		#{completed,jdbcType=BIT},
+		#{logoPath,jdbcType=VARCHAR},
+		#{userId,jdbcType=INTEGER})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.guest.Survey">
+		update
+		guest_survey
+		set SURVEY_NAME = #{surveyName,jdbcType=VARCHAR},
+		COMPLETED = #{completed,jdbcType=BIT},
+		LOGO_PATH =
+		#{logoPath,jdbcType=VARCHAR},
+		USER_ID = #{userId,jdbcType=INTEGER}
+		where SURVEY_ID = #{surveyId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer"><!-- 必须查询外键字段，否则多对一关联查询并不能将User封装给Survey -->
+		select SURVEY_ID, SURVEY_NAME, COMPLETED, LOGO_PATH, USER_ID
+		from
+		guest_survey
+		where SURVEY_ID = #{surveyId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select SURVEY_ID, SURVEY_NAME,
+		COMPLETED, LOGO_PATH, USER_ID
+		from guest_survey
+	</select>
+
+	<update id="compledted" parameterType="java.lang.Integer">
+		update guest_survey
+		set
+		COMPLETED = true where survey_id = #{surveyId}
+	</update>
+
+	<select id="getSurveyLimitedListCount" resultType="java.lang.Integer">
+		select count(*)
+		from guest_survey
+		<where>
+			<if test="userId!=null">user_id=#{userId}</if>
+			and completed=#{completed}
+		</where>
+	</select>
+	<select id="getSurveyLimitedList" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select SURVEY_ID,
+		SURVEY_NAME, COMPLETED, LOGO_PATH,USER_ID
+		from
+		guest_survey
+		<where>
+			<if test="userId!=null">user_id=#{userId}</if>
+			and completed=#{completed}
+		</where>
+		limit
+		#{startIndex},#{pageSize}
+	</select>
+
+
+	<delete id="deleteQuestionBySurveyId" parameterType="integer">
+		delete from
+		guest_question where bag_id in (select b.bag_id from guest_bag b where
+		b.survey_id=#{surveyId})
+	</delete>
+	<delete id="deleteBagBySurveyId" parameterType="integer">
+		delete from
+		guest_bag where survey_id=#{surveyId}
+	</delete>
+
+
+
+	<resultMap type="Survey" id="deeplyGetSurveyResultMap">
+		<id column="survey_id" property="surveyId" />
+		<result column="survey_name" property="surveyName" />
+		<result column="completed" property="completed" />
+		<result column="logo_path" property="logoPath" />
+		<result column="user_id" property="userId" />
+		<collection property="bagSet" column="survey_id" ofType="Bag">
+			<result column="bag_id" property="bagId" />
+			<result column="bag_name" property="bagName" />
+			<result column="bag_order" property="bagOrder" />
+
+			<!-- 这里如果包含survey_id，那么即使当前调查内没有包裹，MyBatis也会创建一个“空”的Bag对象 -->
+			<!-- <result column="survey_id" property="surveyId"/> -->
+			<collection property="questionSet" column="bag_id" ofType="Question">
+				<result column="question_id" property="questionId" />
+				<result column="question_name" property="questionName" />
+				<result column="question_type" property="questionType" />
+				<result column="options" property="options" />
+				<!-- <result column="bag_id" property="bagId"/> -->
+			</collection>
+		</collection>
+	</resultMap>
+
+	<select id="getSurveyDeeply" resultMap="deeplyGetSurveyResultMap">
+		SELECT
+		s.survey_id,survey_name,completed,logo_path,user_id,
+		b.bag_id,bag_name,bag_order,
+		q.question_id,question_name,question_type,options
+		FROM
+		guest_survey s
+		LEFT JOIN guest_bag b ON s.survey_id=b.survey_id
+		LEFT JOIN
+		guest_question q ON b.bag_id=q.bag_id
+		WHERE
+		s.survey_id=#{surveyId}
+		order by
+		s.survey_id,bag_order,q.question_id
+	</select>
+
+
+</mapper>

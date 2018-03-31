@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.RoleMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.manager.Role">
+		<id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+		<result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		manager_role
+		where ROLE_ID = #{roleId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.manager.Role">
+		insert into manager_role
+		(ROLE_ID, ROLE_NAME)
+		values (#{roleId,jdbcType=INTEGER},
+		#{roleName,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.manager.Role">
+		update
+		manager_role
+		set ROLE_NAME = #{roleName,jdbcType=VARCHAR}
+		where ROLE_ID
+		= #{roleId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select ROLE_ID, ROLE_NAME
+		from manager_role
+		where ROLE_ID
+		= #{roleId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select ROLE_ID, ROLE_NAME
+		from
+		manager_role
+	</select>
+	<resultMap type="Role" id="getRoleDeeplyResultMap">
+		<id column="role_id" property="roleId" />
+		<result column="role_name" property="roleName" />
+		<collection property="authSet" ofType="Auth">
+			<id column="auth_id" property="authId" />
+			<result column="auth_name" property="authName" />
+			<collection property="resSet" ofType="Res">
+				<id column="res_id" property="resId" />
+				<!-- <result column="servlet_path" property="servletPath"/> -->
+				<result column="res_code" property="resCode" />
+				<result column="res_pos" property="resPos" />
+			</collection>
+		</collection>
+	</resultMap>
+
+	<select id="getRoleByCompany" resultMap="getRoleDeeplyResultMap">
+		SELECT
+		manager_role.role_id,
+		manager_role.role_name,
+		manager_auth.auth_id,
+		manager_auth.auth_name,
+		manager_res.res_id,
+		manager_res.servlet_path,
+		manager_res.res_code,
+		manager_res.res_pos
+		FROM
+		manager_role
+		LEFT JOIN inner_role_auth
+		ON
+		manager_role.role_id = inner_role_auth.role_id
+		LEFT JOIN
+		manager_auth
+		ON inner_role_auth.auth_id = manager_auth.auth_id
+		LEFT JOIN inner_auth_res
+		ON manager_auth.auth_id =
+		inner_auth_res.auth_id
+		LEFT JOIN manager_res
+		ON
+		inner_auth_res.res_id = manager_res.res_id
+		WHERE
+		manager_role.ROLE_NAME = #{company}
+	</select>
+
+	<select id="getCurrentAuthIdList" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select auth_id from inner_role_auth where role_id=#{roleId}
+	</select>
+
+	<delete id="removeOldRelationship">
+		delete from inner_role_auth where role_id=#{role_id}
+	</delete>
+
+	<insert id="saveNewRelationship">
+		insert into inner_role_auth(auth_id,role_id) values
+		<foreach collection="authIdList" item="authId" separator=",">
+			(#{authId},#{roleId})
+		</foreach>
+	</insert>
+
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from manager_role
+		where role_id in
+		<foreach collection="list" item="roleId" open="(" close=")"
+			separator=",">
+			#{roleId}
+		</foreach>
+	</delete>
+	<select id="getRoleByName" resultMap="BaseResultMap">
+		SELECT
+		role_id,role_name
+		FROM
+		manager_role
+		WHERE ROLE_NAME = #{roleName}
+	</select>
+
+
+</mapper>

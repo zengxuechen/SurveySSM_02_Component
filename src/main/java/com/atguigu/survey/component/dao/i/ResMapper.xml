@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.ResMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.manager.Res">
+		<id column="RES_ID" property="resId" jdbcType="INTEGER" />
+		<result column="SERVLET_PATH" property="servletPath" jdbcType="VARCHAR" />
+		<result column="PUBLIC_RES" property="publicRes" jdbcType="BIT" />
+		<result column="RES_CODE" property="resCode" jdbcType="INTEGER" />
+		<result column="RES_POS" property="resPos" jdbcType="INTEGER" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		manager_res
+		where RES_ID = #{resId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.atguigu.survey.entities.manager.Res">
+		insert into manager_res
+		(RES_ID, SERVLET_PATH, PUBLIC_RES,
+		RES_CODE, RES_POS)
+		values
+		(#{resId,jdbcType=INTEGER}, #{servletPath,jdbcType=VARCHAR},
+		#{publicRes,jdbcType=BIT},
+		#{resCode,jdbcType=INTEGER},
+		#{resPos,jdbcType=INTEGER})
+	</insert>
+	<update id="updateByPrimaryKey" parameterType="com.atguigu.survey.entities.manager.Res">
+		update manager_res
+		set SERVLET_PATH = #{servletPath,jdbcType=VARCHAR},
+		PUBLIC_RES =
+		#{publicRes,jdbcType=BIT},
+		RES_CODE = #{resCode,jdbcType=INTEGER},
+		RES_POS = #{resPos,jdbcType=INTEGER}
+		where RES_ID =
+		#{resId,jdbcType=INTEGER}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select RES_ID, SERVLET_PATH, PUBLIC_RES, RES_CODE,
+		RES_POS
+		from manager_res
+		where RES_ID = #{resId,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select RES_ID, SERVLET_PATH,
+		PUBLIC_RES, RES_CODE, RES_POS
+		from manager_res
+	</select>
+
+	<select id="checkResExist" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*) from manager_res where
+		servlet_path=#{servletPath}
+	</select>
+
+	<select id="getResByServletpath" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select RES_ID, SERVLET_PATH, PUBLIC_RES, RES_CODE, RES_POS
+		from manager_res
+		where servlet_path=#{servletPath}
+	</select>
+
+	<select id="getMaxPos" resultType="java.lang.Integer">
+		select max(RES_POS) from
+		manager_res ;
+	</select>
+
+	<select id="getMaxCode" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select max(RES_CODE) from manager_res where
+		RES_POS=#{maxPos};
+	</select>
+
+	<update id="updateStatus" parameterType="java.lang.Integer">
+		update manager_res
+		set
+		PUBLIC_RES = !PUBLIC_RES
+		where RES_ID = #{resId,jdbcType=INTEGER}
+	</update>
+
+	<select id="getStatus" parameterType="java.lang.Integer"
+		resultType="java.lang.Boolean">
+		select PUBLIC_RES
+		from manager_res
+		where res_id=#{resId}
+	</select>
+
+	<!-- 参考：mybatis-3-User-Guide-Simplified-Chinese.pdf 43页 注意：你可以传递一个List实例或者数组作为参数对象传给MyBatis。 
+		当你这么做的时候，MyBatis会自动将它包装在一个Map中，用名称作为键。 List实例将会以“list”作为键， 而数组实例将会以“array”作为键。 -->
+	<!-- 对于List集合参数默认的collection值为list,对于数组类型参数，默认的collection值为array -->
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from manager_res
+		where RES_ID in
+		<foreach collection="list" item="resId" open="(" close=")"
+			separator=",">
+			#{resId}
+		</foreach>
+	</delete>
+
+</mapper>
