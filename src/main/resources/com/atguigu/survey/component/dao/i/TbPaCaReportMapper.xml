@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.TbPaCaReportMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbPaCaReport">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="PROFESSION_CODE" property="professionCode" jdbcType="VARCHAR" />
+		<result column="PROFESSION_CODE_NAME" property="professionCodeName" jdbcType="VARCHAR" />
+		<result column="CHARACTER_SUMMARIZE" property="characterSummarize" jdbcType="VARCHAR" />
+		<result column="CHARACTER_DESC" property="characterDesc" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="id != null"> and ID= #{id}</if>	
+		<if test="professionCode != null and professionCode !=''"> and PROFESSION_CODE= #{professionCode}</if>
+		<if test="professionCodeName != null and professionCodeName !=''"> and PROFESSION_CODE_NAME= #{professionCodeName}</if>
+		<if test="characterSummarize != null and characterSummarize !=''"> and CHARACTER_SUMMARIZE= #{characterSummarize}</if>
+		<if test="characterDesc != null and characterDesc !=''"> and CHARACTER_DESC= #{characterDesc}</if>
+	</sql>
+	<sql id="Base_Column_List">
+		ID ,
+		PROFESSION_CODE ,
+		PROFESSION_CODE_NAME ,
+		CHARACTER_SUMMARIZE ,
+		CHARACTER_DESC 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_ca_report
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_pa_ca_report
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaCaReport">
+		insert into tb_pa_ca_report
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">ID,</if>	
+			<if test="professionCode != null and professionCode !=''">PROFESSION_CODE,</if>
+			<if test="professionCodeName != null and professionCodeName !=''">PROFESSION_CODE_NAME,</if>
+			<if test="characterSummarize != null and characterSummarize !=''">CHARACTER_SUMMARIZE,</if>
+			<if test="characterDesc != null and characterDesc !=''">CHARACTER_DESC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="professionCode != null and professionCode !=''">
+				#{professionCode,jdbcType=VARCHAR},
+			</if>
+			<if test="professionCodeName != null and professionCodeName !=''">
+				#{professionCodeName,jdbcType=VARCHAR},
+			</if>
+			<if test="characterSummarize != null and characterSummarize !=''">
+				#{characterSummarize,jdbcType=VARCHAR},
+			</if>
+			<if test="characterDesc != null and characterDesc !=''">
+				#{characterDesc,jdbcType=VARCHAR},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaCaReport">
+		update tb_pa_ca_report
+		<set>
+			<if test="professionCode != null and professionCode !=''">
+				PROFESSION_CODE= #{professionCode,jdbcType=VARCHAR},
+			</if>
+			<if test="professionCodeName != null and professionCodeName !=''">
+				PROFESSION_CODE_NAME= #{professionCodeName,jdbcType=VARCHAR},
+			</if>
+			<if test="characterSummarize != null and characterSummarize !=''">
+				CHARACTER_SUMMARIZE= #{characterSummarize,jdbcType=VARCHAR},
+			</if>
+			<if test="characterDesc != null and characterDesc !=''">
+				CHARACTER_DESC= #{characterDesc,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_ca_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_pa_ca_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_ca_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_ca_report where ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>

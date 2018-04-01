@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.TbSelectQuestionLibMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbSelectQuestionLib">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="TEST_TYPE_CODE" property="testTypeCode" jdbcType="VARCHAR" />
+		<result column="TEST_TYPE_NAME" property="testTypeName" jdbcType="VARCHAR" />
+		<result column="QUESTION_TYPE_CODE" property="questionTypeCode" jdbcType="VARCHAR" />
+		<result column="QUESTION_TYPE_NAME" property="questionTypeName" jdbcType="VARCHAR" />
+		<result column="QUESTION_CONTENT" property="questionContent" jdbcType="VARCHAR" />
+		<result column="OPTION" property="option" jdbcType="VARCHAR" />
+		<result column="OPTION_BITMAP" property="optionBitmap" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="id != null"> and ID= #{id}</if>	
+		<if test="testTypeCode != null and testTypeCode !=''"> and TEST_TYPE_CODE= #{testTypeCode}</if>
+		<if test="testTypeName != null and testTypeName !=''"> and TEST_TYPE_NAME= #{testTypeName}</if>
+		<if test="questionTypeCode != null and questionTypeCode !=''"> and QUESTION_TYPE_CODE= #{questionTypeCode}</if>
+		<if test="questionTypeName != null and questionTypeName !=''"> and QUESTION_TYPE_NAME= #{questionTypeName}</if>
+		<if test="questionContent != null and questionContent !=''"> and QUESTION_CONTENT= #{questionContent}</if>
+		<if test="option != null and option !=''"> and OPTION= #{option}</if>
+		<if test="optionBitmap != null and optionBitmap !=''"> and OPTION_BITMAP= #{optionBitmap}</if>
+	</sql>
+	<sql id="Base_Column_List">
+		ID ,
+		TEST_TYPE_CODE ,
+		TEST_TYPE_NAME ,
+		QUESTION_TYPE_CODE ,
+		QUESTION_TYPE_NAME ,
+		QUESTION_CONTENT ,
+		OPTION ,
+		OPTION_BITMAP 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_select_question_lib
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_select_question_lib
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbSelectQuestionLib">
+		insert into tb_select_question_lib
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">ID,</if>	
+			<if test="testTypeCode != null and testTypeCode !=''">TEST_TYPE_CODE,</if>
+			<if test="testTypeName != null and testTypeName !=''">TEST_TYPE_NAME,</if>
+			<if test="questionTypeCode != null and questionTypeCode !=''">QUESTION_TYPE_CODE,</if>
+			<if test="questionTypeName != null and questionTypeName !=''">QUESTION_TYPE_NAME,</if>
+			<if test="questionContent != null and questionContent !=''">QUESTION_CONTENT,</if>
+			<if test="option != null and option !=''">OPTION,</if>
+			<if test="optionBitmap != null and optionBitmap !=''">OPTION_BITMAP,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="testTypeCode != null and testTypeCode !=''">
+				#{testTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="testTypeName != null and testTypeName !=''">
+				#{testTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="questionTypeCode != null and questionTypeCode !=''">
+				#{questionTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="questionTypeName != null and questionTypeName !=''">
+				#{questionTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="questionContent != null and questionContent !=''">
+				#{questionContent,jdbcType=VARCHAR},
+			</if>
+			<if test="option != null and option !=''">
+				#{option,jdbcType=VARCHAR},
+			</if>
+			<if test="optionBitmap != null and optionBitmap !=''">
+				#{optionBitmap,jdbcType=VARCHAR},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbSelectQuestionLib">
+		update tb_select_question_lib
+		<set>
+			<if test="testTypeCode != null and testTypeCode !=''">
+				TEST_TYPE_CODE= #{testTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="testTypeName != null and testTypeName !=''">
+				TEST_TYPE_NAME= #{testTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="questionTypeCode != null and questionTypeCode !=''">
+				QUESTION_TYPE_CODE= #{questionTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="questionTypeName != null and questionTypeName !=''">
+				QUESTION_TYPE_NAME= #{questionTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="questionContent != null and questionContent !=''">
+				QUESTION_CONTENT= #{questionContent,jdbcType=VARCHAR},
+			</if>
+			<if test="option != null and option !=''">
+				OPTION= #{option,jdbcType=VARCHAR},
+			</if>
+			<if test="optionBitmap != null and optionBitmap !=''">
+				OPTION_BITMAP= #{optionBitmap,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_select_question_lib where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_select_question_lib where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_select_question_lib where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_select_question_lib where ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>

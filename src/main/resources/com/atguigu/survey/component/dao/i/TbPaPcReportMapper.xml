@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.TbPaPcReportMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbPaPcReport">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="STYLE_TYPE_CODE" property="styleTypeCode" jdbcType="VARCHAR" />
+		<result column="STYLE_TYPE_TENDENCY" property="styleTypeTendency" jdbcType="VARCHAR" />
+		<result column="STYLE_TYPE_NAME" property="styleTypeName" jdbcType="VARCHAR" />
+		<result column="STYLE_TYPE_DESC" property="styleTypeDesc" jdbcType="VARCHAR" />
+		<result column="BLIND_SPOT_TIPS" property="blindSpotTips" jdbcType="VARCHAR" />
+		<result column="SUITED_CAREER" property="suitedCareer" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="id != null"> and ID= #{id}</if>	
+		<if test="styleTypeCode != null and styleTypeCode !=''"> and STYLE_TYPE_CODE= #{styleTypeCode}</if>
+		<if test="styleTypeTendency != null and styleTypeTendency !=''"> and STYLE_TYPE_TENDENCY= #{styleTypeTendency}</if>
+		<if test="styleTypeName != null and styleTypeName !=''"> and STYLE_TYPE_NAME= #{styleTypeName}</if>
+		<if test="styleTypeDesc != null and styleTypeDesc !=''"> and STYLE_TYPE_DESC= #{styleTypeDesc}</if>
+		<if test="blindSpotTips != null and blindSpotTips !=''"> and BLIND_SPOT_TIPS= #{blindSpotTips}</if>
+		<if test="suitedCareer != null and suitedCareer !=''"> and SUITED_CAREER= #{suitedCareer}</if>
+	</sql>
+	<sql id="Base_Column_List">
+		ID ,
+		STYLE_TYPE_CODE ,
+		STYLE_TYPE_TENDENCY ,
+		STYLE_TYPE_NAME ,
+		STYLE_TYPE_DESC ,
+		BLIND_SPOT_TIPS ,
+		SUITED_CAREER 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_pc_report
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_pa_pc_report
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaPcReport">
+		insert into tb_pa_pc_report
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">ID,</if>	
+			<if test="styleTypeCode != null and styleTypeCode !=''">STYLE_TYPE_CODE,</if>
+			<if test="styleTypeTendency != null and styleTypeTendency !=''">STYLE_TYPE_TENDENCY,</if>
+			<if test="styleTypeName != null and styleTypeName !=''">STYLE_TYPE_NAME,</if>
+			<if test="styleTypeDesc != null and styleTypeDesc !=''">STYLE_TYPE_DESC,</if>
+			<if test="blindSpotTips != null and blindSpotTips !=''">BLIND_SPOT_TIPS,</if>
+			<if test="suitedCareer != null and suitedCareer !=''">SUITED_CAREER,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="styleTypeCode != null and styleTypeCode !=''">
+				#{styleTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="styleTypeTendency != null and styleTypeTendency !=''">
+				#{styleTypeTendency,jdbcType=VARCHAR},
+			</if>
+			<if test="styleTypeName != null and styleTypeName !=''">
+				#{styleTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="styleTypeDesc != null and styleTypeDesc !=''">
+				#{styleTypeDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="blindSpotTips != null and blindSpotTips !=''">
+				#{blindSpotTips,jdbcType=VARCHAR},
+			</if>
+			<if test="suitedCareer != null and suitedCareer !=''">
+				#{suitedCareer,jdbcType=VARCHAR},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaPcReport">
+		update tb_pa_pc_report
+		<set>
+			<if test="styleTypeCode != null and styleTypeCode !=''">
+				STYLE_TYPE_CODE= #{styleTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="styleTypeTendency != null and styleTypeTendency !=''">
+				STYLE_TYPE_TENDENCY= #{styleTypeTendency,jdbcType=VARCHAR},
+			</if>
+			<if test="styleTypeName != null and styleTypeName !=''">
+				STYLE_TYPE_NAME= #{styleTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="styleTypeDesc != null and styleTypeDesc !=''">
+				STYLE_TYPE_DESC= #{styleTypeDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="blindSpotTips != null and blindSpotTips !=''">
+				BLIND_SPOT_TIPS= #{blindSpotTips,jdbcType=VARCHAR},
+			</if>
+			<if test="suitedCareer != null and suitedCareer !=''">
+				SUITED_CAREER= #{suitedCareer,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_pc_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_pa_pc_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_pc_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_pc_report where ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>

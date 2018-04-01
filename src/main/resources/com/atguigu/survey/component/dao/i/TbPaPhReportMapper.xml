@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.TbPaPhReportMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbPaPhReport">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="SYMPTOM_TYPE_CODE" property="symptomTypeCode" jdbcType="VARCHAR" />
+		<result column="SYMPTOM_TYPE_NAME" property="symptomTypeName" jdbcType="VARCHAR" />
+		<result column="STANDARD_VALUE_BGN" property="standardValueBgn" jdbcType="DECIMAL" />
+		<result column="STANDARD_VALUE_END" property="standardValueEnd" jdbcType="DECIMAL" />
+		<result column="SYMPTOM_DESC" property="symptomDesc" jdbcType="VARCHAR" />
+		<result column="STANDARD_MODE" property="standardMode" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="id != null"> and ID= #{id}</if>	
+		<if test="symptomTypeCode != null and symptomTypeCode !=''"> and SYMPTOM_TYPE_CODE= #{symptomTypeCode}</if>
+		<if test="symptomTypeName != null and symptomTypeName !=''"> and SYMPTOM_TYPE_NAME= #{symptomTypeName}</if>
+		<if test="standardValueBgn != null"> and STANDARD_VALUE_BGN= #{standardValueBgn}</if>	
+		<if test="standardValueEnd != null"> and STANDARD_VALUE_END= #{standardValueEnd}</if>	
+		<if test="symptomDesc != null and symptomDesc !=''"> and SYMPTOM_DESC= #{symptomDesc}</if>
+		<if test="standardMode != null"> and STANDARD_MODE= #{standardMode}</if>	
+	</sql>
+	<sql id="Base_Column_List">
+		ID ,
+		SYMPTOM_TYPE_CODE ,
+		SYMPTOM_TYPE_NAME ,
+		STANDARD_VALUE_BGN ,
+		STANDARD_VALUE_END ,
+		SYMPTOM_DESC ,
+		STANDARD_MODE 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_ph_report
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_pa_ph_report
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaPhReport">
+		insert into tb_pa_ph_report
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">ID,</if>	
+			<if test="symptomTypeCode != null and symptomTypeCode !=''">SYMPTOM_TYPE_CODE,</if>
+			<if test="symptomTypeName != null and symptomTypeName !=''">SYMPTOM_TYPE_NAME,</if>
+			<if test="standardValueBgn != null">STANDARD_VALUE_BGN,</if>	
+			<if test="standardValueEnd != null">STANDARD_VALUE_END,</if>	
+			<if test="symptomDesc != null and symptomDesc !=''">SYMPTOM_DESC,</if>
+			<if test="standardMode != null">STANDARD_MODE,</if>	
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="symptomTypeCode != null and symptomTypeCode !=''">
+				#{symptomTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="symptomTypeName != null and symptomTypeName !=''">
+				#{symptomTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="standardValueBgn != null">
+				#{standardValueBgn,jdbcType=DECIMAL},
+			</if>
+			<if test="standardValueEnd != null">
+				#{standardValueEnd,jdbcType=DECIMAL},
+			</if>
+			<if test="symptomDesc != null and symptomDesc !=''">
+				#{symptomDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="standardMode != null">
+				#{standardMode,jdbcType=INTEGER},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaPhReport">
+		update tb_pa_ph_report
+		<set>
+			<if test="symptomTypeCode != null and symptomTypeCode !=''">
+				SYMPTOM_TYPE_CODE= #{symptomTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="symptomTypeName != null and symptomTypeName !=''">
+				SYMPTOM_TYPE_NAME= #{symptomTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="standardValueBgn != null">
+				STANDARD_VALUE_BGN= #{standardValueBgn,jdbcType=DECIMAL},
+			</if>
+			<if test="standardValueEnd != null">
+				STANDARD_VALUE_END= #{standardValueEnd,jdbcType=DECIMAL},
+			</if>
+			<if test="symptomDesc != null and symptomDesc !=''">
+				SYMPTOM_DESC= #{symptomDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="standardMode != null">
+				STANDARD_MODE= #{standardMode,jdbcType=INTEGER}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_ph_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_pa_ph_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_ph_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_ph_report where ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>

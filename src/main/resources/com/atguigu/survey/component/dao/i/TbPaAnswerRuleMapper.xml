@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.TbPaAnswerRuleMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbPaAnswerRule">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="RULE_TYPE_CODE" property="ruleTypeCode" jdbcType="VARCHAR" />
+		<result column="RULE_TYPE_NAME" property="ruleTypeName" jdbcType="VARCHAR" />
+		<result column="QUESTION_ID" property="questionId" jdbcType="INTEGER" />
+		<result column="OPTION" property="option" jdbcType="VARCHAR" />
+		<result column="ANSWER_BITMAP" property="answerBitmap" jdbcType="VARCHAR" />
+		<result column="ANSWER_ANALYSIS" property="answerAnalysis" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="id != null"> and ID= #{id}</if>	
+		<if test="ruleTypeCode != null and ruleTypeCode !=''"> and RULE_TYPE_CODE= #{ruleTypeCode}</if>
+		<if test="ruleTypeName != null and ruleTypeName !=''"> and RULE_TYPE_NAME= #{ruleTypeName}</if>
+		<if test="questionId != null"> and QUESTION_ID= #{questionId}</if>	
+		<if test="option != null and option !=''"> and OPTION= #{option}</if>
+		<if test="answerBitmap != null and answerBitmap !=''"> and ANSWER_BITMAP= #{answerBitmap}</if>
+		<if test="answerAnalysis != null and answerAnalysis !=''"> and ANSWER_ANALYSIS= #{answerAnalysis}</if>
+	</sql>
+	<sql id="Base_Column_List">
+		ID ,
+		RULE_TYPE_CODE ,
+		RULE_TYPE_NAME ,
+		QUESTION_ID ,
+		OPTION ,
+		ANSWER_BITMAP ,
+		ANSWER_ANALYSIS 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_answer_rule
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_pa_answer_rule
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaAnswerRule">
+		insert into tb_pa_answer_rule
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">ID,</if>	
+			<if test="ruleTypeCode != null and ruleTypeCode !=''">RULE_TYPE_CODE,</if>
+			<if test="ruleTypeName != null and ruleTypeName !=''">RULE_TYPE_NAME,</if>
+			<if test="questionId != null">QUESTION_ID,</if>	
+			<if test="option != null and option !=''">OPTION,</if>
+			<if test="answerBitmap != null and answerBitmap !=''">ANSWER_BITMAP,</if>
+			<if test="answerAnalysis != null and answerAnalysis !=''">ANSWER_ANALYSIS,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="ruleTypeCode != null and ruleTypeCode !=''">
+				#{ruleTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="ruleTypeName != null and ruleTypeName !=''">
+				#{ruleTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="questionId != null">
+				#{questionId,jdbcType=INTEGER},
+			</if>
+			<if test="option != null and option !=''">
+				#{option,jdbcType=VARCHAR},
+			</if>
+			<if test="answerBitmap != null and answerBitmap !=''">
+				#{answerBitmap,jdbcType=VARCHAR},
+			</if>
+			<if test="answerAnalysis != null and answerAnalysis !=''">
+				#{answerAnalysis,jdbcType=VARCHAR},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaAnswerRule">
+		update tb_pa_answer_rule
+		<set>
+			<if test="ruleTypeCode != null and ruleTypeCode !=''">
+				RULE_TYPE_CODE= #{ruleTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="ruleTypeName != null and ruleTypeName !=''">
+				RULE_TYPE_NAME= #{ruleTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="questionId != null">
+				QUESTION_ID= #{questionId,jdbcType=INTEGER},
+			</if>
+			<if test="option != null and option !=''">
+				OPTION= #{option,jdbcType=VARCHAR},
+			</if>
+			<if test="answerBitmap != null and answerBitmap !=''">
+				ANSWER_BITMAP= #{answerBitmap,jdbcType=VARCHAR},
+			</if>
+			<if test="answerAnalysis != null and answerAnalysis !=''">
+				ANSWER_ANALYSIS= #{answerAnalysis,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_answer_rule where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_pa_answer_rule where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_answer_rule where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_answer_rule where ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>
