@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atguigu.survey.component.dao.i.TbPaAnswerRuleMapper">
-	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbPaAnswerRule">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbPaAnswerRule">
 		<id column="ID" property="id" jdbcType="INTEGER" />
 		<result column="RULE_TYPE_CODE" property="ruleTypeCode" jdbcType="VARCHAR" />
 		<result column="RULE_TYPE_NAME" property="ruleTypeName" jdbcType="VARCHAR" />
@@ -43,7 +43,7 @@
 		ID = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaAnswerRule">
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbPaAnswerRule">
 		insert into tb_pa_answer_rule
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
@@ -80,7 +80,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaAnswerRule">
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbPaAnswerRule">
 		update tb_pa_answer_rule
 		<set>
 			<if test="ruleTypeCode != null and ruleTypeCode !=''">

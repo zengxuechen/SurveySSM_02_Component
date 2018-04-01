@@ -143,7 +143,7 @@
             #{startIndex},#{pageSize}
     </select>
 
-    <select id="queryPaperTypeByCodeCount" parameterType="java.lang.String" resultMap="java.lang.Integer">
+    <select id="queryPaperTypeByCodeCount" parameterType="java.lang.String" resultType="java.lang.Integer">
         select
             count(1)
         from

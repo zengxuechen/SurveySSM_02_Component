@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atguigu.survey.component.dao.i.TbPaPhReportMapper">
-	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbPaPhReport">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbPaPhReport">
 		<id column="ID" property="id" jdbcType="INTEGER" />
 		<result column="SYMPTOM_TYPE_CODE" property="symptomTypeCode" jdbcType="VARCHAR" />
 		<result column="SYMPTOM_TYPE_NAME" property="symptomTypeName" jdbcType="VARCHAR" />
@@ -43,7 +43,7 @@
 		ID = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaPhReport">
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbPaPhReport">
 		insert into tb_pa_ph_report
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
@@ -80,7 +80,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaPhReport">
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbPaPhReport">
 		update tb_pa_ph_report
 		<set>
 			<if test="symptomTypeCode != null and symptomTypeCode !=''">
