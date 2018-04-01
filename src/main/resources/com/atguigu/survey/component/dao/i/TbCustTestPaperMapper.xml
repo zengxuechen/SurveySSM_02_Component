@@ -132,4 +132,24 @@
 		</foreach>
 	</select>
 
+    <select id="queryPaperTypeByCode" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List" />
+        from
+            tb_cust_test_paper
+        where
+            TEST_TYPE_CODE = #{typeCode}
+        limit
+            #{startIndex},#{pageSize}
+    </select>
+
+    <select id="queryPaperTypeByCodeCount" parameterType="java.lang.String" resultMap="java.lang.Integer">
+        select
+            count(1)
+        from
+            tb_cust_test_paper
+        where
+            TEST_TYPE_CODE = #{typeCode}
+    </select>
+
 </mapper>

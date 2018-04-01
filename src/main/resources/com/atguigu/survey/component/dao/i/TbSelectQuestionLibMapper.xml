@@ -142,4 +142,25 @@
 		</foreach>
 	</select>
 
+
+    <select id="queryExQuestionByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_select_question_lib where ID in
+        <foreach collection="idIntList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        limit
+        #{startIndex},#{pageSize}
+    </select>
+
+    <select id="queryExQuestionsCount" parameterType="java.util.List" resultType="java.lang.Integer">
+        select
+         count(1)
+        from tb_select_question_lib where ID in
+        <foreach collection="idIntList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+    </select>
 </mapper>

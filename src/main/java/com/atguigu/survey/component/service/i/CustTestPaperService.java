@@ -1,8 +1,7 @@
 package com.atguigu.survey.component.service.i;
 
-import com.atguigu.survey.component.handler.zhyq.CustTestPaper;
-
-import java.util.List;
+import com.atguigu.survey.entities.zhyq.TbCustTestPaper;
+import com.atguigu.survey.model.Page;
 
 /**
  * Using IntelliJ IDEA.
@@ -11,6 +10,7 @@ import java.util.List;
  */
 public interface CustTestPaperService {
 
-    List<CustTestPaper> queryPaperTypeByCode(String typeCode);
+    Page<TbCustTestPaper> queryPaperTypeByCode(String pageNoStr, String typeCode);
+
 
 }
