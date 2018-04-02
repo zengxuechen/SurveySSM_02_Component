@@ -29,7 +29,7 @@ public class CustTestPaper {
     @RequestMapping("/queryPaperTypeByCode/{typeCode}")
     @ResponseBody
     public Map<String,Object> queryPaperTypeByCode(@PathVariable("typeCode") String typeCode){
-         Map<String,Object> map = new HashMap<>();
+         Map<String,Object> map = new HashMap<String,Object>();
          custTestPaper.queryPaperTypeByCode(typeCode);
 
          return map;
