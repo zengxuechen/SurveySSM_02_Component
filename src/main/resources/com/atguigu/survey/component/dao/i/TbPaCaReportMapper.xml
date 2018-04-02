@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atguigu.survey.component.dao.i.TbPaCaReportMapper">
-	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbPaCaReport">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbPaCaReport">
 		<id column="ID" property="id" jdbcType="INTEGER" />
 		<result column="PROFESSION_CODE" property="professionCode" jdbcType="VARCHAR" />
 		<result column="PROFESSION_CODE_NAME" property="professionCodeName" jdbcType="VARCHAR" />
@@ -37,7 +37,7 @@
 		ID = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaCaReport">
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbPaCaReport">
 		insert into tb_pa_ca_report
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
@@ -66,7 +66,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbPaCaReport">
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbPaCaReport">
 		update tb_pa_ca_report
 		<set>
 			<if test="professionCode != null and professionCode !=''">
