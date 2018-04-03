@@ -23,7 +23,6 @@ public class SelectQuestionLibServiceImpl implements SelectQuestionLibService {
     @Autowired
     TbSelectQuestionLibMapper selectQuestionLibMapper;
 
-    @Override
     public Page<TbSelectQuestionLib> queryExQuestionByIds( String pageNoStr, List<Integer> idIntList) {
 
         Integer count = selectQuestionLibMapper.queryExQuestionsCount(idIntList);

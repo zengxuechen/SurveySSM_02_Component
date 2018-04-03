@@ -18,7 +18,6 @@ public class CustTestResultServiceImpl implements CustTestResultService {
     @Autowired
     TbCustTestResultMapper custTestResultMapper;
 
-    @Override
     public Integer saveCustTestResult(Map<String, Object> map) {
 
         Integer integer = custTestResultMapper.saveCustTestResult(map);

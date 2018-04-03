@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public enum SymptomTypeEnumEnum{
 	
-	ALL_PC("ALL_AVERAGE", "总症状_总均分"),
+	ALL_AVERAGE("ALL_AVERAGE", "总症状_总均分"),
 	ALL_POSITIVENUM("ALL_POSITIVENUM", "总症状_阳性项目数"),
 	ALL_POSITIVEAVERAGE("ALL_POSITIVEAVERAGE", "总症状_阳性症状均分"),
 	PART_SOMATIZATION("PA_SOMATIZATION", "分症状均分_躯体化"),
