@@ -20,7 +20,7 @@ import java.util.*;
  *
  * @author 李小鑫 at 2018/4/1 13:10
  */
-@Controller("/custTestPaper")
+@Controller
 public class CustTestPaperHandler {
 
     @Autowired
@@ -30,7 +30,7 @@ public class CustTestPaperHandler {
      * 根据测评类型码查询出所有试卷类型集合
      * @param typeCode
      */
-    @RequestMapping("/queryPaperTypeByCode/{typeCode}/{pageNoStr}")
+    @RequestMapping("guest/custTestPaper/queryPaperTypeByCode/{typeCode}/{pageNoStr}")
     public String queryPaperTypeByCode(@PathVariable("typeCode") String typeCode, Map map, HttpSession session, String pageNoStr){
          Page<TbCustTestPaper> page =
                 custTestPaperService.queryPaperTypeByCode(pageNoStr,typeCode);
@@ -40,7 +40,7 @@ public class CustTestPaperHandler {
          map.put("page",page);
          map.put("user",user);
 
-         return "/zhyq/paper_type.jsp";
+         return "zhyq/paper_type";
     }
 
 
