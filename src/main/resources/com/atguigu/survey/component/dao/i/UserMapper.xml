@@ -127,4 +127,9 @@
 		update guest_user set CODE_ARR_STR=#{codeArr} where
 		user_id=#{userId}
 	</update>
+
+    <insert id="saveUserAndReturnId" parameterType="com.atguigu.survey.entities.guest.User"  useGeneratedKeys="true" keyProperty="USER_ID">
+        insert into guest_user(USER_NAME,USER_PWD)
+        values (#{userName},#{userPwd})
+    </insert>
 </mapper>

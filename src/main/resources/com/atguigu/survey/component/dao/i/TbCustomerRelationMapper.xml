@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.atguigu.survey.component.dao.i.TbCustomerRelationMapper">
-	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
+<mapper namespace="TbCustomerRelationMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbCustomerRelation">
 		<id column="ID" property="id" jdbcType="INTEGER" />
 		<result column="USER_ID" property="userId" jdbcType="INTEGER" />
 		<result column="DEPARTMENT_ID" property="departmentId" jdbcType="INTEGER" />
 		<result column="POSITION_ID" property="positionId" jdbcType="INTEGER" />
+		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
+		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="USER_NAME_CN" property="userNameCn" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Where">
 		<if test="id != null"> and ID= #{id}</if>	
 		<if test="userId != null"> and USER_ID= #{userId}</if>	
 		<if test="departmentId != null"> and DEPARTMENT_ID= #{departmentId}</if>	
 		<if test="positionId != null"> and POSITION_ID= #{positionId}</if>	
+		<if test="phone != null and phone !=''"> and PHONE= #{phone}</if>
+		<if test="email != null and email !=''"> and EMAIL= #{email}</if>
+		<if test="userNameCn != null and userNameCn !=''"> and USER_NAME_CN= #{userNameCn}</if>
 	</sql>
 	<sql id="Base_Column_List">
 		ID ,
 		USER_ID ,
 		DEPARTMENT_ID ,
-		POSITION_ID 
+		POSITION_ID ,
+		PHONE ,
+		EMAIL ,
+		USER_NAME_CN 
 	</sql>
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -34,13 +43,16 @@
 		ID = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustomerRelation">
 		insert into tb_customer_relation
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
 			<if test="userId != null">USER_ID,</if>	
 			<if test="departmentId != null">DEPARTMENT_ID,</if>	
 			<if test="positionId != null">POSITION_ID,</if>	
+			<if test="phone != null and phone !=''">PHONE,</if>
+			<if test="email != null and email !=''">EMAIL,</if>
+			<if test="userNameCn != null and userNameCn !=''">USER_NAME_CN,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -55,11 +67,20 @@
 			<if test="positionId != null">
 				#{positionId,jdbcType=INTEGER},
 			</if>
+			<if test="phone != null and phone !=''">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null and email !=''">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="userNameCn != null and userNameCn !=''">
+				#{userNameCn,jdbcType=VARCHAR},
+			</if>
 			
 		</trim>
 	</insert>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustomerRelation">
 		update tb_customer_relation
 		<set>
 			<if test="userId != null">
@@ -69,7 +90,16 @@
 				DEPARTMENT_ID= #{departmentId,jdbcType=INTEGER},
 			</if>
 			<if test="positionId != null">
-				POSITION_ID= #{positionId,jdbcType=INTEGER}
+				POSITION_ID= #{positionId,jdbcType=INTEGER},
+			</if>
+			<if test="phone != null and phone !=''">
+				PHONE= #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null and email !=''">
+				EMAIL= #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="userNameCn != null and userNameCn !=''">
+				USER_NAME_CN= #{userNameCn,jdbcType=VARCHAR}
 			</if>
 		</set>
 		where

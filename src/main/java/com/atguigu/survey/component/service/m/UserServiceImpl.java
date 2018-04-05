@@ -107,7 +107,11 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
-	public User getEntity(Integer entityId) {
+    public Integer saveUserAndReturnId(User user) {
+        return userMapper.saveUserAndReturnId(user);
+    }
+
+    public User getEntity(Integer entityId) {
 		return userMapper.selectByPrimaryKey(entityId);
 	}
 

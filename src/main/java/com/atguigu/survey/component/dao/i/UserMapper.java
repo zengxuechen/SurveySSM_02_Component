@@ -39,4 +39,7 @@ public interface UserMapper {
 
 	void updateUserCodeArr(@Param("userId") Integer userId,
 			@Param("codeArr") String codeArr);
+
+    Integer saveUserAndReturnId(User user);
+
 }
