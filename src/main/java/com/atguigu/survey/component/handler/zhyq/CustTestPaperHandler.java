@@ -31,7 +31,7 @@ public class CustTestPaperHandler {
      * @param typeCode
      */
     @RequestMapping("guest/custTestPaper/queryPaperTypeByCode/{typeCode}/{pageNoStr}")
-    public String queryPaperTypeByCode(@PathVariable("typeCode") String typeCode, Map map, HttpSession session, String pageNoStr){
+    public String queryPaperTypeByCode(@PathVariable("typeCode") String typeCode, Map<String,Object> map, HttpSession session, @PathVariable("pageNoStr") String pageNoStr){
          Page<TbCustTestPaper> page =
                 custTestPaperService.queryPaperTypeByCode(pageNoStr,typeCode);
 
@@ -39,6 +39,7 @@ public class CustTestPaperHandler {
 
          map.put("page",page);
          map.put("user",user);
+         map.put("typeCode",typeCode);
 
          return "zhyq/paper_type";
     }

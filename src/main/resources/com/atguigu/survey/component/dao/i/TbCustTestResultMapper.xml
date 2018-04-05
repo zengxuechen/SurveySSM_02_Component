@@ -3,20 +3,20 @@
 <mapper namespace="com.atguigu.survey.component.dao.i.TbCustTestResultMapper">
 	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCustTestResult">
 		<id column="ID" property="id" jdbcType="INTEGER" />
-		<result column="TEST_USER_ID" property="testUserId" jdbcType="VARCHAR" />
-		<result column="TEST_TYPE_ID" property="testTypeId" jdbcType="VARCHAR" />
+		<result column="TEST_USER_ID" property="testUserId" jdbcType="INTEGER" />
+		<result column="TEST_PAPER_ID" property="testPaperId" jdbcType="INTEGER" />
 		<result column="TEST_RESULT" property="testResult" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Where">
 		<if test="id != null"> and ID= #{id}</if>	
-		<if test="testUserId != null and testUserId !=''"> and TEST_USER_ID= #{testUserId}</if>
-		<if test="testTypeId != null and testTypeId !=''"> and TEST_TYPE_ID= #{testTypeId}</if>
+		<if test="testUserId != null"> and TEST_USER_ID= #{testUserId}</if>
+		<if test="testPaperId != null"> and TEST_PAPER_ID= #{testPaperId}</if>
 		<if test="testResult != null and testResult !=''"> and TEST_RESULT= #{testResult}</if>
 	</sql>
 	<sql id="Base_Column_List">
 		ID ,
 		TEST_USER_ID ,
-		TEST_TYPE_ID ,
+		TEST_PAPER_ID ,
 		TEST_RESULT 
 	</sql>
 
@@ -38,19 +38,19 @@
 		insert into tb_cust_test_result
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
-			<if test="testUserId != null and testUserId !=''">TEST_USER_ID,</if>
-			<if test="testTypeId != null and testTypeId !=''">TEST_TYPE_ID,</if>
+			<if test="testUserId != null">TEST_USER_ID,</if>
+			<if test="testPaperId != null">TEST_PAPER_ID,</if>
 			<if test="testResult != null and testResult !=''">TEST_RESULT,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
 				#{id,jdbcType=INTEGER},
 			</if>
-			<if test="testUserId != null and testUserId !=''">
-				#{testUserId,jdbcType=VARCHAR},
+			<if test="testUserId != null">
+				#{testUserId,jdbcType=INTEGER},
 			</if>
-			<if test="testTypeId != null and testTypeId !=''">
-				#{testTypeId,jdbcType=VARCHAR},
+			<if test="testPaperId != null">
+				#{testPaperId,jdbcType=INTEGER},
 			</if>
 			<if test="testResult != null and testResult !=''">
 				#{testResult,jdbcType=VARCHAR},
@@ -62,11 +62,11 @@
 	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustTestResult">
 		update tb_cust_test_result
 		<set>
-			<if test="testUserId != null and testUserId !=''">
-				TEST_USER_ID= #{testUserId,jdbcType=VARCHAR},
+			<if test="testUserId != null">
+				TEST_USER_ID= #{testUserId,jdbcType=INTEGER},
 			</if>
-			<if test="testTypeId != null and testTypeId !=''">
-				TEST_TYPE_ID= #{testTypeId,jdbcType=VARCHAR},
+			<if test="testPaperId != null">
+				TEST_PAPER_ID= #{testPaperId,jdbcType=INTEGER},
 			</if>
 			<if test="testResult != null and testResult !=''">
 				TEST_RESULT= #{testResult,jdbcType=VARCHAR}
@@ -104,9 +104,9 @@
 
     <insert id="saveCustTestResult" parameterType="java.util.Map" >
         insert into
-           tb_cust_test_result(TEST_USER_ID, TEST_TYPE_ID, TEST_RESULT)
+           tb_cust_test_result(TEST_USER_ID, TEST_PAPER_ID, TEST_RESULT)
         values
-           (#{userId},#{typeId},#{result})
+           (#{userId},#{paperId},#{result})
     </insert>
 
 </mapper>

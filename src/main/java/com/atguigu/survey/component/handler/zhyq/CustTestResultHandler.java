@@ -23,8 +23,8 @@ public class CustTestResultHandler {
     @Autowired
     CustTestResultService custTestResultService;
 
-    @RequestMapping("guest/custTestResult/saveCustTestResult/{typeId}/{result}")
-    public String saveCustTestResult(HttpSession session , @PathVariable("typeId") String typeId ,@PathVariable("result") String result){
+    @RequestMapping("guest/custTestResult/saveCustTestResult/{paperId}/{result}")
+    public String saveCustTestResult(HttpSession session , @PathVariable("paperId") String paperId ,@PathVariable("result") String result){
 
         User user = (User)session.getAttribute(GlobalNames.LOGIN_USER);
         Integer userId = user.getUserId();
@@ -32,7 +32,7 @@ public class CustTestResultHandler {
         Map<String,Object> map = new HashMap<String,Object>();
 
         map.put("userId",userId);
-        map.put("typeId",typeId);
+        map.put("paperId",paperId);
         map.put("result",result);
 
         Integer integer = custTestResultService.saveCustTestResult(map);
