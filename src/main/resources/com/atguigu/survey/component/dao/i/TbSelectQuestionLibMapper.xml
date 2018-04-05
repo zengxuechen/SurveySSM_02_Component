@@ -8,8 +8,8 @@
 		<result column="QUESTION_TYPE_CODE" property="questionTypeCode" jdbcType="VARCHAR" />
 		<result column="QUESTION_TYPE_NAME" property="questionTypeName" jdbcType="VARCHAR" />
 		<result column="QUESTION_CONTENT" property="questionContent" jdbcType="VARCHAR" />
-		<result column="OPTION" property="option" jdbcType="VARCHAR" />
-		<result column="OPTION_BITMAP" property="optionBitmap" jdbcType="VARCHAR" />
+		<result column="OPTIONS" property="options" jdbcType="VARCHAR" />
+		<result column="OPTIONS_BITMAP" property="optionsBitmap" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Where">
 		<if test="id != null"> and ID= #{id}</if>	
@@ -18,8 +18,8 @@
 		<if test="questionTypeCode != null and questionTypeCode !=''"> and QUESTION_TYPE_CODE= #{questionTypeCode}</if>
 		<if test="questionTypeName != null and questionTypeName !=''"> and QUESTION_TYPE_NAME= #{questionTypeName}</if>
 		<if test="questionContent != null and questionContent !=''"> and QUESTION_CONTENT= #{questionContent}</if>
-		<if test="option != null and option !=''"> and OPTION= #{option}</if>
-		<if test="optionBitmap != null and optionBitmap !=''"> and OPTION_BITMAP= #{optionBitmap}</if>
+		<if test="options != null and options !=''"> and OPTIONS= #{options}</if>
+		<if test="optionsBitmap != null and optionsBitmap !=''"> and OPTIONS_BITMAP= #{optionsBitmap}</if>
 	</sql>
 	<sql id="Base_Column_List">
 		ID ,
@@ -28,8 +28,8 @@
 		QUESTION_TYPE_CODE ,
 		QUESTION_TYPE_NAME ,
 		QUESTION_CONTENT ,
-		OPTION ,
-		OPTION_BITMAP 
+		OPTIONS ,
+		OPTIONS_BITMAP 
 	</sql>
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -55,8 +55,8 @@
 			<if test="questionTypeCode != null and questionTypeCode !=''">QUESTION_TYPE_CODE,</if>
 			<if test="questionTypeName != null and questionTypeName !=''">QUESTION_TYPE_NAME,</if>
 			<if test="questionContent != null and questionContent !=''">QUESTION_CONTENT,</if>
-			<if test="option != null and option !=''">OPTION,</if>
-			<if test="optionBitmap != null and optionBitmap !=''">OPTION_BITMAP,</if>
+			<if test="options != null and options !=''">OPTIONS,</if>
+			<if test="optionsBitmap != null and optionsBitmap !=''">OPTIONS_BITMAP,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -77,11 +77,11 @@
 			<if test="questionContent != null and questionContent !=''">
 				#{questionContent,jdbcType=VARCHAR},
 			</if>
-			<if test="option != null and option !=''">
-				#{option,jdbcType=VARCHAR},
+			<if test="options != null and options !=''">
+				#{options,jdbcType=VARCHAR},
 			</if>
-			<if test="optionBitmap != null and optionBitmap !=''">
-				#{optionBitmap,jdbcType=VARCHAR},
+			<if test="optionsBitmap != null and optionsBitmap !=''">
+				#{optionsBitmap,jdbcType=VARCHAR},
 			</if>
 			
 		</trim>
@@ -105,11 +105,11 @@
 			<if test="questionContent != null and questionContent !=''">
 				QUESTION_CONTENT= #{questionContent,jdbcType=VARCHAR},
 			</if>
-			<if test="option != null and option !=''">
-				OPTION= #{option,jdbcType=VARCHAR},
+			<if test="options != null and options !=''">
+				OPTIONS= #{options,jdbcType=VARCHAR},
 			</if>
-			<if test="optionBitmap != null and optionBitmap !=''">
-				OPTION_BITMAP= #{optionBitmap,jdbcType=VARCHAR}
+			<if test="optionsBitmap != null and optionsBitmap !=''">
+				OPTIONS_BITMAP= #{optionsBitmap,jdbcType=VARCHAR}
 			</if>
 		</set>
 		where
@@ -158,7 +158,7 @@
         select
          count(1)
         from tb_select_question_lib where ID in
-        <foreach collection="idIntList" item="item" open="(" separator="," close=")">
+        <foreach collection="list" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
 

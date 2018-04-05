@@ -31,9 +31,8 @@ public class SelectQuestionLibHandler {
      * @return
      */
     @RequestMapping("guest/selectQuestionLib/queryExQuestionByIds/{questionIds}/{pageNoStr}")
-    @ResponseBody
     public String queryExQuestionByIds(@PathVariable("questionIds") String questionIds, HttpSession session, Map map,String pageNoStr){
-        String[] ids = questionIds.split("|");
+        String[] ids = questionIds.split("@");
         List<String> idList = Arrays.asList(ids);
         List<Integer> idIntList = new ArrayList<Integer>();
         for(String id : idList){
