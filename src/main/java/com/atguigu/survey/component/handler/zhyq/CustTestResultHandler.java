@@ -17,13 +17,13 @@ import java.util.Map;
  *
  * @author 李小鑫 at 2018/4/1 17:01
  */
-@Controller("custTestResult")
+@Controller
 public class CustTestResultHandler {
 
     @Autowired
     CustTestResultService custTestResultService;
 
-    @RequestMapping("/saveCustTestResult/{typeId}/{result}")
+    @RequestMapping("guest/custTestResult/saveCustTestResult/{typeId}/{result}")
     public String saveCustTestResult(HttpSession session , @PathVariable("typeId") String typeId ,@PathVariable("result") String result){
 
         User user = (User)session.getAttribute(GlobalNames.LOGIN_USER);
@@ -38,9 +38,9 @@ public class CustTestResultHandler {
         Integer integer = custTestResultService.saveCustTestResult(map);
 
         if(integer == 1){
-            return "/zhyq/saveUserResult_success.jsp";
+            return "/zhyq/saveUserResult_success";
         }else{
-            return "/zhyq/saveUserResult_error.jsp";
+            return "/zhyq/saveUserResult_error";
         }
 
     }

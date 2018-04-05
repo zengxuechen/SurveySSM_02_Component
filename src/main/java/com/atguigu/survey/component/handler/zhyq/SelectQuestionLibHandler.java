@@ -19,7 +19,7 @@ import java.util.*;
  *
  * @author 李小鑫 at 2018/4/1 15:25
  */
-@Controller("/selectQuestionLib")
+@Controller
 public class SelectQuestionLibHandler {
 
     @Autowired
@@ -30,7 +30,7 @@ public class SelectQuestionLibHandler {
      * @param questionIds
      * @return
      */
-    @RequestMapping("/queryExQuestionByIds/{questionIds}/{pageNoStr}")
+    @RequestMapping("guest/selectQuestionLib/queryExQuestionByIds/{questionIds}/{pageNoStr}")
     @ResponseBody
     public String queryExQuestionByIds(@PathVariable("questionIds") String questionIds, HttpSession session, Map map,String pageNoStr){
         String[] ids = questionIds.split("|");
@@ -45,7 +45,7 @@ public class SelectQuestionLibHandler {
                 selectQuestionLibService.queryExQuestionByIds(pageNoStr,idIntList);
         map.put("page",page);
         map.put("user",user);
-        return "/zhyq/question_list.jsp";
+        return "/zhyq/question_list";
     }
 
 
