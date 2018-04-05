@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.TbCustomerRelationMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="USER_ID" property="userId" jdbcType="INTEGER" />
+		<result column="DEPARTMENT_ID" property="departmentId" jdbcType="INTEGER" />
+		<result column="POSITION_ID" property="positionId" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="id != null"> and ID= #{id}</if>	
+		<if test="userId != null"> and USER_ID= #{userId}</if>	
+		<if test="departmentId != null"> and DEPARTMENT_ID= #{departmentId}</if>	
+		<if test="positionId != null"> and POSITION_ID= #{positionId}</if>	
+	</sql>
+	<sql id="Base_Column_List">
+		ID ,
+		USER_ID ,
+		DEPARTMENT_ID ,
+		POSITION_ID 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_customer_relation
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_customer_relation
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
+		insert into tb_customer_relation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">ID,</if>	
+			<if test="userId != null">USER_ID,</if>	
+			<if test="departmentId != null">DEPARTMENT_ID,</if>	
+			<if test="positionId != null">POSITION_ID,</if>	
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="departmentId != null">
+				#{departmentId,jdbcType=INTEGER},
+			</if>
+			<if test="positionId != null">
+				#{positionId,jdbcType=INTEGER},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
+		update tb_customer_relation
+		<set>
+			<if test="userId != null">
+				USER_ID= #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="departmentId != null">
+				DEPARTMENT_ID= #{departmentId,jdbcType=INTEGER},
+			</if>
+			<if test="positionId != null">
+				POSITION_ID= #{positionId,jdbcType=INTEGER}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_customer_relation where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_customer_relation where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_customer_relation where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_customer_relation where ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>

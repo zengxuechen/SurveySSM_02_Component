@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.TbCompanyMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCompany">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="COMPANY_NAME_EN" property="companyNameEn" jdbcType="VARCHAR" />
+		<result column="COMPANY_NAME_CN" property="companyNameCn" jdbcType="VARCHAR" />
+		<result column="COMPANY_LOGO" property="companyLogo" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="id != null"> and ID= #{id}</if>	
+		<if test="companyNameEn != null and companyNameEn !=''"> and COMPANY_NAME_EN= #{companyNameEn}</if>
+		<if test="companyNameCn != null and companyNameCn !=''"> and COMPANY_NAME_CN= #{companyNameCn}</if>
+		<if test="companyLogo != null and companyLogo !=''"> and COMPANY_LOGO= #{companyLogo}</if>
+	</sql>
+	<sql id="Base_Column_List">
+		ID ,
+		COMPANY_NAME_EN ,
+		COMPANY_NAME_CN ,
+		COMPANY_LOGO 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_company
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_company
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbCompany">
+		insert into tb_company
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">ID,</if>	
+			<if test="companyNameEn != null and companyNameEn !=''">COMPANY_NAME_EN,</if>
+			<if test="companyNameCn != null and companyNameCn !=''">COMPANY_NAME_CN,</if>
+			<if test="companyLogo != null and companyLogo !=''">COMPANY_LOGO,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="companyNameEn != null and companyNameEn !=''">
+				#{companyNameEn,jdbcType=VARCHAR},
+			</if>
+			<if test="companyNameCn != null and companyNameCn !=''">
+				#{companyNameCn,jdbcType=VARCHAR},
+			</if>
+			<if test="companyLogo != null and companyLogo !=''">
+				#{companyLogo,jdbcType=VARCHAR},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbCompany">
+		update tb_company
+		<set>
+			<if test="companyNameEn != null and companyNameEn !=''">
+				COMPANY_NAME_EN= #{companyNameEn,jdbcType=VARCHAR},
+			</if>
+			<if test="companyNameCn != null and companyNameCn !=''">
+				COMPANY_NAME_CN= #{companyNameCn,jdbcType=VARCHAR},
+			</if>
+			<if test="companyLogo != null and companyLogo !=''">
+				COMPANY_LOGO= #{companyLogo,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_company where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_company where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_company where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_company where ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>
