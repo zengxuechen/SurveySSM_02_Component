@@ -92,4 +92,17 @@
 		</foreach>
 	</select>
 
+    <select id="getDepartmentListByCompanyId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_department
+        where
+        COMPANY_ID_ID = #{companyId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="saveDepartmentByCompanyId">
+        insert into tb_department(COMPANY_ID,DEPARTMENT_NAME)
+        values (#{companyId},#{departmentName})
+    </insert>
+
 </mapper>
