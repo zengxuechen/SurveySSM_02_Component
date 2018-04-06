@@ -108,5 +108,18 @@
         values
            (#{userId},#{paperId},#{result})
     </insert>
+    
+    <select id="queryResultByTypeCode" resultType="map" parameterType="map">
+		select
+			r.ID as "resultId",
+			p.TEST_TYPE_CODE as "testTypeCode",
+			p.TEST_TYPE_NAME as "testTypeName",
+			p.TEST_PAPER_NAME as "testPaperName"
+		from tb_cust_test_result r, tb_cust_test_paper p where 1=1
+		and r.TEST_PAPER_ID = p.ID
+		and r.TEST_USER_ID = #{userId,jdbcType=INTEGER}
+		and p.TEST_TYPE_CODE = #{typeCode,jdbcType=VARCHAR}
+		<include refid="Base_Where" />
+	</select>
 
 </mapper>

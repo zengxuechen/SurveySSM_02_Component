@@ -5,6 +5,7 @@ import com.atguigu.survey.component.service.i.CustTestResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,5 +24,10 @@ public class CustTestResultServiceImpl implements CustTestResultService {
         Integer integer = custTestResultMapper.saveCustTestResult(map);
 
         return integer;
+    }
+    
+    public List<Map<String, Object>> queryResultByTypeCode(Map<String, Object> map){
+    	List<Map<String, Object>> list = custTestResultMapper.queryResultByTypeCode(map);
+        return list;
     }
 }
