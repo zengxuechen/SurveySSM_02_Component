@@ -34,8 +34,8 @@ public class SelectQuestionLibHandler {
      * @param questionIds
      * @return
      */
-    @RequestMapping("guest/selectQuestionLib/queryExQuestionByIds/{paperId}/{questionIds}/{pageNoStr}/{result}")
-    public String queryExQuestionByIds(@PathVariable("paperId") String paperId, @PathVariable("questionIds") String questionIds, HttpSession session, Map<String, Object> map, @PathVariable("pageNoStr") String pageNoStr, @PathVariable("result") String result){
+    @RequestMapping("guest/selectQuestionLib/queryExQuestionByIds/{typeCode}/{paperId}/{questionIds}/{pageNoStr}/{result}")
+    public String queryExQuestionByIds(@PathVariable("typeCode") String typeCode, @PathVariable("paperId") String paperId, @PathVariable("questionIds") String questionIds, HttpSession session, Map<String, Object> map, @PathVariable("pageNoStr") String pageNoStr, @PathVariable("result") String result){
         String[] ids = questionIds.split("@");
         List<String> idList = Arrays.asList(ids);
         List<Integer> idIntList = new ArrayList<Integer>();
@@ -50,7 +50,18 @@ public class SelectQuestionLibHandler {
         map.put("user",user);
         map.put("questionIds",questionIds);
         map.put("paperId",paperId);
-        map.put("result",result);
+        if("null".equals(result)) {
+        	int length = questionIds.split("@").length;
+        	result = "";
+        	for(int i=0;i <length;i++) {
+        		result += "_@";
+        	}
+        	if(!"".equals(result)) {
+        		result = result.substring(0, result.length()-1);
+        	}
+        	map.put("result",result);
+        }
+        map.put("typeCode",typeCode);
         
         return "/zhyq/question_list";
     }
