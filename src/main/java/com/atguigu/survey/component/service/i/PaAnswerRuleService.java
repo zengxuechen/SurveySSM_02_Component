@@ -1,4 +1,4 @@
-package com.atguigu.survey.component.dao.i;
+package com.atguigu.survey.component.service.i;
 
 import com.atguigu.survey.entities.zhyq.TbPaAnswerRule;
 
@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * Using IntelliJ IDEA.
  *
- * @author 李小鑫 at 2018/4/1 12:47
+ * @author 李小鑫 at 2018/4/6 16:06
  */
-public interface TbPaAnswerRuleMapper {
+public interface PaAnswerRuleService {
 
     List<TbPaAnswerRule> getPaAnswerRuleByQuestionId(Integer questionId);
 

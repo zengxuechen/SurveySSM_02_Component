@@ -132,4 +132,12 @@
 		</foreach>
 	</select>
 
+    <select id=" getPaPcDetailByStyleTypeCode" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pa_pc_report
+        where
+        STYLE_TYPE_CODE = #{styleTypeCode,jdbcType=INTEGER}
+    </select>
+
 </mapper>

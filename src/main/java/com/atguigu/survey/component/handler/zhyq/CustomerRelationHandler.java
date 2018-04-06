@@ -10,6 +10,7 @@ import com.atguigu.survey.entities.zhyq.TbCustomerRelation;
 import com.atguigu.survey.vo.CustomerRelationInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -55,7 +56,5 @@ public class CustomerRelationHandler {
         }
 
     }
-
-
 
 }

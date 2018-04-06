@@ -17,4 +17,6 @@ public interface TbCustTestPaperMapper {
     List<TbCustTestPaper> queryPaperTypeByCode(Map<String,Object> map);
 
     Integer queryPaperTypeByCodeCount(String typeCode);
+
+    TbCustTestPaper getCustTestResultAndPaperInfoByTestResultId(int i);
 }

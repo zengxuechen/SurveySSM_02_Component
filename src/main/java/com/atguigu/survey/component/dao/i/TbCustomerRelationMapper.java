@@ -1,6 +1,7 @@
 package com.atguigu.survey.component.dao.i;
 
 import com.atguigu.survey.entities.zhyq.TbCustomerRelation;
+import com.atguigu.survey.vo.CustomerDetailVo;
 import com.atguigu.survey.vo.CustomerRelationInfoVo; /**
  * Using IntelliJ IDEA.
  *
@@ -9,4 +10,6 @@ import com.atguigu.survey.vo.CustomerRelationInfoVo; /**
 public interface TbCustomerRelationMapper {
 
     Integer insertSelective(TbCustomerRelation customerRelation);
+
+    CustomerDetailVo getRelationInfoByUserId(int i);
 }

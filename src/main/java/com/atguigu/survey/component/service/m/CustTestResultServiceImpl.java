@@ -2,6 +2,7 @@ package com.atguigu.survey.component.service.m;
 
 import com.atguigu.survey.component.dao.i.TbCustTestResultMapper;
 import com.atguigu.survey.component.service.i.CustTestResultService;
+import com.atguigu.survey.entities.zhyq.TbCustTestResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +26,14 @@ public class CustTestResultServiceImpl implements CustTestResultService {
 
         return integer;
     }
-    
+
     public List<Map<String, Object>> queryResultByTypeCode(Map<String, Object> map){
     	List<Map<String, Object>> list = custTestResultMapper.queryResultByTypeCode(map);
         return list;
+    }
+
+    public TbCustTestResult getTbCustTestResultByTestPaperId(Integer id) {
+        TbCustTestResult result =  custTestResultMapper.getTbCustTestResultByTestPaperId(id);
+        return result;
     }
 }

@@ -132,4 +132,21 @@
 		</foreach>
 	</select>
 
+    <select id="getRelationInfoByUserId" parameterType="java.lang.Integer" resultType="com.atguigu.survey.vo.CustomerDetailVo">
+        select
+           r.USER_NAME_CN as userName,
+           c.COMPANY_NAME_EN as companyNameEN,
+           c.COMPANY_NAME_CN as companyNameCN,
+           d.DEPARTMENT_NAME as departmentName,
+           p.POSITION_NAME as positionName
+        from
+           tb_customer_relation r
+           inner join  tb_department d on r.DEPARTMENT_ID = d.ID
+           inner join  tb_company c on c.ID = d.COMPANY_ID
+           inner join  tb_position p on r.POSITION_ID = p.ID
+        where
+           r.USER_ID =  #{id}
+    </select>
+
+
 </mapper>

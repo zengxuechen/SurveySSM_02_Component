@@ -12,5 +12,5 @@ public interface CustTestPaperService {
 
     Page<TbCustTestPaper> queryPaperTypeByCode(String pageNoStr, String typeCode);
 
-
+    TbCustTestPaper getCustTestResultAndPaperInfoByTestResultId(int i);
 }

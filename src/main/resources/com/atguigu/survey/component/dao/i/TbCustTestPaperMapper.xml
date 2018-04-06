@@ -152,4 +152,17 @@
             TEST_TYPE_CODE = #{typeCode}
     </select>
 
+    <select id="getCustTestResultAndPaperInfoByTestResultId" parameterType="java.lang.Integer" resultType="com.atguigu.survey.entities.zhyq.TbCustTestPaper">
+        select
+        p.TEST_TYPE_CODE as testTypeCode,
+        p.TEST_TYPE_NAME as testTypeName,
+        p.TEST_PAPER_NAME as testPaperName,
+        p.PAPER_ON_FLAG as paperOnFlag,
+        p.QUESTION_IDS as questionIds,
+        p.CREATOR_ID  as creatorId
+        from tb_cust_test_paper p ,tb_cust_test_result r
+        where r.TEST_PAPER_ID  = p.ID
+        and r.ID = #{id}
+    </select>
+
 </mapper>

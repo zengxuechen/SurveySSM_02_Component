@@ -1,4 +1,4 @@
-package com.atguigu.survey.component.dao.i;
+package com.atguigu.survey.component.service.i;
 
 import com.atguigu.survey.entities.zhyq.TbPaEcReport;
 
@@ -8,8 +8,8 @@ import java.util.Map;
 /**
  * Using IntelliJ IDEA.
  *
- * @author 李小鑫 at 2018/4/1 12:52
+ * @author 李小鑫 at 2018/4/6 18:54
  */
-public interface TbPaEcReportMapper {
+public interface PaEcReportService {
     List<TbPaEcReport> getAll(Map<String,Object> map);
 }

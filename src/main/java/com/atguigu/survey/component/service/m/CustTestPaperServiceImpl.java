@@ -45,5 +45,10 @@ public class CustTestPaperServiceImpl implements CustTestPaperService {
         return page;
     }
 
+    public TbCustTestPaper getCustTestResultAndPaperInfoByTestResultId(int i) {
+        TbCustTestPaper custTestPaper = custTestPaperMapper.getCustTestResultAndPaperInfoByTestResultId(i);
+        return custTestPaper;
+    }
+
 
 }

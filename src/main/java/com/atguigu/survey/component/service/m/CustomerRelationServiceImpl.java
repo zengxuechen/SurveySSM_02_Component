@@ -3,6 +3,7 @@ package com.atguigu.survey.component.service.m;
 import com.atguigu.survey.component.dao.i.TbCustomerRelationMapper;
 import com.atguigu.survey.component.service.i.CustomerRelationService;
 import com.atguigu.survey.entities.zhyq.TbCustomerRelation;
+import com.atguigu.survey.vo.CustomerDetailVo;
 import com.atguigu.survey.vo.CustomerRelationInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,10 @@ public class CustomerRelationServiceImpl implements CustomerRelationService {
     public Integer saveCustomerRelationInfo(TbCustomerRelation TbCustomerRelation) {
         Integer integer = customerRelationMapper.insertSelective(TbCustomerRelation);
         return integer;
+    }
+
+    public CustomerDetailVo getRelationInfoByUserId(int i) {
+        CustomerDetailVo customerDetailVo = customerRelationMapper.getRelationInfoByUserId(i);
+        return  customerDetailVo;
     }
 }
