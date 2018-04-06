@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import com.atguigu.survey.component.service.i.*;
 import com.atguigu.survey.entities.zhyq.*;
+import com.atguigu.survey.utils.PdfUtil;
 import com.atguigu.survey.vo.CustomerDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -177,25 +178,25 @@ public class CustTestResultHandler {
                          jCount++;
                      }
                     if("P".equals(pa.getAnswerAnalysis())){
-                        pCount++;
+                         pCount++;
                     }
                     if("T".equals(pa.getAnswerAnalysis())){
-                        tCount++;
+                         tCount++;
                     }
                     if("F".equals(pa.getAnswerAnalysis())){
-                        fCount++;
+                         fCount++;
                     }
                     if("S".equals(pa.getAnswerAnalysis())){
-                        sCount++;
+                         sCount++;
                     }
                     if("N".equals(pa.getAnswerAnalysis())){
-                        nCount++;
+                         nCount++;
                     }
                     if("E".equals(pa.getAnswerAnalysis())){
-                        eCount++;
+                         eCount++;
                     }
                     if("I".equals(pa.getAnswerAnalysis())){
-                        iCount++;
+                         iCount++;
                     }
                 }
             }
@@ -489,28 +490,28 @@ public class CustTestResultHandler {
                 String s = paCaStrings1.get(i);//测试结果
                 String answerBitmap = pa.getAnswerBitmap(); //标准答案
                 if (answerBitmap.equals(s)) {
-                    if(PA_CA_TF.getCode().equals(pa.getAnswerAnalysis())){
+                    if(PA_CA_TF.getCode().equals(pa.getRuleTypeCode())){
                         tfScore += Integer.parseInt(pa.getAnswerAnalysis());
                     }
-                    if(PA_CA_GM.getCode().equals(pa.getAnswerAnalysis())){
+                    if(PA_CA_GM.getCode().equals(pa.getRuleTypeCode())){
                         gmScore += Integer.parseInt(pa.getAnswerAnalysis());
                     }
-                    if(PA_CA_AU.getCode().equals(pa.getAnswerAnalysis())){
+                    if(PA_CA_AU.getCode().equals(pa.getRuleTypeCode())){
                         auScore += Integer.parseInt(pa.getAnswerAnalysis());
                     }
-                    if(PA_CA_SE.getCode().equals(pa.getAnswerAnalysis())){
+                    if(PA_CA_SE.getCode().equals(pa.getRuleTypeCode())){
                         seScore += Integer.parseInt(pa.getAnswerAnalysis());
                     }
-                    if(PA_CA_EC.getCode().equals(pa.getAnswerAnalysis())){
+                    if(PA_CA_EC.getCode().equals(pa.getRuleTypeCode())){
                         ecScore += Integer.parseInt(pa.getAnswerAnalysis());
                     }
-                    if(PA_CA_SV.getCode().equals(pa.getAnswerAnalysis())){
+                    if(PA_CA_SV.getCode().equals(pa.getRuleTypeCode())){
                         svScore += Integer.parseInt(pa.getAnswerAnalysis());
                     }
-                    if(PA_CA_CH.getCode().equals(pa.getAnswerAnalysis())){
+                    if(PA_CA_CH.getCode().equals(pa.getRuleTypeCode())){
                         chScore += Integer.parseInt(pa.getAnswerAnalysis());
                     }
-                    if(PA_CA_LS.getCode().equals(pa.getAnswerAnalysis())){
+                    if(PA_CA_LS.getCode().equals(pa.getRuleTypeCode())){
                         lsScore += Integer.parseInt(pa.getAnswerAnalysis());
                     }
                 }
@@ -534,7 +535,33 @@ public class CustTestResultHandler {
         String star6 = "";
         String star7 = "";
         String star8 = "";
-
+        if("TF".equals(diskMax)){
+            star1 = "★";
+        }
+        if("GM".equals(diskMax)){
+            star2 = "★";
+        }
+        if("AU".equals(diskMax)){
+            star3 = "★";
+        }
+        if("SE".equals(diskMax)){
+            star4 = "★";
+        }
+        if("EC".equals(diskMax)){
+            star5 = "★";
+        }
+        if("SV".equals(diskMax)){
+            star6 = "★";
+        }
+        if("CH".equals(diskMax)){
+            star7 = "★";
+        }
+        if("LS".equals(diskMax)){
+            star7 = "★";
+        }
+        String html = PdfUtil.getHtml();
+        //替换模板中的字符
+        
         // ⑥。 (个人发展建议)（目前是写死的） 在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_CA 找到 QUESTION_IDS 所有的问题
          // 通过 循环 tb_pa_answer_rule（规则表）得出相应的枚举（RULe）各个类型的得分，tb_pa_ca_report 里进行匹配拿出数据进行替换（根据文件规则进
          //3。通过PdfUtil的getHtml方法 读出的是SB，替换相应的值
