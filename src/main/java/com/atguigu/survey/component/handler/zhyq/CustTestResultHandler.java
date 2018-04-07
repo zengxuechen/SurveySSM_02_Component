@@ -60,6 +60,9 @@ public class CustTestResultHandler {
     @Autowired
     PaEcReportService paEcReportService;
 
+    @Autowired
+    PaCaReportService paCaReportService;
+
 
     @RequestMapping("guest/custTestResult/saveCustTestResult/{typeCode}/{paperId}/{result}")
     public String saveCustTestResult(HttpSession session , @PathVariable("typeCode") String typeCode, @PathVariable("paperId") String paperId ,@PathVariable("result") String result){
@@ -111,7 +114,7 @@ public class CustTestResultHandler {
      */
     @RequestMapping("guest/custTestResultHandler/exportPDF/{resultIds}")
     public void exportPDF(@PathVariable("resultId") String resultIds){
-         //1。传过来一个试题id字符串（用@分割）。
+        //1。传过来一个试题id字符串（用@分割）。
         String[] split = resultIds.split("@");
         List<String> resultIdList = Arrays.asList(split);
         //2。通过 第一个resultId（题目id） 查询tb_cust_test_result表的 客户id字段 通过多表关联 查出 公司 部门 个人信息
@@ -128,29 +131,29 @@ public class CustTestResultHandler {
         int month = now.get(Calendar.MONTH) + 1;//需要替换的字段（月）
         int day = now.get(Calendar.DAY_OF_MONTH);//需要替换的字段（日）
         //3.计算出需要替换的值
-         // ①。 个人与公司信息与时间
-         // ②。（职业性格）在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_PC 找到  QUESTION_IDS 所有的问题
-         // 通过 循环 tb_pa_answer_rule（规则表）算出相应的得分，出现最多来进行判断是哪种人然后替换（写死）（根据文件规则进行相应的类型去匹配）
-         // 获取所有的客户测试题表的对象
-         TbCustTestPaper paPcReport = null; // 职业性格测试表对象
-         TbCustTestPaper paPhReport = null; // 心理健康测评表对象
-         TbCustTestPaper paEcReport = null; // 情绪能力测评表对象
-         TbCustTestPaper paCaReport = null; // 职业锚测评表对象
-         for( String paperId : resultIdList){ // 获取各个测评显示的对象
-             TbCustTestPaper custTestPaper = custTestPaperService.getCustTestResultAndPaperInfoByTestResultId(Integer.parseInt(paperId));
-             if(PA_PC.getCode().equals(custTestPaper.getTestTypeCode())){
-                 paPcReport = custTestPaper;
-             }
-             if(PA_PH.getCode().equals(custTestPaper.getTestTypeCode())){
-                 paPhReport = custTestPaper;
-             }
-             if(PA_EC.getCode().equals(custTestPaper.getTestTypeCode())){
-                 paEcReport = custTestPaper;
-             }
-             if(PA_CA.getCode().equals(custTestPaper.getTestTypeCode())){
-                 paCaReport = custTestPaper;
-             }
-         }
+        // ①。 个人与公司信息与时间
+        // ②。（职业性格）在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_PC 找到  QUESTION_IDS 所有的问题
+        // 通过 循环 tb_pa_answer_rule（规则表）算出相应的得分，出现最多来进行判断是哪种人然后替换（写死）（根据文件规则进行相应的类型去匹配）
+        // 获取所有的客户测试题表的对象
+        TbCustTestPaper paPcReport = null; // 职业性格测试表对象
+        TbCustTestPaper paPhReport = null; // 心理健康测评表对象
+        TbCustTestPaper paEcReport = null; // 情绪能力测评表对象
+        TbCustTestPaper paCaReport = null; // 职业锚测评表对象
+        for( String paperId : resultIdList){ // 获取各个测评显示的对象
+            TbCustTestPaper custTestPaper = custTestPaperService.getCustTestResultAndPaperInfoByTestResultId(Integer.parseInt(paperId));
+            if(PA_PC.getCode().equals(custTestPaper.getTestTypeCode())){
+                paPcReport = custTestPaper;
+            }
+            if(PA_PH.getCode().equals(custTestPaper.getTestTypeCode())){
+                paPhReport = custTestPaper;
+            }
+            if(PA_EC.getCode().equals(custTestPaper.getTestTypeCode())){
+                paEcReport = custTestPaper;
+            }
+            if(PA_CA.getCode().equals(custTestPaper.getTestTypeCode())){
+                paCaReport = custTestPaper;
+            }
+        }
         TbCustTestResult result = custTestResultService.getTbCustTestResultByTestPaperId(paPcReport.getId());
         String questionIds = paPcReport.getQuestionIds();//获取试题集
         String[] split1 = questionIds.split("@");
@@ -167,36 +170,36 @@ public class CustTestResultHandler {
         int eCount = 0; //E的数量
         int iCount = 0; //I的数量
         for( int i = 0 ; i <  strings.size() ; i++){
-             //通过试题编号 从测评解读表（tb_pa_answer_rule）中取出相应的解析
+            //通过试题编号 从测评解读表（tb_pa_answer_rule）中取出相应的解析
             Integer questionId = Integer.parseInt(strings.get(i));
             List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(questionId);
             for(TbPaAnswerRule pa : answerList){
                 String s = strings1.get(i); //测试结果
                 String answerBitmap = pa.getAnswerBitmap(); //标准答案
                 if(answerBitmap.equals(s)){
-                     if("J".equals(pa.getAnswerAnalysis())){
-                         jCount++;
-                     }
+                    if("J".equals(pa.getAnswerAnalysis())){
+                        jCount++;
+                    }
                     if("P".equals(pa.getAnswerAnalysis())){
-                         pCount++;
+                        pCount++;
                     }
                     if("T".equals(pa.getAnswerAnalysis())){
-                         tCount++;
+                        tCount++;
                     }
                     if("F".equals(pa.getAnswerAnalysis())){
-                         fCount++;
+                        fCount++;
                     }
                     if("S".equals(pa.getAnswerAnalysis())){
-                         sCount++;
+                        sCount++;
                     }
                     if("N".equals(pa.getAnswerAnalysis())){
-                         nCount++;
+                        nCount++;
                     }
                     if("E".equals(pa.getAnswerAnalysis())){
-                         eCount++;
+                        eCount++;
                     }
                     if("I".equals(pa.getAnswerAnalysis())){
-                         iCount++;
+                        iCount++;
                     }
                 }
             }
@@ -231,7 +234,7 @@ public class CustTestResultHandler {
         String blindSpotTips = paPcReportResult.getBlindSpotTips();//需要替换的字段
         String suitedCareer = paPcReportResult.getSuitedCareer();//需要替换的字段
         // ③。 (心理健康测评) 在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_PH 找到 QUESTION_IDS 所有的问题
-         // 通过 循环 tb_pa_answer_rule（规则表）算出相应的得分，在tb_pa_ph_report表里进行对比拿数据，出现最多来进行判断是哪种人然后替换（写死）（根据文件规则进行相应的类型去匹配）
+        // 通过 循环 tb_pa_answer_rule（规则表）算出相应的得分，在tb_pa_ph_report表里进行对比拿数据，出现最多来进行判断是哪种人然后替换（写死）（根据文件规则进行相应的类型去匹配）
         TbCustTestResult paPhResult = custTestResultService.getTbCustTestResultByTestPaperId(paPhReport.getId());
         String paPhQuestionIds = paPhReport.getQuestionIds();//获取试题集
         String[] paPhSplit1 = paPhQuestionIds.split("@");
@@ -379,15 +382,15 @@ public class CustTestResultHandler {
             String code = pa.getSymptomTypeCode();
             String symptomDesc = pa.getSymptomDesc();
             if(PA_PH_ALL_ALL_AVERAGE.getCode().equals(code)){//总症状
-                 if(allAverageScoreBD.compareTo(begin) > 0 && allAverageScoreBD.compareTo(end) < 0 ){
-                     desc_ALL_AVERAGE = symptomDesc;
-                 }
-             }
-             if(PA_PH_SOMATIZATION.getCode().equals(code)){//躯体化
+                if(allAverageScoreBD.compareTo(begin) > 0 && allAverageScoreBD.compareTo(end) < 0 ){
+                    desc_ALL_AVERAGE = symptomDesc;
+                }
+            }
+            if(PA_PH_SOMATIZATION.getCode().equals(code)){//躯体化
                 if(somatizationAverageBD.compareTo(begin) > 0 && somatizationAverageBD.compareTo(end)< 0){
                     symptomDesc_PART_SOMATIZATION  = symptomDesc;
                 }
-             }
+            }
             if(PA_PH_OBSESSION.getCode().equals(code)){//强迫症
                 if(obsessionAverageBD.compareTo(begin) > 0 && obsessionAverageBD.compareTo(end)< 0){
                     symptomDesc_PART_OBSESSION  = symptomDesc;
@@ -434,8 +437,8 @@ public class CustTestResultHandler {
                 }
             }
         }
-         // ④。 (情绪能力测评) 在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_EC 找到 QUESTION_IDS 所有的问题
-         // 通过 循环 tb_pa_answer_rule（规则表）得出相应的总分得分，在tb_pa_ec_report表 里分数进行匹配（根据文件规则进行相应的类型去匹配）
+        // ④。 (情绪能力测评) 在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_EC 找到 QUESTION_IDS 所有的问题
+        // 通过 循环 tb_pa_answer_rule（规则表）得出相应的总分得分，在tb_pa_ec_report表 里分数进行匹配（根据文件规则进行相应的类型去匹配）
         TbCustTestResult paEcResult = custTestResultService.getTbCustTestResultByTestPaperId(paEcReport.getId());
         String paEcQuestionIds = paEcReport.getQuestionIds();//获取试题集
         String[] paEcSplit1 = paEcQuestionIds.split("@");
@@ -460,13 +463,13 @@ public class CustTestResultHandler {
         String sectionDesc = "";//需要替换
         List<TbPaEcReport> paEcList =  paEcReportService.getAll(map);
         for(TbPaEcReport pa : paEcList){
-               if(totalScore1 > pa.getStandardValueBgn() &&  totalScore1 < pa.getStandardValueEnd()){
-                   sectionDesc = pa.getSectionDesc();
-               }
+            if(totalScore1 > pa.getStandardValueBgn() &&  totalScore1 < pa.getStandardValueEnd()){
+                sectionDesc = pa.getSectionDesc();
+            }
         }
 
-         // ⑤。 (职业价值观测评) 在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_CA 找到 QUESTION_IDS 所有的问题
-         // 通过 循环 tb_pa_answer_rule（规则表）得出相应的枚举（RULe）各个类型的得分，tb_pa_ca_report 里进行匹配拿出数据进行替换（根据文件规则进行相应的类
+        // ⑤。 (职业价值观测评) 在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_CA 找到 QUESTION_IDS 所有的问题
+        // 通过 循环 tb_pa_answer_rule（规则表）得出相应的枚举（RULe）各个类型的得分，tb_pa_ca_report 里进行匹配拿出数据进行替换（根据文件规则进行相应的类
         TbCustTestResult paCaResult = custTestResultService.getTbCustTestResultByTestPaperId(paCaReport.getId());
         String paCaQuestionIds = paCaReport.getQuestionIds();//获取试题集
         String[] paCaSplit1 = paCaQuestionIds.split("@");
@@ -559,12 +562,65 @@ public class CustTestResultHandler {
         if("LS".equals(diskMax)){
             star7 = "★";
         }
-        String html = PdfUtil.getHtml();
-        //替换模板中的字符
-        
+        TbPaCaReport tbPaCaReport =  paCaReportService.getPaCaReportByProfessionCode(diskMax);
+        String characterSummarize = tbPaCaReport.getCharacterSummarize();
+        String characterDesc = tbPaCaReport.getCharacterDesc();
+
+
         // ⑥。 (个人发展建议)（目前是写死的） 在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_CA 找到 QUESTION_IDS 所有的问题
-         // 通过 循环 tb_pa_answer_rule（规则表）得出相应的枚举（RULe）各个类型的得分，tb_pa_ca_report 里进行匹配拿出数据进行替换（根据文件规则进
-         //3。通过PdfUtil的getHtml方法 读出的是SB，替换相应的值
+        // 通过 循环 tb_pa_answer_rule（规则表）得出相应的枚举（RULe）各个类型的得分，tb_pa_ca_report 里进行匹配拿出数据进行替换（根据文件规则进
+        //3。通过PdfUtil的getHtml方法 读出的是SB，替换相应的值
+        String html = PdfUtil.getHtml();
+        html.replace("${companyName}",companyName);
+        html.replace("${userName}",userName);
+        html.replace("${departmentName}",departmentName);
+        html.replace("${positionName}",positionName);
+        html.replace("${year}",year+"");
+        html.replace("${month}",month+"");
+        html.replace("${date}",day+"");
+        html.replace("${styleTypeCode}",styleTypeCode);
+        html.replace("${styleTypeTendency}",styleTypeTendency);
+        html.replace("${styleTypeName}",styleTypeName);
+        html.replace("${styleTypeDesc} ",styleTypeDesc);
+        html.replace("${blindSpotTips} ",blindSpotTips);
+        html.replace("${suitedCareer}",suitedCareer);
+        html.replace("${score_ALL_AVERAGE}",score_ALL_AVERAGE);
+        html.replace("${desc_ALL_AVERAGE}",desc_ALL_AVERAGE);
+        html.replace("${count_ALL_POSITIVENUM}",count_ALL_POSITIVENUM);
+        html.replace("${score_ALL_POSITIVEAVERAGE}",score_ALL_POSITIVEAVERAGE);
+        html.replace("${score_PART_SOMATIZATION}",score_PART_SOMATIZATION);
+        html.replace("${symptomDesc_PART_SOMATIZATION}",symptomDesc_PART_SOMATIZATION);
+        html.replace("${score_PART_OBSESSION}",score_PART_OBSESSION);
+        html.replace("${symptomDesc_PART_OBSESSION}",symptomDesc_PART_OBSESSION);
+        html.replace("${score_PART_INTERPERSONAL}",score_PART_INTERPERSONAL);
+        html.replace("${symptomDesc_PART_INTERPERSONAL}",symptomDesc_PART_INTERPERSONAL);
+        html.replace("${score_PART_DEPRESSED}",score_PART_DEPRESSED);
+        html.replace("${symptomDesc_PART_DEPRESSED}",symptomDesc_PART_DEPRESSED);
+        html.replace("${score_PART_ANXIOUS}",score_PART_ANXIOUS);
+        html.replace("${symptomDesc_PART_ANXIOUS}",symptomDesc_PART_ANXIOUS);
+        html.replace("${score_PART_HOSTILE}",score_PART_HOSTILE);
+        html.replace("${symptomDesc_PART_HOSTILE}",symptomDesc_PART_HOSTILE);
+        html.replace("${score_PART_TERROR}",score_PART_TERROR);
+        html.replace("${symptomDesc_PART_TERROR}",symptomDesc_PART_TERROR);
+        html.replace("${score_PART_PARANOID}",score_PART_PARANOID);
+        html.replace("${symptomDesc_PART_PARANOID}",symptomDesc_PART_PARANOID);
+        html.replace("${score_PART_PSYCHOSIS}",score_PART_PSYCHOSIS);
+        html.replace("${symptomDesc_PART_PSYCHOSIS}",symptomDesc_PART_PSYCHOSIS);
+        html.replace("${score_PART_OTHER}",score_PART_OTHER);
+        html.replace("${symptomDesc_PART_OTHER}",symptomDesc_PART_OTHER);
+        html.replace("${pa_ec_score}",pa_ec_score);
+        html.replace("${sectionDesc}",sectionDesc);
+        html.replace("${star1}",star1);
+        html.replace("${star2}",star2);
+        html.replace("${star3}",star3);
+        html.replace("${star4}",star4);
+        html.replace("${star5}",star5);
+        html.replace("${star6}",star6);
+        html.replace("${star7}",star7);
+        html.replace("${star8}",star8);
+        html.replace("${characterSummarize}",characterSummarize);
+        html.replace("${characterDesc}",characterDesc);
+
 
     }
 

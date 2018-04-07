@@ -111,5 +111,11 @@
 			#{item}
 		</foreach>
 	</select>
+    <select id="getPaCaReportByProfessionCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pa_ca_report where
+        PROFESSION_CODE = #{code}
+    </select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.atguigu.survey.component.dao.i;
 
+import com.atguigu.survey.entities.zhyq.TbPaCaReport;
 import com.atguigu.survey.entities.zhyq.TbPaPcReport;
 
 /**
@@ -10,4 +11,6 @@ import com.atguigu.survey.entities.zhyq.TbPaPcReport;
 public interface TbPaCaReportMapper {
 
     TbPaPcReport getPaPcDetailByStyleTypeCode(String styleTypeCode);
+
+    TbPaCaReport getPaCaReportByProfessionCode(String diskMax);
 }
