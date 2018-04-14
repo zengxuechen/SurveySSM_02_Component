@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.ws.Action;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Using IntelliJ IDEA.
@@ -55,6 +56,12 @@ public class CompanyHandler {
         }else{
             return "zhyq/saveCompany_error";
         }
+    }
+
+    @RequestMapping("manager/companyHandler/getAllCompany")
+    public List<TbCompany> getAllCompany(){
+        List<TbCompany> resultList =  companyService.getAllCompany();
+        return resultList;
     }
 
 }

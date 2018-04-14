@@ -6,6 +6,8 @@ import com.atguigu.survey.entities.zhyq.TbCompany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Using IntelliJ IDEA.
  *
@@ -20,5 +22,9 @@ public class CompanyServiceImpl implements CompanyService {
     public Integer saveCompanyInfo(TbCompany company) {
         Integer integer = companMapper.insertSelective(company);
         return integer;
+    }
+
+    public List<TbCompany> getAllCompany() {
+        return companMapper.getAllCompany();
     }
 }
