@@ -9,6 +9,7 @@
 		<result column="STYLE_TYPE_DESC" property="styleTypeDesc" jdbcType="VARCHAR" />
 		<result column="BLIND_SPOT_TIPS" property="blindSpotTips" jdbcType="VARCHAR" />
 		<result column="SUITED_CAREER" property="suitedCareer" jdbcType="VARCHAR" />
+		<result column="DEVELOPMENT_ADVICE" property="developmentAdvice" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Where">
 		<if test="id != null"> and ID= #{id}</if>	
@@ -18,6 +19,7 @@
 		<if test="styleTypeDesc != null and styleTypeDesc !=''"> and STYLE_TYPE_DESC= #{styleTypeDesc}</if>
 		<if test="blindSpotTips != null and blindSpotTips !=''"> and BLIND_SPOT_TIPS= #{blindSpotTips}</if>
 		<if test="suitedCareer != null and suitedCareer !=''"> and SUITED_CAREER= #{suitedCareer}</if>
+		<if test="developmentAdvice != null and developmentAdvice !=''"> and DEVELOPMENT_ADVICE= #{developmentAdvice}</if>
 	</sql>
 	<sql id="Base_Column_List">
 		ID ,
@@ -26,7 +28,8 @@
 		STYLE_TYPE_NAME ,
 		STYLE_TYPE_DESC ,
 		BLIND_SPOT_TIPS ,
-		SUITED_CAREER 
+		SUITED_CAREER ,
+		DEVELOPMENT_ADVICE 
 	</sql>
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -53,6 +56,7 @@
 			<if test="styleTypeDesc != null and styleTypeDesc !=''">STYLE_TYPE_DESC,</if>
 			<if test="blindSpotTips != null and blindSpotTips !=''">BLIND_SPOT_TIPS,</if>
 			<if test="suitedCareer != null and suitedCareer !=''">SUITED_CAREER,</if>
+			<if test="developmentAdvice != null and developmentAdvice !=''">DEVELOPMENT_ADVICE,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -75,6 +79,9 @@
 			</if>
 			<if test="suitedCareer != null and suitedCareer !=''">
 				#{suitedCareer,jdbcType=VARCHAR},
+			</if>
+			<if test="developmentAdvice != null and developmentAdvice !=''">
+				#{developmentAdvice,jdbcType=VARCHAR},
 			</if>
 			
 		</trim>
@@ -99,7 +106,10 @@
 				BLIND_SPOT_TIPS= #{blindSpotTips,jdbcType=VARCHAR},
 			</if>
 			<if test="suitedCareer != null and suitedCareer !=''">
-				SUITED_CAREER= #{suitedCareer,jdbcType=VARCHAR}
+				SUITED_CAREER= #{suitedCareer,jdbcType=VARCHAR},
+			</if>
+			<if test="developmentAdvice != null and developmentAdvice !=''">
+				DEVELOPMENT_ADVICE= #{developmentAdvice,jdbcType=VARCHAR}
 			</if>
 		</set>
 		where
@@ -131,8 +141,8 @@
 			#{item}
 		</foreach>
 	</select>
-
-    <select id=" getPaPcDetailByStyleTypeCode" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	
+	<select id=" getPaPcDetailByStyleTypeCode" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List" />
         from tb_pa_pc_report

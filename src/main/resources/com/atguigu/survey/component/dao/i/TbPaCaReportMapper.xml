@@ -6,7 +6,8 @@
 		<result column="PROFESSION_CODE" property="professionCode" jdbcType="VARCHAR" />
 		<result column="PROFESSION_CODE_NAME" property="professionCodeName" jdbcType="VARCHAR" />
 		<result column="CHARACTER_SUMMARIZE" property="characterSummarize" jdbcType="VARCHAR" />
-		<result column="CHARACTER_DESC" property="characterDesc" jdbcType="VARCHAR" />
+		<id column="CHARACTER_DESC" property="characterDesc" jdbcType="VARCHAR" />
+		<result column="DEVELOPMENT_ADVICE" property="developmentAdvice" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Where">
 		<if test="id != null"> and ID= #{id}</if>	
@@ -14,27 +15,31 @@
 		<if test="professionCodeName != null and professionCodeName !=''"> and PROFESSION_CODE_NAME= #{professionCodeName}</if>
 		<if test="characterSummarize != null and characterSummarize !=''"> and CHARACTER_SUMMARIZE= #{characterSummarize}</if>
 		<if test="characterDesc != null and characterDesc !=''"> and CHARACTER_DESC= #{characterDesc}</if>
+		<if test="developmentAdvice != null and developmentAdvice !=''"> and DEVELOPMENT_ADVICE= #{developmentAdvice}</if>
 	</sql>
 	<sql id="Base_Column_List">
 		ID ,
 		PROFESSION_CODE ,
 		PROFESSION_CODE_NAME ,
 		CHARACTER_SUMMARIZE ,
-		CHARACTER_DESC 
+		CHARACTER_DESC ,
+		DEVELOPMENT_ADVICE 
 	</sql>
 
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
 		from tb_pa_ca_report
 		where
 		ID = #{id,jdbcType=INTEGER}
+		CHARACTER_DESC = #{characterDesc,jdbcType=VARCHAR}
 	</select>
 
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
 		delete from tb_pa_ca_report
 		where
 		ID = #{id,jdbcType=INTEGER}
+		CHARACTER_DESC = #{characterDesc,jdbcType=VARCHAR}
 	</delete>
 
 	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbPaCaReport">
@@ -45,6 +50,7 @@
 			<if test="professionCodeName != null and professionCodeName !=''">PROFESSION_CODE_NAME,</if>
 			<if test="characterSummarize != null and characterSummarize !=''">CHARACTER_SUMMARIZE,</if>
 			<if test="characterDesc != null and characterDesc !=''">CHARACTER_DESC,</if>
+			<if test="developmentAdvice != null and developmentAdvice !=''">DEVELOPMENT_ADVICE,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -62,6 +68,9 @@
 			<if test="characterDesc != null and characterDesc !=''">
 				#{characterDesc,jdbcType=VARCHAR},
 			</if>
+			<if test="developmentAdvice != null and developmentAdvice !=''">
+				#{developmentAdvice,jdbcType=VARCHAR},
+			</if>
 			
 		</trim>
 	</insert>
@@ -78,12 +87,13 @@
 			<if test="characterSummarize != null and characterSummarize !=''">
 				CHARACTER_SUMMARIZE= #{characterSummarize,jdbcType=VARCHAR},
 			</if>
-			<if test="characterDesc != null and characterDesc !=''">
-				CHARACTER_DESC= #{characterDesc,jdbcType=VARCHAR}
+			<if test="developmentAdvice != null and developmentAdvice !=''">
+				DEVELOPMENT_ADVICE= #{developmentAdvice,jdbcType=VARCHAR}
 			</if>
 		</set>
 		where
 		ID = #{id,jdbcType=INTEGER}
+		CHARACTER_DESC = #{characterDesc,jdbcType=VARCHAR}
 	</update>
 
 	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
@@ -106,12 +116,13 @@
 	<select id="selectByIds" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from tb_pa_ca_report where ID in
+		from tb_pa_ca_report where IDCHARACTER_DESC in
 		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
 			#{item}
 		</foreach>
 	</select>
-    <select id="getPaCaReportByProfessionCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+	
+	 <select id="getPaCaReportByProfessionCode" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from tb_pa_ca_report where
