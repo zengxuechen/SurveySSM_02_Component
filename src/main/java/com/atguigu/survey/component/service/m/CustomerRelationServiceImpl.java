@@ -8,6 +8,8 @@ import com.atguigu.survey.vo.CustomerRelationInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Using IntelliJ IDEA.
  *
@@ -27,5 +29,10 @@ public class CustomerRelationServiceImpl implements CustomerRelationService {
     public CustomerDetailVo getRelationInfoByUserId(int i) {
         CustomerDetailVo customerDetailVo = customerRelationMapper.getRelationInfoByUserId(i);
         return  customerDetailVo;
+    }
+
+    public List<CustomerRelationInfoVo> getAllUserInfoByDepartmentId(Integer departmentId) {
+        List<CustomerRelationInfoVo> resultList = customerRelationMapper.getAllUserInfoByDepartmentId(departmentId);
+        return resultList;
     }
 }

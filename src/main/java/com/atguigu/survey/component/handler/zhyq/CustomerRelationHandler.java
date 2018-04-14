@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 /**
  * Using IntelliJ IDEA.
  *
@@ -30,6 +32,11 @@ public class CustomerRelationHandler {
     @Autowired
     UserService userService;
 
+    /**
+     * 保存用户信息
+     * @param customerRelationInfoVo
+     * @return
+     */
     @RequestMapping("manager/customerRelationHandler/saveCustomerInfo")
     public String saveCustomerInfo(CustomerRelationInfoVo customerRelationInfoVo){
 
@@ -55,6 +62,12 @@ public class CustomerRelationHandler {
             return "zhyq/saveUser_error";
         }
 
+    }
+
+    @RequestMapping("manager/customerRelationHandler/getAll/{departmentId}")
+    public List<CustomerRelationInfoVo> getAllUserInfoByDepartmentId(@PathVariable("departmentId") Integer departmentId){
+        List<CustomerRelationInfoVo> resultList =  customerRelationService.getAllUserInfoByDepartmentId(departmentId);
+        return resultList;
     }
 
 }

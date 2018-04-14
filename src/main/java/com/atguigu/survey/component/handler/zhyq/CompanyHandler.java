@@ -58,6 +58,10 @@ public class CompanyHandler {
         }
     }
 
+    /**
+     * 查询所有的公司列表
+     * @return
+     */
     @RequestMapping("manager/companyHandler/getAllCompany")
     public List<TbCompany> getAllCompany(){
         List<TbCompany> resultList =  companyService.getAllCompany();
