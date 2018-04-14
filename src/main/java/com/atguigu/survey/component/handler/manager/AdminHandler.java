@@ -34,15 +34,15 @@ public class AdminHandler {
 	@Autowired
 	private RoleService roleService ;
 
-	@RequestMapping("/manager/admin/doDispatcherRole")
-	public String doDispatcherRole(
-				@RequestParam("adminId") Integer adminId ,
-				@RequestParam(value="roleList",required=false) List<Integer> roleIdList){
-		
-		adminService.doDispatcherRole(roleIdList,adminId);
-		
-		return "redirect:/manager/admin/showAdminList";
-	}
+    @RequestMapping("/manager/admin/doDispatcherRole")
+    public String doDispatcherRole(
+            @RequestParam("adminId") Integer adminId ,
+            @RequestParam(value="roleList",required=false) List<Integer> roleIdList){
+
+        adminService.doDispatcherRole(roleIdList,adminId);
+
+        return "redirect:/manager/admin/showAdminList";
+    }
 	
 	
 	//给管理员分配角色-列表页面
