@@ -1,11 +1,9 @@
 package com.atguigu.survey.component.handler.zhyq;
 
-import com.atguigu.survey.component.service.i.CompanyService;
 import com.atguigu.survey.component.service.i.CustomerRelationService;
 import com.atguigu.survey.component.service.i.DepartmentService;
 import com.atguigu.survey.component.service.i.UserService;
 import com.atguigu.survey.entities.guest.User;
-import com.atguigu.survey.entities.zhyq.TbCompany;
 import com.atguigu.survey.entities.zhyq.TbCustomerRelation;
 import com.atguigu.survey.vo.CustomerRelationInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
