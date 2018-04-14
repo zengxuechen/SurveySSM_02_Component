@@ -62,10 +62,16 @@ public class CustomerRelationHandler {
 
     }
 
+    /**
+     * 通过部门Id查询所有的员工信息
+     * @param departmentId
+     * @return
+     */
     @RequestMapping("manager/customerRelationHandler/getAll/{departmentId}")
     public List<CustomerRelationInfoVo> getAllUserInfoByDepartmentId(@PathVariable("departmentId") Integer departmentId){
         List<CustomerRelationInfoVo> resultList =  customerRelationService.getAllUserInfoByDepartmentId(departmentId);
         return resultList;
     }
+
 
 }

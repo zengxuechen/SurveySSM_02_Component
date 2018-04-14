@@ -6,7 +6,7 @@
 		<result column="PROFESSION_CODE" property="professionCode" jdbcType="VARCHAR" />
 		<result column="PROFESSION_CODE_NAME" property="professionCodeName" jdbcType="VARCHAR" />
 		<result column="CHARACTER_SUMMARIZE" property="characterSummarize" jdbcType="VARCHAR" />
-		<id column="CHARACTER_DESC" property="characterDesc" jdbcType="VARCHAR" />
+		<result column="CHARACTER_DESC" property="characterDesc" jdbcType="VARCHAR" />
 		<result column="DEVELOPMENT_ADVICE" property="developmentAdvice" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Where">

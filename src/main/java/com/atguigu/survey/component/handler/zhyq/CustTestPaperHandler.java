@@ -3,14 +3,12 @@ package com.atguigu.survey.component.handler.zhyq;
 import com.atguigu.survey.component.service.i.CustTestPaperService;
 import com.atguigu.survey.entities.guest.User;
 import com.atguigu.survey.entities.zhyq.TbCustTestPaper;
-import com.atguigu.survey.entities.zhyq.TbSelectQuestionLib;
 import com.atguigu.survey.model.Page;
 import com.atguigu.survey.utils.GlobalNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
