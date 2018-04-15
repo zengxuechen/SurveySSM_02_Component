@@ -570,7 +570,10 @@ public class CustTestResultHandler {
         // ⑥。 (个人发展建议)（目前是写死的） 在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_CA 找到 QUESTION_IDS 所有的问题
         // 通过 循环 tb_pa_answer_rule（规则表）得出相应的枚举（RULe）各个类型的得分，tb_pa_ca_report 里进行匹配拿出数据进行替换（根据文件规则进
         //3。通过PdfUtil的getHtml方法 读出的是SB，替换相应的值
-        String html = PdfUtil.getHtml();
+        
+        
+        String fileName = this.getClass().getClassLoader().getResource("/template/paReport.html").getPath();
+		String html = PdfUtil.readToString(fileName);
         html.replace("${companyName}",companyName);
         html.replace("${userName}",userName);
         html.replace("${departmentName}",departmentName);
@@ -1086,7 +1089,8 @@ public class CustTestResultHandler {
         // ⑥。 (个人发展建议)（目前是写死的） 在 tb_cust_test_paper 取值 TEST_TYPE_CODE = PA_CA 找到 QUESTION_IDS 所有的问题
         // 通过 循环 tb_pa_answer_rule（规则表）得出相应的枚举（RULe）各个类型的得分，tb_pa_ca_report 里进行匹配拿出数据进行替换（根据文件规则进
         //3。通过PdfUtil的getHtml方法 读出的是SB，替换相应的值
-        String html = PdfUtil.getHtml();
+        String fileName = this.getClass().getClassLoader().getResource("/template/paReport.html").getPath();
+		String html = PdfUtil.readToString(fileName);
         html.replace("${companyName}",companyName);
         html.replace("${userName}",userName);
         html.replace("${departmentName}",departmentName);

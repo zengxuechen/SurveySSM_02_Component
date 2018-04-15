@@ -1,10 +1,15 @@
 package com.atguigu.survey.component.handler.manager;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.BatchUpdateException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,7 @@ import com.atguigu.survey.entities.manager.Admin;
 import com.atguigu.survey.entities.manager.Role;
 import com.atguigu.survey.utils.GlobalMessage;
 import com.atguigu.survey.utils.GlobalNames;
+import com.atguigu.survey.utils.PdfUtil;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 @SuppressWarnings("all")
@@ -156,6 +162,48 @@ public class AdminHandler {
 		List<User> userList =  userService.queryAllList();
 		map.put("userList", userList);
 		return "manager/admin_showGuestList";
+	}
+	
+	//查看所有客户
+	@RequestMapping("/manager/admin/exportReport")
+	public void exportReport(Map map, HttpServletResponse response){
+		String fileName = this.getClass().getClassLoader().getResource("/template/paReport.html").getPath();
+		String content = PdfUtil.readToString(fileName);
+		PdfUtil.createTempPdf(content);
+		
+		// 设置文件ContentType类型，这样设置，会自动判断下载文件类型
+        response.setContentType("multipart/form-data");
+        // 设置响应头，控制浏览器下载该文件
+        response.setHeader("content-disposition", "attachment;filename=" + "111.pdf");
+        // 读取要下载的文件，保存到文件输入流
+    	FileInputStream in = null;
+		try {
+			in = new FileInputStream("D:\\fff222.pdf");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        // 创建输出流
+    	OutputStream out = null;
+		try {
+			out = response.getOutputStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        // 创建缓冲区
+        byte buffer[] = new byte[1024];
+        int len = 0;
+        // 循环将输入流中的内容读取到缓冲区当中
+        try {
+			while ((len = in.read(buffer)) > 0) {
+			    // 输出缓冲区的内容到浏览器，实现文件下载
+			    out.write(buffer, 0, len);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }
