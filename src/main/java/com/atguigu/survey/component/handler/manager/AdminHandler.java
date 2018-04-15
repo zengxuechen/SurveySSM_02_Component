@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.atguigu.survey.component.service.i.AdminService;
 import com.atguigu.survey.component.service.i.RoleService;
+import com.atguigu.survey.component.service.i.UserService;
 import com.atguigu.survey.e.RemoveAdminFailedException;
 import com.atguigu.survey.e.RemoveAuthFailedException;
+import com.atguigu.survey.entities.guest.User;
 import com.atguigu.survey.entities.manager.Admin;
 import com.atguigu.survey.entities.manager.Role;
 import com.atguigu.survey.utils.GlobalMessage;
@@ -33,16 +35,19 @@ public class AdminHandler {
 	
 	@Autowired
 	private RoleService roleService ;
+	
+	@Autowired
+	private UserService userService ;
 
-    @RequestMapping("/manager/admin/doDispatcherRole")
-    public String doDispatcherRole(
-            @RequestParam("adminId") Integer adminId ,
-            @RequestParam(value="roleList",required=false) List<Integer> roleIdList){
-
-        adminService.doDispatcherRole(roleIdList,adminId);
-
-        return "redirect:/manager/admin/showAdminList";
-    }
+	@RequestMapping("/manager/admin/doDispatcherRole")
+	public String doDispatcherRole(
+				@RequestParam("adminId") Integer adminId ,
+				@RequestParam(value="roleList",required=false) List<Integer> roleIdList){
+		
+		adminService.doDispatcherRole(roleIdList,adminId);
+		
+		return "redirect:/manager/admin/showAdminList";
+	}
 	
 	
 	//给管理员分配角色-列表页面
@@ -136,6 +141,21 @@ public class AdminHandler {
 		session.setAttribute(GlobalNames.LOGIN_Admin, adminDB);
 		
 		return "redirect:/manager/admin/toMainUI";
+	}
+	
+	//新增客户信息
+	@RequestMapping("/manager/admin/saveGuest")
+	public String saveGuest(User user){
+		userService.regist(user);
+		return "redirect:/manager/admin/showAdminList";
+	}
+	
+	//查看所有客户
+	@RequestMapping("/manager/admin/showGuestList")
+	public String showGuestList(Map map){
+		List<User> userList =  userService.queryAllList();
+		map.put("userList", userList);
+		return "manager/admin_showGuestList";
 	}
 	
 }
