@@ -1,6 +1,7 @@
 package com.atguigu.survey.component.service.m;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,56 +34,56 @@ public class UserServiceImpl implements UserService {
 
 	public void regist(User user) {
 		
-		//1.鑾峰彇鐢ㄦ埛鍚嶅拰瀵嗙爜瀛楃涓�
+		//1.获取用户名和密码字符串
 		String userName = user.getUserName();
 		String userPwd = user.getUserPwd();
 		
-		//鈶犳鏌ョ敤鎴锋槸鍚﹀湪鏁版嵁搴撲腑瀛樺湪
+		//①检查用户是否在数据库中存在
 		boolean exists = userMapper.checkUserName(userName) > 0;
-		//鈶″鏋滅敤鎴峰悕绉板湪鏁版嵁搴撲腑瀛樺湪锛岄偅涔堝氨鎶涘紓甯�
+		//②如果用户名称在数据库中存在，那么就抛异常
 		if(exists){
 			throw new UserNameAlreadyExistsException(GlobalMessage.USER_NAME_ALREADY_EXISTS);			
 		}
 		
 
-		//4.濡傛灉鐢ㄦ埛鍚嶅彲鐢紝鍒欏瀵嗙爜杩涜鍔犲瘑
+		//4.如果用户名可用，则对密码进行加密
 		userPwd = DataProcessUtils.md5(userPwd);
 		user.setUserPwd(userPwd);
 		
-		//5.淇濆瓨User瀵硅薄
+		//5.保存User对象
 		userMapper.insert(user);
 		
-		//----------------璁＄畻鐢ㄦ埛鏉冮檺鐮佹暟缁�---------------
-		//i.鍒ゆ柇鐢ㄦ埛鐨勭被鍒�
+		//----------------计算用户权限码数组---------------
+		//i.判断用户的类别
 		Boolean company = user.getCompany();
 		
-		//ii.鏍规嵁鐢ㄦ埛绫诲埆鏌ヨ瀵瑰簲鐨凴ole瀵硅薄
+		//ii.根据用户类别查询对应的Role对象
 		String roleName = null;
 		
 		if(company) {
-			roleName = "浼佷笟鐢ㄦ埛";
+			roleName = "企业用户";
 		}else{
-			roleName = "涓汉鐢ㄦ埛";
+			roleName = "个人用户";
 		}
 		
 		Role role = roleMapper.getRoleByName(roleName);
 		
-		//iii.淇濆瓨鍏宠仈鍏崇郴
+		//iii.保存关联关系
 		Integer userId = user.getUserId();
 		Integer roleId = role.getRoleId();
 		
 		userMapper.saveRelationship(userId, roleId);
 		
-		//iv.鏍规嵁userId鏌ヨSet<Role>
+		//iv.根据userId查询Set<Role>
 		Set<Role> roleSet = userMapper.getRoleSetDeeply(userId);
 		
-		//v.鏌ヨ鏈�澶ф潈闄愪綅鍊�
+		//v.查询最大权限位值
 		Integer maxPos = resMapper.getMaxPos();
 		
-		//vi.璁＄畻鏉冮檺鐮佹暟缁勫��
+		//vi.计算权限码数组值
 		String codeArr = DataProcessUtils.calculateCodeArr(roleSet, maxPos);
 		
-		//vii.缁橴ser瀵硅薄璁剧疆codeArr
+		//vii.给User对象设置codeArr
 		userMapper.updateUserCodeArr(userId, codeArr);
 		
 		//---------------------------------------------
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
 	//<tx:method name="login" read-only="true" />
 	public User login(String userName, String userPwd) {
 		
-		//瀵嗙爜鍔犲瘑
+		//密码加密
 		String md5Pwd = DataProcessUtils.md5(userPwd);		
 		
 		Map<String, String> params = new HashMap<String, String>();
@@ -106,14 +107,11 @@ public class UserServiceImpl implements UserService {
 		
 		return user;
 	}
-
-    public Integer saveUserAndReturnId(User user) {
-        return userMapper.saveUserAndReturnId(user);
-    }
-
-    public User getEntity(Integer entityId) {
-		return userMapper.selectByPrimaryKey(entityId);
+	
+	public List<User> queryAllList(){
+		return userMapper.selectAll();
 	}
+
 
 	public void updateEntity(User t) {
 		userMapper.updateByPrimaryKey(t);
@@ -121,5 +119,15 @@ public class UserServiceImpl implements UserService {
 
 	public void removeEntityById(Integer entityId) {
 		userMapper.deleteByPrimaryKey(entityId);
+	}
+
+	public Integer saveUserAndReturnId(User user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public User getEntity(Integer entityId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

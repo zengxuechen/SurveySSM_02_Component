@@ -132,4 +132,5 @@
         insert into guest_user(USER_NAME,USER_PWD)
         values (#{userName},#{userPwd})
     </insert>
+    
 </mapper>
