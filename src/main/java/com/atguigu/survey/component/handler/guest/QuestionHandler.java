@@ -26,7 +26,7 @@ public class QuestionHandler {
 		return "redirect:/guest/survey/toDesignUI/"+surveyId;
 	}
 	
-	//璺宠浆鍒颁慨鏀归〉闈�
+	//跳转到修改页面
 	@RequestMapping("/guest/question/toEidtUI/{questionId}/{surveyId}")
 	public String toEditUI(@PathVariable("questionId") Integer questionId,
 			@PathVariable("surveyId") Integer surveyId,
@@ -36,23 +36,23 @@ public class QuestionHandler {
 		map.put("question", question);
 		
 		Map<String,String> questionTypeMap = new HashMap<String,String>();
-		questionTypeMap.put("0", "鍗曢�夐");
-		questionTypeMap.put("1", "澶氶�夐");
-		questionTypeMap.put("2", "绠�绛旈");
+		questionTypeMap.put("0", "单选题");
+		questionTypeMap.put("1", "多选题");
+		questionTypeMap.put("2", "简答题");
 		map.put("questionTypeMap", questionTypeMap);
 		
 		return "guest/question_editUI";
 	}
 	
 	
-	//鍒犻櫎闂
+	//删除问题
 	@RequestMapping("/guest/question/removeQuestion/{qquestionId}/{surveyId}")
 	public String removeQuestion(@PathVariable("qquestionId") Integer questionId,@PathVariable("surveyId") Integer surveyId){
 		questionService.removeEntityById(questionId);
 		return "redirect:/guest/survey/toDesignUI/"+surveyId;
 	}
 	
-	//淇濆瓨闂
+	//保存问题
 	@RequestMapping("/guest/question/saveQuestion")
 	public String saveQuestion(Question question,@RequestParam("surveyId") Integer surveyId){
 		
@@ -61,7 +61,7 @@ public class QuestionHandler {
 		return "redirect:/guest/survey/toDesignUI/"+surveyId;
 	}
 
-	//璺宠浆鍒版坊鍔犻棶棰橀〉闈�
+	//跳转到添加问题页面
 	@RequestMapping("/guest/question/toAddUI/{bagId}/{surveyId}")
 	public String toAddUI(@PathVariable("bagId") Integer bagId,@PathVariable("surveyId") Integer surveyId){
 		

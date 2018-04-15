@@ -20,7 +20,7 @@ import java.util.Map;
 public class CustTestPaperServiceImpl implements CustTestPaperService {
 
     @Autowired
-    TbCustTestPaperMapper  custTestPaperMapper;
+    TbCustTestPaperMapper custTestPaperMapper;
 
     public Page<TbCustTestPaper> queryPaperTypeByCode(String pageNoStr, String typeCode) {
 
@@ -47,6 +47,10 @@ public class CustTestPaperServiceImpl implements CustTestPaperService {
     public TbCustTestPaper getCustTestResultAndPaperInfoByTestResultId(int i) {
         TbCustTestPaper custTestPaper = custTestPaperMapper.getCustTestResultAndPaperInfoByTestResultId(i);
         return custTestPaper;
+    }
+
+    public List<TbCustTestPaper> getCustTestPaperList(List<Integer> ids) {
+        return custTestPaperMapper.getCustTestPaperList(ids);
     }
 
 
