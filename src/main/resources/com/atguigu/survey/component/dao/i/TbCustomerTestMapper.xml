@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="TbCustomerTestMapper">
-	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbCustomerTest">
+<mapper namespace="com.atguigu.survey.component.dao.i.TbCustomerTestMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCustomerTest">
 		<id column="ID" property="id" jdbcType="INTEGER" />
 		<result column="USER_ID" property="userId" jdbcType="INTEGER" />
 		<result column="TEST_PAPER_IDS" property="testPaperIds" jdbcType="VARCHAR" />
@@ -43,7 +43,7 @@
 		ID = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustomerTest">
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerTest">
 		insert into tb_customer_test
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
@@ -80,7 +80,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustomerTest">
+    <update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerTest">
 		update tb_customer_test
 		<set>
 			<if test="userId != null">

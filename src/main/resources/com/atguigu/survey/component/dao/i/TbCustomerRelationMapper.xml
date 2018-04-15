@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="TbCustomerRelationMapper">
-	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbCustomerRelation">
+<mapper namespace="com.atguigu.survey.component.dao.i.TbCustomerRelationMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
 		<id column="ID" property="id" jdbcType="INTEGER" />
 		<result column="USER_ID" property="userId" jdbcType="INTEGER" />
 		<result column="DEPARTMENT_ID" property="departmentId" jdbcType="INTEGER" />
@@ -43,7 +43,7 @@
 		ID = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustomerRelation">
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
 		insert into tb_customer_relation
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
@@ -80,7 +80,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustomerRelation">
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
 		update tb_customer_relation
 		<set>
 			<if test="userId != null">
