@@ -14,4 +14,6 @@ public interface CustTestResultService {
     List<Map<String, Object>> queryResultByTypeCode(Map<String, Object> map);
 
     TbCustTestResult getTbCustTestResultByTestPaperId(Integer id);
+
+    List<TbCustTestResult> getTbCustTestResultListByUserId(String userId);
 }

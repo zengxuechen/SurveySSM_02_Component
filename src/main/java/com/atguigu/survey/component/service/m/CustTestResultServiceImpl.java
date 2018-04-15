@@ -36,4 +36,8 @@ public class CustTestResultServiceImpl implements CustTestResultService {
         TbCustTestResult result =  custTestResultMapper.getTbCustTestResultByTestPaperId(id);
         return result;
     }
+
+    public List<TbCustTestResult> getTbCustTestResultListByUserId(String userId) {
+        return null;
+    }
 }

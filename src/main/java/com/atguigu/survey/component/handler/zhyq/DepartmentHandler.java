@@ -38,11 +38,20 @@ public class DepartmentHandler {
         return list;
     }
 
+    /**
+     * 在相应的公司下添加部门
+     * @param companyId
+     * @param departmentName
+     * @return
+     */
     @RequestMapping("/manager/departmentHandler/saveDepartmentByCid/{companyId}/{departmentName}")
     public String addDepartment(@PathVariable("companyId") Integer companyId ,@PathVariable("departmentName") String departmentName) {
         Integer integer = departmentService.saveDepartmentBuCompanyId(companyId, departmentName);
-
-        return "";
+        if(integer == 1){
+            return "addDepartment_success";
+        }else{
+            return "addDepartment_error";
+        }
     }
 
 }

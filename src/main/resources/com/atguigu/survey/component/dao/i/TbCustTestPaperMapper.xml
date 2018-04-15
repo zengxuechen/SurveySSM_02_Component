@@ -8,7 +8,7 @@
 		<result column="TEST_PAPER_NAME" property="testPaperName" jdbcType="VARCHAR" />
 		<result column="PAPER_ON_FLAG" property="paperOnFlag" jdbcType="VARCHAR" />
 		<result column="QUESTION_IDS" property="questionIds" jdbcType="VARCHAR" />
-		<result column="CREATOR_ID" property="creatorId" jdbcType="INTEGER" />
+		<result column="CREATOR_ID" property="creatorId" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Where">
 		<if test="id != null"> and ID= #{id}</if>	
@@ -17,7 +17,7 @@
 		<if test="testPaperName != null and testPaperName !=''"> and TEST_PAPER_NAME= #{testPaperName}</if>
 		<if test="paperOnFlag != null and paperOnFlag !=''"> and PAPER_ON_FLAG= #{paperOnFlag}</if>
 		<if test="questionIds != null and questionIds !=''"> and QUESTION_IDS= #{questionIds}</if>
-		<if test="creatorId != null"> and CREATOR_ID= #{creatorId}</if>	
+		<if test="creatorId != null and creatorId !=''"> and CREATOR_ID= #{creatorId}</if>
 	</sql>
 	<sql id="Base_Column_List">
 		ID ,
@@ -52,7 +52,7 @@
 			<if test="testPaperName != null and testPaperName !=''">TEST_PAPER_NAME,</if>
 			<if test="paperOnFlag != null and paperOnFlag !=''">PAPER_ON_FLAG,</if>
 			<if test="questionIds != null and questionIds !=''">QUESTION_IDS,</if>
-			<if test="creatorId != null">CREATOR_ID,</if>	
+			<if test="creatorId != null and creatorId !=''">CREATOR_ID,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -73,8 +73,8 @@
 			<if test="questionIds != null and questionIds !=''">
 				#{questionIds,jdbcType=VARCHAR},
 			</if>
-			<if test="creatorId != null">
-				#{creatorId,jdbcType=INTEGER},
+			<if test="creatorId != null and creatorId !=''">
+				#{creatorId,jdbcType=VARCHAR},
 			</if>
 			
 		</trim>
@@ -98,8 +98,8 @@
 			<if test="questionIds != null and questionIds !=''">
 				QUESTION_IDS= #{questionIds,jdbcType=VARCHAR},
 			</if>
-			<if test="creatorId != null">
-				CREATOR_ID= #{creatorId,jdbcType=INTEGER}
+			<if test="creatorId != null and creatorId !=''">
+				CREATOR_ID= #{creatorId,jdbcType=VARCHAR}
 			</if>
 		</set>
 		where
@@ -131,8 +131,8 @@
 			#{item}
 		</foreach>
 	</select>
-
-    <select id="queryPaperTypeByCode" parameterType="java.util.Map" resultMap="BaseResultMap">
+	
+	 <select id="queryPaperTypeByCode" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
             <include refid="Base_Column_List" />
         from

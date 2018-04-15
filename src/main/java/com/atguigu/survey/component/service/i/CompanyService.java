@@ -2,6 +2,8 @@ package com.atguigu.survey.component.service.i;
 
 import com.atguigu.survey.entities.zhyq.TbCompany;
 
+import java.util.List;
+
 /**
  * Using IntelliJ IDEA.
  *
@@ -10,4 +12,6 @@ import com.atguigu.survey.entities.zhyq.TbCompany;
 public interface CompanyService {
 
     Integer  saveCompanyInfo(TbCompany company);
+
+    List<TbCompany> getAllCompany();
 }

@@ -3,24 +3,24 @@
 <mapper namespace="com.atguigu.survey.component.dao.i.TbPaEcReportMapper">
 	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbPaEcReport">
 		<id column="ID" property="id" jdbcType="INTEGER" />
-		<result column="EQ_SECTION_CODE" property="eqSectionCode" jdbcType="VARCHAR" />
 		<result column="STANDARD_VALUE_BGN" property="standardValueBgn" jdbcType="INTEGER" />
 		<result column="STANDARD_VALUE_END" property="standardValueEnd" jdbcType="INTEGER" />
 		<result column="SECTION_DESC" property="sectionDesc" jdbcType="VARCHAR" />
+		<result column="DEVELOPMENT_ADVICE" property="developmentAdvice" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Where">
 		<if test="id != null"> and ID= #{id}</if>	
-		<if test="eqSectionCode != null and eqSectionCode !=''"> and EQ_SECTION_CODE= #{eqSectionCode}</if>
 		<if test="standardValueBgn != null"> and STANDARD_VALUE_BGN= #{standardValueBgn}</if>	
 		<if test="standardValueEnd != null"> and STANDARD_VALUE_END= #{standardValueEnd}</if>	
 		<if test="sectionDesc != null and sectionDesc !=''"> and SECTION_DESC= #{sectionDesc}</if>
+		<if test="developmentAdvice != null and developmentAdvice !=''"> and DEVELOPMENT_ADVICE= #{developmentAdvice}</if>
 	</sql>
 	<sql id="Base_Column_List">
 		ID ,
-		EQ_SECTION_CODE ,
 		STANDARD_VALUE_BGN ,
 		STANDARD_VALUE_END ,
-		SECTION_DESC 
+		SECTION_DESC ,
+		DEVELOPMENT_ADVICE 
 	</sql>
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -41,17 +41,14 @@
 		insert into tb_pa_ec_report
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
-			<if test="eqSectionCode != null and eqSectionCode !=''">EQ_SECTION_CODE,</if>
 			<if test="standardValueBgn != null">STANDARD_VALUE_BGN,</if>	
 			<if test="standardValueEnd != null">STANDARD_VALUE_END,</if>	
 			<if test="sectionDesc != null and sectionDesc !=''">SECTION_DESC,</if>
+			<if test="developmentAdvice != null and developmentAdvice !=''">DEVELOPMENT_ADVICE,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
 				#{id,jdbcType=INTEGER},
-			</if>
-			<if test="eqSectionCode != null and eqSectionCode !=''">
-				#{eqSectionCode,jdbcType=VARCHAR},
 			</if>
 			<if test="standardValueBgn != null">
 				#{standardValueBgn,jdbcType=INTEGER},
@@ -62,6 +59,9 @@
 			<if test="sectionDesc != null and sectionDesc !=''">
 				#{sectionDesc,jdbcType=VARCHAR},
 			</if>
+			<if test="developmentAdvice != null and developmentAdvice !=''">
+				#{developmentAdvice,jdbcType=VARCHAR},
+			</if>
 			
 		</trim>
 	</insert>
@@ -69,9 +69,6 @@
 	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbPaEcReport">
 		update tb_pa_ec_report
 		<set>
-			<if test="eqSectionCode != null and eqSectionCode !=''">
-				EQ_SECTION_CODE= #{eqSectionCode,jdbcType=VARCHAR},
-			</if>
 			<if test="standardValueBgn != null">
 				STANDARD_VALUE_BGN= #{standardValueBgn,jdbcType=INTEGER},
 			</if>
@@ -79,7 +76,10 @@
 				STANDARD_VALUE_END= #{standardValueEnd,jdbcType=INTEGER},
 			</if>
 			<if test="sectionDesc != null and sectionDesc !=''">
-				SECTION_DESC= #{sectionDesc,jdbcType=VARCHAR}
+				SECTION_DESC= #{sectionDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="developmentAdvice != null and developmentAdvice !=''">
+				DEVELOPMENT_ADVICE= #{developmentAdvice,jdbcType=VARCHAR}
 			</if>
 		</set>
 		where

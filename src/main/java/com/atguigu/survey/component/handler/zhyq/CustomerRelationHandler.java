@@ -1,17 +1,17 @@
 package com.atguigu.survey.component.handler.zhyq;
 
-import com.atguigu.survey.component.service.i.CompanyService;
 import com.atguigu.survey.component.service.i.CustomerRelationService;
 import com.atguigu.survey.component.service.i.DepartmentService;
 import com.atguigu.survey.component.service.i.UserService;
 import com.atguigu.survey.entities.guest.User;
-import com.atguigu.survey.entities.zhyq.TbCompany;
 import com.atguigu.survey.entities.zhyq.TbCustomerRelation;
 import com.atguigu.survey.vo.CustomerRelationInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * Using IntelliJ IDEA.
@@ -30,6 +30,11 @@ public class CustomerRelationHandler {
     @Autowired
     UserService userService;
 
+    /**
+     * 保存用户信息
+     * @param customerRelationInfoVo
+     * @return
+     */
     @RequestMapping("manager/customerRelationHandler/saveCustomerInfo")
     public String saveCustomerInfo(CustomerRelationInfoVo customerRelationInfoVo){
 
@@ -56,5 +61,17 @@ public class CustomerRelationHandler {
         }
 
     }
+
+    /**
+     * 通过部门Id查询所有的员工信息
+     * @param departmentId
+     * @return
+     */
+    @RequestMapping("manager/customerRelationHandler/getAll/{departmentId}")
+    public List<CustomerRelationInfoVo> getAllUserInfoByDepartmentId(@PathVariable("departmentId") Integer departmentId){
+        List<CustomerRelationInfoVo> resultList =  customerRelationService.getAllUserInfoByDepartmentId(departmentId);
+        return resultList;
+    }
+
 
 }

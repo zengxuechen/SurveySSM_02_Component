@@ -3,6 +3,9 @@ package com.atguigu.survey.component.service.i;
 import com.atguigu.survey.entities.zhyq.TbCustomerRelation;
 import com.atguigu.survey.vo.CustomerDetailVo;
 import com.atguigu.survey.vo.CustomerRelationInfoVo;
+
+import java.util.List;
+
 /**
  * Using IntelliJ IDEA.
  *
@@ -15,4 +18,6 @@ public interface CustomerRelationService {
     //List<> getUserInfoListByDepartmentId(Integer departmentId);
 
     CustomerDetailVo getRelationInfoByUserId(int i);
+
+    List<CustomerRelationInfoVo> getAllUserInfoByDepartmentId(Integer departmentId);
 }
