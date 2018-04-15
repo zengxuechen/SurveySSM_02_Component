@@ -35,4 +35,9 @@ public class CustomerRelationServiceImpl implements CustomerRelationService {
         List<CustomerRelationInfoVo> resultList = customerRelationMapper.getAllUserInfoByDepartmentId(departmentId);
         return resultList;
     }
+    
+    public List<CustomerRelationInfoVo> getAllUser(){
+    	List<CustomerRelationInfoVo> resultList = customerRelationMapper.getAllUser();
+        return resultList;
+    }
 }

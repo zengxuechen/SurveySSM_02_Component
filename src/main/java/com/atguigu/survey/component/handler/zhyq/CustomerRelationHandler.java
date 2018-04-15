@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Using IntelliJ IDEA.
@@ -41,11 +42,12 @@ public class CustomerRelationHandler {
         User user = new User();
         user.setUserName(customerRelationInfoVo.getUserName());
         user.setUserPwd(customerRelationInfoVo.getPassword());
+        user.setCompany(false); //个人
         //保存到用户表（guest_user）中 并返回主键Id
-        Integer userId = userService.saveUserAndReturnId(user);
+        userService.regist(user);
 
         TbCustomerRelation customerRelation = new TbCustomerRelation();
-        customerRelation.setUserId(userId);
+        customerRelation.setUserId(user.getUserId());
         customerRelation.setUserNameCn(customerRelationInfoVo.getUserName());
         customerRelation.setDepartmentId(customerRelationInfoVo.getDepartmentId());
         customerRelation.setPositionId(customerRelationInfoVo.getPositionId());
@@ -54,7 +56,7 @@ public class CustomerRelationHandler {
 
         Integer integer = customerRelationService.saveCustomerRelationInfo(customerRelation);
 
-        if(userId > 0 && integer >0){
+        if(integer >0){
             return "zhyq/saveUser_success";
         }else{
             return "zhyq/saveUser_error";
@@ -67,10 +69,24 @@ public class CustomerRelationHandler {
      * @param departmentId
      * @return
      */
-    @RequestMapping("manager/customerRelationHandler/getAll/{departmentId}")
-    public List<CustomerRelationInfoVo> getAllUserInfoByDepartmentId(@PathVariable("departmentId") Integer departmentId){
+    @RequestMapping("manager/customerRelationHandler/getAllUserInfoByDepartmentId/{departmentId}")
+    public String getAllUserInfoByDepartmentId(Map<String, Object> map, @PathVariable("departmentId") Integer departmentId){
         List<CustomerRelationInfoVo> resultList =  customerRelationService.getAllUserInfoByDepartmentId(departmentId);
-        return resultList;
+        map.put("userList", resultList);
+        return "zhyq/department_users";
+    }
+    
+    
+    /**
+     * 查询所有的员工信息
+     * @param departmentId
+     * @return
+     */
+    @RequestMapping("manager/customerRelationHandler/getAllUser")
+    public String getAllUser(Map<String, Object> map){
+        List<CustomerRelationInfoVo> resultList =  customerRelationService.getAllUser();
+        map.put("userList", resultList);
+        return "zhyq/admin_showGuestList";
     }
 
 

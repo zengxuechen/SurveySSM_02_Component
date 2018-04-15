@@ -20,4 +20,6 @@ public interface CustomerRelationService {
     CustomerDetailVo getRelationInfoByUserId(int i);
 
     List<CustomerRelationInfoVo> getAllUserInfoByDepartmentId(Integer departmentId);
+
+	List<CustomerRelationInfoVo> getAllUser();
 }
