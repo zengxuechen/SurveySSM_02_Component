@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TbCustomerTestMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbCustomerTest">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="USER_ID" property="userId" jdbcType="INTEGER" />
+		<result column="TEST_PAPER_IDS" property="testPaperIds" jdbcType="VARCHAR" />
+		<result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+		<result column="TEST_ON_FLAG" property="testOnFlag" jdbcType="INTEGER" />
+		<result column="CREAT_TIME" property="creatTime" jdbcType="TIMESTAMP" />
+		<result column="LAST_MODIFY_TIME" property="lastModifyTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="id != null"> and ID= #{id}</if>	
+		<if test="userId != null"> and USER_ID= #{userId}</if>	
+		<if test="testPaperIds != null and testPaperIds !=''"> and TEST_PAPER_IDS= #{testPaperIds}</if>
+		<if test="creator != null and creator !=''"> and CREATOR= #{creator}</if>
+		<if test="testOnFlag != null"> and TEST_ON_FLAG= #{testOnFlag}</if>	
+		<if test="creatTime != null"> and CREAT_TIME= #{creatTime}</if>	
+		<if test="lastModifyTime != null"> and LAST_MODIFY_TIME= #{lastModifyTime}</if>	
+	</sql>
+	<sql id="Base_Column_List">
+		ID ,
+		USER_ID ,
+		TEST_PAPER_IDS ,
+		CREATOR ,
+		TEST_ON_FLAG ,
+		CREAT_TIME ,
+		LAST_MODIFY_TIME 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_customer_test
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_customer_test
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustomerTest">
+		insert into tb_customer_test
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">ID,</if>	
+			<if test="userId != null">USER_ID,</if>	
+			<if test="testPaperIds != null and testPaperIds !=''">TEST_PAPER_IDS,</if>
+			<if test="creator != null and creator !=''">CREATOR,</if>
+			<if test="testOnFlag != null">TEST_ON_FLAG,</if>	
+			<if test="creatTime != null">CREAT_TIME,</if>	
+			<if test="lastModifyTime != null">LAST_MODIFY_TIME,</if>	
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="testPaperIds != null and testPaperIds !=''">
+				#{testPaperIds,jdbcType=VARCHAR},
+			</if>
+			<if test="creator != null and creator !=''">
+				#{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="testOnFlag != null">
+				#{testOnFlag,jdbcType=INTEGER},
+			</if>
+			<if test="creatTime != null">
+				#{creatTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastModifyTime != null">
+				#{lastModifyTime,jdbcType=TIMESTAMP},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustomerTest">
+		update tb_customer_test
+		<set>
+			<if test="userId != null">
+				USER_ID= #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="testPaperIds != null and testPaperIds !=''">
+				TEST_PAPER_IDS= #{testPaperIds,jdbcType=VARCHAR},
+			</if>
+			<if test="creator != null and creator !=''">
+				CREATOR= #{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="testOnFlag != null">
+				TEST_ON_FLAG= #{testOnFlag,jdbcType=INTEGER},
+			</if>
+			<if test="creatTime != null">
+				CREAT_TIME= #{creatTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastModifyTime != null">
+				LAST_MODIFY_TIME= #{lastModifyTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_customer_test where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_customer_test where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_customer_test where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_customer_test where ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+    <insert id="saveCustomerTestPaperIds" parameterType="java.util.Map">
+        insert into tb_customer_test(USER_ID,TEST_PAPER_IDS,CREATOR,TEST_ON_FLAG,CREAT_TIME,LAST_MODIFY_TIME)
+        values (#{userId},#{testPaperIds},#{creator},1,now(),now())
+    </insert>
+
+    <select id="selectCustomerTestPaperByUesrId" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+        select
+         <include refid="Base_Column_List" />
+        where
+          USER_ID = #{userId}
+          and TEST_ON_FLAG = 1
+    </select>
+
+</mapper>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.atguigu.survey.component.dao.i.TbCustomerRelationMapper">
-	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
+<mapper namespace="TbCustomerRelationMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbCustomerRelation">
 		<id column="ID" property="id" jdbcType="INTEGER" />
 		<result column="USER_ID" property="userId" jdbcType="INTEGER" />
 		<result column="DEPARTMENT_ID" property="departmentId" jdbcType="INTEGER" />
@@ -9,8 +9,6 @@
 		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
 		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
 		<result column="USER_NAME_CN" property="userNameCn" jdbcType="VARCHAR" />
-		<result column="TEST_PAPER_IDS" property="testPaperIds" jdbcType="VARCHAR" />
-		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 	<sql id="Base_Where">
 		<if test="id != null"> and ID= #{id}</if>	
@@ -20,8 +18,6 @@
 		<if test="phone != null and phone !=''"> and PHONE= #{phone}</if>
 		<if test="email != null and email !=''"> and EMAIL= #{email}</if>
 		<if test="userNameCn != null and userNameCn !=''"> and USER_NAME_CN= #{userNameCn}</if>
-		<if test="testPaperIds != null and testPaperIds !=''"> and TEST_PAPER_IDS= #{testPaperIds}</if>
-		<if test="createTime != null"> and CREATE_TIME= #{createTime}</if>	
 	</sql>
 	<sql id="Base_Column_List">
 		ID ,
@@ -30,9 +26,7 @@
 		POSITION_ID ,
 		PHONE ,
 		EMAIL ,
-		USER_NAME_CN ,
-		TEST_PAPER_IDS ,
-		CREATE_TIME 
+		USER_NAME_CN 
 	</sql>
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -49,7 +43,7 @@
 		ID = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustomerRelation">
 		insert into tb_customer_relation
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
@@ -59,8 +53,6 @@
 			<if test="phone != null and phone !=''">PHONE,</if>
 			<if test="email != null and email !=''">EMAIL,</if>
 			<if test="userNameCn != null and userNameCn !=''">USER_NAME_CN,</if>
-			<if test="testPaperIds != null and testPaperIds !=''">TEST_PAPER_IDS,</if>
-			<if test="createTime != null">CREATE_TIME,</if>	
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -84,17 +76,11 @@
 			<if test="userNameCn != null and userNameCn !=''">
 				#{userNameCn,jdbcType=VARCHAR},
 			</if>
-			<if test="testPaperIds != null and testPaperIds !=''">
-				#{testPaperIds,jdbcType=VARCHAR},
-			</if>
-			<if test="createTime != null">
-				#{createTime,jdbcType=TIMESTAMP},
-			</if>
 			
 		</trim>
 	</insert>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustomerRelation">
 		update tb_customer_relation
 		<set>
 			<if test="userId != null">
@@ -113,13 +99,7 @@
 				EMAIL= #{email,jdbcType=VARCHAR},
 			</if>
 			<if test="userNameCn != null and userNameCn !=''">
-				USER_NAME_CN= #{userNameCn,jdbcType=VARCHAR},
-			</if>
-			<if test="testPaperIds != null and testPaperIds !=''">
-				TEST_PAPER_IDS= #{testPaperIds,jdbcType=VARCHAR},
-			</if>
-			<if test="createTime != null">
-				CREATE_TIME= #{createTime,jdbcType=TIMESTAMP}
+				USER_NAME_CN= #{userNameCn,jdbcType=VARCHAR}
 			</if>
 		</set>
 		where
@@ -151,8 +131,7 @@
 			#{item}
 		</foreach>
 	</select>
-	
-	  <select id="getRelationInfoByUserId" parameterType="java.lang.Integer" resultType="com.atguigu.survey.vo.CustomerDetailVo">
+	 <select id="getRelationInfoByUserId" parameterType="java.lang.Integer" resultType="com.atguigu.survey.vo.CustomerDetailVo">
         select
            r.USER_NAME_CN as userName,
            c.COMPANY_NAME_EN as companyNameEN,
