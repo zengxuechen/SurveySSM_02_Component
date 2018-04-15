@@ -17,4 +17,6 @@ public interface CustTestPaperService {
     TbCustTestPaper getCustTestResultAndPaperInfoByTestResultId(int i);
 
     List<TbCustTestPaper> getCustTestPaperList(List<Integer> ids);
+
+	List<TbCustTestPaper> queryAll();
 }

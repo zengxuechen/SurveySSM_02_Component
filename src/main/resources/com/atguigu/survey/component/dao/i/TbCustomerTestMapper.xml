@@ -134,12 +134,13 @@
 
     <insert id="saveCustomerTestPaperIds" parameterType="java.util.Map">
         insert into tb_customer_test(USER_ID,TEST_PAPER_IDS,CREATOR,TEST_ON_FLAG,CREAT_TIME,LAST_MODIFY_TIME)
-        values (#{userId},#{testPaperIds},#{creator},1,now(),now())
+        values (#{userId},#{testPaperIds},1,1,now(),now())
     </insert>
 
     <select id="selectCustomerTestPaperByUesrId" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
         select
          <include refid="Base_Column_List" />
+        from tb_customer_test
         where
           USER_ID = #{userId}
           and TEST_ON_FLAG = 1

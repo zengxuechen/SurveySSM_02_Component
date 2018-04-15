@@ -41,7 +41,7 @@ public class SurveyHandler {
 		
 		surveyService.complete(surveyId);
 		
-		return "redirect:/index.jsp";
+		return "redirect:/guest/user/toLoginUI";
 	}
 	
 	
@@ -238,7 +238,7 @@ public class SurveyHandler {
 		//9保存survey对象
 		surveyService.saveEntity(survey);
 		
-		//return "redirect:/index.jsp";
+		//return "redirect:/guest/user/toLoginUI";
 		return "redirect:/guest/survey/showMyUnCompletedSurvey";
 	}
 	
@@ -270,7 +270,7 @@ public class SurveyHandler {
 			
 		}
 		
-		return "redirect:/index.jsp";
+		return "redirect:/guest/user/toLoginUI";
 	}
 	
 	
@@ -290,7 +290,7 @@ public class SurveyHandler {
 		//realPath=F:\SurveyNew\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Survey_01_UI\surveyLogos
 		System.out.println("realPath="+realPath);
 		
-		return "redirect:/index.jsp";
+		return "redirect:/guest/user/toLoginUI";
 	}
 	
 	//测试1-获取文件上传文件的信息（普通表单项和文件上传表单项）
@@ -320,7 +320,7 @@ public class SurveyHandler {
 		long size = logoFile.getSize();
 		System.out.println("size="+size);
 		
-		return "redirect:/index.jsp";
+		return "redirect:/guest/user/toLoginUI";
 	}
 	
 	/*	<mvc:view-controller path="/guest/survey/toAddUI" view-name="guest/survey_addUI"/>

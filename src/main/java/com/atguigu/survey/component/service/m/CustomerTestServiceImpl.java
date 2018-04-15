@@ -1,15 +1,14 @@
 package com.atguigu.survey.component.service.m;
 
-import com.atguigu.survey.component.dao.i.TbCustomerTestMapper;
-import com.atguigu.survey.component.service.i.CustomerTestService;
-import com.atguigu.survey.entities.guest.User;
-import com.atguigu.survey.entities.zhyq.TbCustomerTest;
-import com.atguigu.survey.utils.GlobalNames;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.atguigu.survey.component.dao.i.TbCustomerTestMapper;
+import com.atguigu.survey.component.service.i.CustomerTestService;
+import com.atguigu.survey.entities.zhyq.TbCustomerTest;
 
 /**
  * Using IntelliJ IDEA.
@@ -22,11 +21,10 @@ public class CustomerTestServiceImpl implements CustomerTestService {
     @Autowired
     TbCustomerTestMapper customerTestMapper;
 
-    public Integer saveCustomerTestPaperIds(Integer userId, String testPaperIds,User user) {
+    public Integer saveCustomerTestPaperIds(Integer userId, String testPaperIds) {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("userId",userId);
         map.put("testPaperIds",testPaperIds);
-        map.put("user",user.getUserId().toString());
         Integer count = customerTestMapper.saveCustomerTestPaperIds(map);
         return count;
     }

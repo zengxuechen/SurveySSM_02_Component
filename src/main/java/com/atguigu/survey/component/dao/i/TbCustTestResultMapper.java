@@ -14,4 +14,6 @@ public interface TbCustTestResultMapper {
 
     List<Map<String, Object>> queryResultByTypeCode(Map<String, Object> map);
     TbCustTestResult getTbCustTestResultByTestPaperId(Integer id);
+
+	Integer queryResultByUserIdAndPaperId(Map<String, Object> map1);
 }

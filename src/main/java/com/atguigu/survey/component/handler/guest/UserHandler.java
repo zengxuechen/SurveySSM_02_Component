@@ -26,7 +26,7 @@ public class UserHandler {
 	public String logout(HttpSession session){		
 		session.invalidate();		
 		//session.removeAttribute(GlobalNames.LOGIN_USER);		
-		return "redirect:/index.jsp";
+		return "redirect:/guest/user/toLoginUI";
 	}
 	
 	/**
@@ -52,7 +52,7 @@ public class UserHandler {
 		}else {
 			User user = userService.login(userName,userPwd);		
 			session.setAttribute(GlobalNames.LOGIN_USER, user);
-			return "index";
+			return "redirect:/guest/customerTestHandler/selectCustomerTestPaperByUesrId/"+user.getUserId();
 		}
 		
 	}

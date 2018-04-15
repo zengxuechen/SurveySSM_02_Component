@@ -40,4 +40,8 @@ public class CustTestResultServiceImpl implements CustTestResultService {
     public List<TbCustTestResult> getTbCustTestResultListByUserId(String userId) {
         return null;
     }
+    
+    public Integer queryResultByUserIdAndPaperId(Map<String, Object> map1) {
+    	return custTestResultMapper.queryResultByUserIdAndPaperId(map1);
+    }
 }

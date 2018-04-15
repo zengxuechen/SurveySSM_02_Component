@@ -96,7 +96,7 @@ public class EngageHandler { //参与调查
 		session.removeAttribute(GlobalNames.ALL_BAG_MAP);
 		session.removeAttribute(GlobalNames.LAST_INDEX);
 		
-		return "redirect:/index.jsp";
+		return "redirect:/guest/user/toLoginUI";
 	}
 	
 	
@@ -192,7 +192,7 @@ public class EngageHandler { //参与调查
 			
 			engageService.parseAndSave(allBagMap,surveyId);
 			
-			return "redirect:/index.jsp";
+			return "redirect:/guest/user/toLoginUI";
 		}
 		
 		return "guest/engage_engage";

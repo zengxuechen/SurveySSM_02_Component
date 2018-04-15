@@ -53,5 +53,8 @@ public class CustTestPaperServiceImpl implements CustTestPaperService {
         return custTestPaperMapper.getCustTestPaperList(ids);
     }
 
+    public List<TbCustTestPaper> queryAll(){
+    	return custTestPaperMapper.getAll();
+    }
 
 }

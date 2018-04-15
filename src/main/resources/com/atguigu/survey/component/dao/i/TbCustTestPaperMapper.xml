@@ -170,8 +170,8 @@
          <include refid="Base_Column_List" />
         from tb_cust_test_paper
         where ID in
-        <foreach collection="ids" item="id" open="(" close=")" separator=",">
-            id
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
         </foreach>
     </select>
 

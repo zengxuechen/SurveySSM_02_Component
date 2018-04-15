@@ -41,6 +41,20 @@ public class CustTestPaperHandler {
 
          return "zhyq/paper_type";
     }
+    
+    /**
+     * 查询出所有试卷集合
+     * @param typeCode
+     */
+    @RequestMapping("manager/custTestPaper/queryAll/{userId}")
+    public String queryAll(Map<String,Object> map, @PathVariable("userId") Integer userId){
+         List<TbCustTestPaper> list =
+                custTestPaperService.queryAll();
+         map.put("paperList",list);
+         map.put("userId",userId);
+
+         return "zhyq/paper_toDispatcherUI";
+    }
 
 
 }

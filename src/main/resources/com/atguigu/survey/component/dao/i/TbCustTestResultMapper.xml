@@ -129,5 +129,15 @@
         where
         ID = #{id,jdbcType=INTEGER}
     </select>
+    
+    <select id="queryResultByUserIdAndPaperId" resultType="Integer" parameterType="map">
+        select
+        	count(1)
+        from tb_cust_test_result
+        where
+        TEST_USER_ID = #{userId,jdbcType=INTEGER}
+        and TEST_PAPER_ID = #{paperId,jdbcType=INTEGER}
+    </select>
+    
 
 </mapper>
