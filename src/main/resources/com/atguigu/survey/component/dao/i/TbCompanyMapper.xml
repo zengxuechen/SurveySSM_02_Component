@@ -102,7 +102,7 @@
 		</foreach>
 	</select>
 
-    <select id="resultList" resultMap="BaseResultMap">
+    <select id="getAllCompany" resultMap="BaseResultMap">
         select
           <include refid="Base_Column_List" />
         from tb_company

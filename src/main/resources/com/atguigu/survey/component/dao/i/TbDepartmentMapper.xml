@@ -97,7 +97,7 @@
         <include refid="Base_Column_List" />
         from tb_department
         where
-        COMPANY_ID_ID = #{companyId,jdbcType=INTEGER}
+        COMPANY_ID = #{companyId,jdbcType=INTEGER}
     </select>
 
     <insert id="saveDepartmentByCompanyId">

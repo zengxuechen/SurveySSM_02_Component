@@ -1,19 +1,25 @@
 package com.atguigu.survey.component.handler.zhyq;
 
-import com.atguigu.survey.component.service.i.CompanyService;
-import com.atguigu.survey.entities.zhyq.TbCompany;
-import lombok.extern.slf4j.Slf4j;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.ws.Action;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import com.atguigu.survey.component.service.i.CompanyService;
+import com.atguigu.survey.entities.zhyq.TbCompany;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Using IntelliJ IDEA.
@@ -45,11 +51,11 @@ public class CompanyHandler {
         try {
             logoFile.transferTo(new File(uploadPath+"/"+fileName));
         } catch (IOException e) {
-            log.info("图片上传出现异常！");
+            log.info("图片上传出现异常！", e);
             return "zhyq/uploadLogo_failure";
         }
         //封装公司Logo参数
-        company.setCompanyLogo(fileName);
+        company.setCompanyLogo("/upload/image/"+fileName);
         Integer integer = companyService.saveCompanyInfo(company);
         if(integer == 1 ){
             return "zhyq/saveCompany_success";
@@ -63,9 +69,23 @@ public class CompanyHandler {
      * @return
      */
     @RequestMapping("manager/companyHandler/getAllCompany")
-    public List<TbCompany> getAllCompany(){
+    public String getAllCompany(Map<String,Object> map){
         List<TbCompany> resultList =  companyService.getAllCompany();
-        return resultList;
+        map.put("companyList", resultList);
+        return "zhyq/company_list";
     }
+    
+    /**
+     * 跳转添加部门页面
+     * @return
+     */
+    @RequestMapping("manager/admin/toDepartmentUI/{companyId}")
+    public String toDepartmentUI(Map<String,Object> map, @PathVariable("companyId") Integer companyId){
+        map.put("companyId", companyId);
+        return "zhyq/admin_departmentUI";
+    }
+    
+    
+    
 
 }

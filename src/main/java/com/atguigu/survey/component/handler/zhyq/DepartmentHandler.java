@@ -1,16 +1,16 @@
 package com.atguigu.survey.component.handler.zhyq;
 
-import com.atguigu.survey.component.service.i.DepartmentService;
-import com.atguigu.survey.entities.zhyq.TbDepartment;
-import org.apache.ibatis.annotations.Param;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.atguigu.survey.component.service.i.DepartmentService;
+import com.atguigu.survey.entities.zhyq.TbDepartment;
 
 /**
  * Using IntelliJ IDEA.
@@ -29,13 +29,11 @@ public class DepartmentHandler {
      * @return
      */
     @RequestMapping("/manager/departmentHandler/showDepartmentListByCompanyId/{companyId}")
-    public List<TbDepartment> showDepartmentListByCompanyId(@PathVariable("companyId") Integer companyId ){
-        List<TbDepartment> list = new ArrayList<TbDepartment>();
+    public String showDepartmentListByCompanyId(Map<String, Object> map, @PathVariable("companyId") Integer companyId ){
         List<TbDepartment> selectList = departmentService.getDepartmentListByCompanyId(companyId);
-        if( selectList != null && selectList.size() > 0){
-            list = selectList;
-        }
-        return list;
+        
+        map.put("departmentList", selectList);
+        return "zhyq/department_list";
     }
 
     /**
@@ -44,13 +42,13 @@ public class DepartmentHandler {
      * @param departmentName
      * @return
      */
-    @RequestMapping("/manager/departmentHandler/saveDepartmentByCid/{companyId}/{departmentName}")
-    public String addDepartment(@PathVariable("companyId") Integer companyId ,@PathVariable("departmentName") String departmentName) {
+    @RequestMapping("/manager/departmentHandler/saveDepartmentByCid")
+    public String addDepartment(Integer companyId , String departmentName) {
         Integer integer = departmentService.saveDepartmentBuCompanyId(companyId, departmentName);
         if(integer == 1){
-            return "addDepartment_success";
+            return "zhyq/addDepartment_success";
         }else{
-            return "addDepartment_error";
+            return "zhyq/addDepartment_error";
         }
     }
 
