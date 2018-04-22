@@ -112,6 +112,8 @@ public class AdminHandler {
 	
 	@Autowired
 	PaCaReportService paCaReportService;
+	
+	static final String[] CHAPTER = {"一", "二", "三", "四", "五"};
 
 	@RequestMapping("/manager/admin/doDispatcherRole")
 	public String doDispatcherRole(
@@ -249,7 +251,9 @@ public class AdminHandler {
         // 2.考试结果报告信息
  		// 是否含有PDP标志
  		boolean pdpFlg = true;
-        for(TbCustTestResult custTestResult : resultLists){// 获取各个测评显示的对象
+ 		int i;
+        for(i=0; i< resultLists.size(); i++) {
+        	TbCustTestResult custTestResult = resultLists.get(i);// 获取各个测评显示的对象
             TbCustTestPaper custTestPaper = custTestPaperService.getCustTestResultAndPaperInfoByTestResultId(custTestResult.getId());
             String questionIds = custTestPaper.getQuestionIds();//获取试题集
             String testResult = custTestResult.getTestResult(); //获取测试结果集（以"@"区分开）
@@ -257,15 +261,15 @@ public class AdminHandler {
             // PA_PC("PA_PC", "人才测评_职业性格")
             if(PA_PC.getCode().equals(custTestPaper.getTestTypeCode())){
             	// 2-1.替换职业性格信息
-         		/*String contentPA_PC = makeContentPA_PC(questionIds, testResult);
+         		String contentPA_PC = makeContentPA_PC(questionIds, testResult);
          		personInfoContent = personInfoContent + contentPA_PC;
-         		pdpFlg = false;*/
+         		pdpFlg = false;
             }
             // PA_PH("PA_PH", "人才测评_心理健康"),
             if(PA_PH.getCode().equals(custTestPaper.getTestTypeCode())){
             	// 2-2.替换心理健康信息
-            	/*String contentPA_PH = makeContentPA_PH(questionIds, testResult);
-         		personInfoContent = personInfoContent + contentPA_PH;*/
+            	String contentPA_PH = makeContentPA_PH(questionIds, testResult);
+         		personInfoContent = personInfoContent + contentPA_PH;
             }
             // PA_EC("PA_EC", "人才测评_情绪能力"),
             if(PA_EC.getCode().equals(custTestPaper.getTestTypeCode())){
@@ -279,20 +283,24 @@ public class AdminHandler {
          		String contentPA_CA = makeContentPA_CA(questionIds, testResult);
          		personInfoContent = personInfoContent + contentPA_CA;
             }
+            personInfoContent = personInfoContent.replace("${chapter}", CHAPTER[i]);
         }
         
 		if(pdpFlg) {
 			// 2-5.pdp信息
 			String contentPA_PDP = makeContentPA_PDP();
      		personInfoContent = personInfoContent + contentPA_PDP;
+     		personInfoContent = personInfoContent.replace("${chapter}", CHAPTER[i]);
+     		i++;
 		}
 		
 		String contentPA_ADVISE = makeContentPA_ADVISE();
  		personInfoContent = personInfoContent + contentPA_ADVISE;
-		
+ 		personInfoContent = personInfoContent.replace("${chapter}", CHAPTER[i]);
+ 		
  		String tempFilePath = request.getSession().getServletContext().getRealPath("/tempFile/");
  		String fileName = "测评报告_"+user.getUserName()+"_"+now.getYear()+"-"+now.getMonthValue()+"-"+now.getDayOfMonth()+"_"+now.getHour()+"_"+now.getMinute()+"_"+now.getSecond()+".pdf";
-		PdfUtil.createTempPdf(personInfoContent, tempFilePath+fileName);
+		boolean isover = PdfUtil.createTempPdf(personInfoContent, tempFilePath+fileName);
 		
 		// 设置文件ContentType类型，这样设置，会自动判断下载文件类型
         response.setContentType("multipart/form-data");
@@ -324,19 +332,20 @@ public class AdminHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        
 	}
 
 	private String makePersonInfoContent(CustomerDetailVo user, LocalDateTime now){
 		String personInfoTemplate = this.getClass().getClassLoader().getResource("/template/REPORT_PA_PERSONINFO.html").getPath();
 		String personInfoContent = PdfUtil.readToString(personInfoTemplate);
-		personInfoContent.replace("${companyName}", user.getCompanyNameCN());
-		personInfoContent.replace("${companyLogo}", user.getCompanyLogo());
-		personInfoContent.replace("${userName}", user.getUserName());
-		personInfoContent.replace("${departmentName}", user.getDepartmentName());
-		personInfoContent.replace("${positionName}", user.getPositionName());
-		personInfoContent.replace("${year}", now.getYear()+"");
-		personInfoContent.replace("${month}", now.getMonth()+"");
-		personInfoContent.replace("${date}", now.getDayOfMonth()+"");
+		personInfoContent = personInfoContent.replace("${companyName}", user.getCompanyNameCN());
+		personInfoContent = personInfoContent.replace("${companyLogo}", user.getCompanyLogo());
+		personInfoContent = personInfoContent.replace("${userName}", user.getUserName());
+		personInfoContent = personInfoContent.replace("${departmentName}", user.getDepartmentName());
+		personInfoContent = personInfoContent.replace("${positionName}", user.getPositionName());
+		personInfoContent = personInfoContent.replace("${year}", now.getYear()+"");
+		personInfoContent = personInfoContent.replace("${month}", now.getMonthValue()+"");
+		personInfoContent = personInfoContent.replace("${date}", now.getDayOfMonth()+"");
 		return personInfoContent;
 	}
 	
@@ -418,11 +427,12 @@ public class AdminHandler {
         TbPaPcReport paPcReportResult = paPcReportService.getPaPcDetailByStyleTypeCode(styleTypeCode);
         String personInfoTemplate = this.getClass().getClassLoader().getResource("/template/REPORT_PA_PC.html").getPath();
 		String contentPA_PC = PdfUtil.readToString(personInfoTemplate);
-        contentPA_PC.replace("${styleTypeTendency}", paPcReportResult.getStyleTypeTendency());
-        contentPA_PC.replace("${styleTypeName}", paPcReportResult.getStyleTypeName());
-        contentPA_PC.replace("${styleTypeDesc}", paPcReportResult.getStyleTypeDesc());
-        contentPA_PC.replace("${blindSpotTips}", paPcReportResult.getBlindSpotTips());
-        contentPA_PC.replace("${suitedCareer}", paPcReportResult.getSuitedCareer());
+		contentPA_PC = contentPA_PC.replace("${styleTypeCode}", paPcReportResult.getStyleTypeCode());
+		contentPA_PC = contentPA_PC.replace("${styleTypeTendency}", paPcReportResult.getStyleTypeTendency());
+		contentPA_PC = contentPA_PC.replace("${styleTypeName}", paPcReportResult.getStyleTypeName());
+		contentPA_PC = contentPA_PC.replace("${styleTypeDesc}", paPcReportResult.getStyleTypeDesc());
+		contentPA_PC = contentPA_PC.replace("${blindSpotTips}", paPcReportResult.getBlindSpotTips());
+		contentPA_PC = contentPA_PC.replace("${suitedCareer}", paPcReportResult.getSuitedCareer());
 		return contentPA_PC;
 	}
 	
@@ -610,30 +620,30 @@ public class AdminHandler {
         String personInfoTemplate = this.getClass().getClassLoader().getResource("/template/REPORT_PA_PH.html").getPath();
 		String contentPA_PH = PdfUtil.readToString(personInfoTemplate);
 		
-		contentPA_PH.replace("${score_ALL_AVERAGE}",allAverageScore+"");
-        contentPA_PH.replace("${desc_ALL_AVERAGE}",desc_ALL_AVERAGE);
-        contentPA_PH.replace("${count_ALL_POSITIVENUM}",positiveCount+"");
-        contentPA_PH.replace("${score_ALL_POSITIVEAVERAGE}",positiveAverage+"");
-        contentPA_PH.replace("${score_PART_SOMATIZATION}",somatizationAverage+"");
-        contentPA_PH.replace("${symptomDesc_PART_SOMATIZATION}",symptomDesc_PART_SOMATIZATION);
-        contentPA_PH.replace("${score_PART_OBSESSION}",obsessionAverage+"");
-        contentPA_PH.replace("${symptomDesc_PART_OBSESSION}",symptomDesc_PART_OBSESSION);
-        contentPA_PH.replace("${score_PART_INTERPERSONAL}",interpersonalAverage+"");
-        contentPA_PH.replace("${symptomDesc_PART_INTERPERSONAL}",symptomDesc_PART_INTERPERSONAL);
-        contentPA_PH.replace("${score_PART_DEPRESSED}",depressedAverage+"");
-        contentPA_PH.replace("${symptomDesc_PART_DEPRESSED}",symptomDesc_PART_DEPRESSED);
-        contentPA_PH.replace("${score_PART_ANXIOUS}",anxiousAverage+"");
-        contentPA_PH.replace("${symptomDesc_PART_ANXIOUS}",symptomDesc_PART_ANXIOUS);
-        contentPA_PH.replace("${score_PART_HOSTILE}",hostileAverage+"");
-        contentPA_PH.replace("${symptomDesc_PART_HOSTILE}",symptomDesc_PART_HOSTILE);
-        contentPA_PH.replace("${score_PART_TERROR}",terrorAverage+"");
-        contentPA_PH.replace("${symptomDesc_PART_TERROR}",symptomDesc_PART_TERROR);
-        contentPA_PH.replace("${score_PART_PARANOID}",paranoidAverage+"");
-        contentPA_PH.replace("${symptomDesc_PART_PARANOID}",symptomDesc_PART_PARANOID);
-        contentPA_PH.replace("${score_PART_PSYCHOSIS}",psychosisAverage+"");
-        contentPA_PH.replace("${symptomDesc_PART_PSYCHOSIS}",symptomDesc_PART_PSYCHOSIS);
-        contentPA_PH.replace("${score_PART_OTHER}",otherAverage+"");
-        contentPA_PH.replace("${symptomDesc_PART_OTHER}",symptomDesc_PART_OTHER);
+		contentPA_PH = contentPA_PH.replace("${score_ALL_AVERAGE}",allAverageScore+"");
+		contentPA_PH = contentPA_PH.replace("${desc_ALL_AVERAGE}",desc_ALL_AVERAGE);
+		contentPA_PH = contentPA_PH.replace("${count_ALL_POSITIVENUM}",positiveCount+"");
+		contentPA_PH = contentPA_PH.replace("${score_ALL_POSITIVEAVERAGE}",positiveAverage+"");
+		contentPA_PH = contentPA_PH.replace("${score_PART_SOMATIZATION}",somatizationAverage+"");
+		contentPA_PH = contentPA_PH.replace("${symptomDesc_PART_SOMATIZATION}",symptomDesc_PART_SOMATIZATION);
+		contentPA_PH = contentPA_PH.replace("${score_PART_OBSESSION}",obsessionAverage+"");
+		contentPA_PH = contentPA_PH.replace("${symptomDesc_PART_OBSESSION}",symptomDesc_PART_OBSESSION);
+		contentPA_PH = contentPA_PH.replace("${score_PART_INTERPERSONAL}",interpersonalAverage+"");
+		contentPA_PH = contentPA_PH.replace("${symptomDesc_PART_INTERPERSONAL}",symptomDesc_PART_INTERPERSONAL);
+		contentPA_PH = contentPA_PH.replace("${score_PART_DEPRESSED}",depressedAverage+"");
+		contentPA_PH = contentPA_PH.replace("${symptomDesc_PART_DEPRESSED}",symptomDesc_PART_DEPRESSED);
+		contentPA_PH = contentPA_PH.replace("${score_PART_ANXIOUS}",anxiousAverage+"");
+		contentPA_PH = contentPA_PH.replace("${symptomDesc_PART_ANXIOUS}",symptomDesc_PART_ANXIOUS);
+		contentPA_PH = contentPA_PH.replace("${score_PART_HOSTILE}",hostileAverage+"");
+		contentPA_PH = contentPA_PH.replace("${symptomDesc_PART_HOSTILE}",symptomDesc_PART_HOSTILE);
+		contentPA_PH = contentPA_PH.replace("${score_PART_TERROR}",terrorAverage+"");
+		contentPA_PH = contentPA_PH.replace("${symptomDesc_PART_TERROR}",symptomDesc_PART_TERROR);
+		contentPA_PH = contentPA_PH.replace("${score_PART_PARANOID}",paranoidAverage+"");
+		contentPA_PH = contentPA_PH.replace("${symptomDesc_PART_PARANOID}",symptomDesc_PART_PARANOID);
+		contentPA_PH = contentPA_PH.replace("${score_PART_PSYCHOSIS}",psychosisAverage+"");
+		contentPA_PH = contentPA_PH.replace("${symptomDesc_PART_PSYCHOSIS}",symptomDesc_PART_PSYCHOSIS);
+		contentPA_PH = contentPA_PH.replace("${score_PART_OTHER}",otherAverage+"");
+		contentPA_PH = contentPA_PH.replace("${symptomDesc_PART_OTHER}",symptomDesc_PART_OTHER);
 		return contentPA_PH;
 	}
 	
@@ -671,8 +681,8 @@ public class AdminHandler {
         //根据所属类型替换相对应的信息
         String personInfoTemplate = this.getClass().getClassLoader().getResource("/template/REPORT_PA_EC.html").getPath();
 		String contentPA_EC = PdfUtil.readToString(personInfoTemplate);
-		contentPA_EC.replace("${pa_ec_score}", pa_ec_score+"");
-		contentPA_EC.replace("${sectionDesc}", sectionDesc);
+		contentPA_EC = contentPA_EC.replace("${pa_ec_score}", pa_ec_score+"");
+		contentPA_EC = contentPA_EC.replace("${sectionDesc}", sectionDesc);
 		return contentPA_EC;
 	}
 	
@@ -778,16 +788,16 @@ public class AdminHandler {
         //根据所属类型替换相对应的信息
         String personInfoTemplate = this.getClass().getClassLoader().getResource("/template/REPORT_PA_CA.html").getPath();
 		String contentPA_CA = PdfUtil.readToString(personInfoTemplate);
-		contentPA_CA.replace("${star1}",star1);
-		contentPA_CA.replace("${star2}",star2);
-		contentPA_CA.replace("${star3}",star3);
-		contentPA_CA.replace("${star4}",star4);
-		contentPA_CA.replace("${star5}",star5);
-		contentPA_CA.replace("${star6}",star6);
-		contentPA_CA.replace("${star7}",star7);
-		contentPA_CA.replace("${star8}",star8);
-		contentPA_CA.replace("${characterSummarize}",characterSummarize);
-		contentPA_CA.replace("${characterDesc}",characterDesc);
+		contentPA_CA = contentPA_CA.replace("${star1}",star1);
+		contentPA_CA = contentPA_CA.replace("${star2}",star2);
+		contentPA_CA = contentPA_CA.replace("${star3}",star3);
+		contentPA_CA = contentPA_CA.replace("${star4}",star4);
+		contentPA_CA = contentPA_CA.replace("${star5}",star5);
+		contentPA_CA = contentPA_CA.replace("${star6}",star6);
+		contentPA_CA = contentPA_CA.replace("${star7}",star7);
+		contentPA_CA = contentPA_CA.replace("${star8}",star8);
+		contentPA_CA = contentPA_CA.replace("${characterSummarize}",characterSummarize);
+		contentPA_CA = contentPA_CA.replace("${characterDesc}",characterDesc);
 		return contentPA_CA;
 	}
 	
