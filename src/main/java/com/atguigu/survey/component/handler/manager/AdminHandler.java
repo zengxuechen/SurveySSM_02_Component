@@ -1,5 +1,13 @@
 package com.atguigu.survey.component.handler.manager;
 
+import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_AU;
+import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_CH;
+import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_EC;
+import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_GM;
+import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_LS;
+import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_SE;
+import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_SV;
+import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_TF;
 import static com.atguigu.survey.constant.RuleTypeEnum.PA_PH_ALL_ALL_AVERAGE;
 import static com.atguigu.survey.constant.RuleTypeEnum.PA_PH_ANXIOUS;
 import static com.atguigu.survey.constant.RuleTypeEnum.PA_PH_DEPRESSED;
@@ -22,8 +30,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.BatchUpdateException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +52,7 @@ import com.atguigu.survey.component.service.i.CustTestPaperService;
 import com.atguigu.survey.component.service.i.CustTestResultService;
 import com.atguigu.survey.component.service.i.CustomerRelationService;
 import com.atguigu.survey.component.service.i.PaAnswerRuleService;
+import com.atguigu.survey.component.service.i.PaCaReportService;
 import com.atguigu.survey.component.service.i.PaEcReportService;
 import com.atguigu.survey.component.service.i.PaPcReportService;
 import com.atguigu.survey.component.service.i.PaPhReportService;
@@ -57,6 +66,7 @@ import com.atguigu.survey.entities.manager.Role;
 import com.atguigu.survey.entities.zhyq.TbCustTestPaper;
 import com.atguigu.survey.entities.zhyq.TbCustTestResult;
 import com.atguigu.survey.entities.zhyq.TbPaAnswerRule;
+import com.atguigu.survey.entities.zhyq.TbPaCaReport;
 import com.atguigu.survey.entities.zhyq.TbPaEcReport;
 import com.atguigu.survey.entities.zhyq.TbPaPcReport;
 import com.atguigu.survey.entities.zhyq.TbPaPhReport;
@@ -99,6 +109,9 @@ public class AdminHandler {
 	
 	@Autowired
 	PaEcReportService paEcReportService;
+	
+	@Autowired
+	PaCaReportService paCaReportService;
 
 	@RequestMapping("/manager/admin/doDispatcherRole")
 	public String doDispatcherRole(
@@ -673,33 +686,109 @@ public class AdminHandler {
 		String[] questionIdArr = questionIds.split("@");
 		String[] resultArr = testResult.split("@");
 		
-		int pa_ec_score = 0;
+		int tfScore = 0;//TF分数
+        int gmScore = 0;//GM分数
+        int auScore = 0;//AU分数
+        int seScore = 0;//SE分数
+        int ecScore = 0;//EC分数
+        int svScore = 0;//SV分数
+        int chScore = 0;//CH分数
+        int lsScore = 0;//LS分数
         for(int i = 0; i< questionIdArr.length ;i++) {
             //通过试题编号 从测评解读表（tb_pa_answer_rule）中取出相应的解析
-            List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(Integer.parseInt(questionIdArr[i]));
+            Integer questionId = Integer.parseInt(questionIdArr[i]);
+            List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(questionId);
             for (TbPaAnswerRule pa : answerList) {
                 String s = resultArr[i];//测试结果
                 String answerBitmap = pa.getAnswerBitmap(); //标准答案
                 if (answerBitmap.equals(s)) {
-                	pa_ec_score += Integer.parseInt(pa.getAnswerAnalysis());
+                    if(PA_CA_TF.getCode().equals(pa.getRuleTypeCode())){
+                        tfScore += Integer.parseInt(pa.getAnswerAnalysis());
+                    }
+                    if(PA_CA_GM.getCode().equals(pa.getRuleTypeCode())){
+                        gmScore += Integer.parseInt(pa.getAnswerAnalysis());
+                    }
+                    if(PA_CA_AU.getCode().equals(pa.getRuleTypeCode())){
+                        auScore += Integer.parseInt(pa.getAnswerAnalysis());
+                    }
+                    if(PA_CA_SE.getCode().equals(pa.getRuleTypeCode())){
+                        seScore += Integer.parseInt(pa.getAnswerAnalysis());
+                    }
+                    if(PA_CA_EC.getCode().equals(pa.getRuleTypeCode())){
+                        ecScore += Integer.parseInt(pa.getAnswerAnalysis());
+                    }
+                    if(PA_CA_SV.getCode().equals(pa.getRuleTypeCode())){
+                        svScore += Integer.parseInt(pa.getAnswerAnalysis());
+                    }
+                    if(PA_CA_CH.getCode().equals(pa.getRuleTypeCode())){
+                        chScore += Integer.parseInt(pa.getAnswerAnalysis());
+                    }
+                    if(PA_CA_LS.getCode().equals(pa.getRuleTypeCode())){
+                        lsScore += Integer.parseInt(pa.getAnswerAnalysis());
+                    }
                 }
             }
         }
-        String sectionDesc = "";//需要替换
-        Map<String,Object> map = new HashMap<String,Object>();
-        List<TbPaEcReport> paEcList =  paEcReportService.getAll(map);
-        for(TbPaEcReport pa : paEcList){
-            if(pa_ec_score > pa.getStandardValueBgn() &&  pa_ec_score < pa.getStandardValueEnd()){
-                sectionDesc = pa.getSectionDesc();
-            }
+        Map<String,Integer> map2 = new HashMap<String,Integer>();
+        map2.put("TF",tfScore);
+        map2.put("GM",gmScore);
+        map2.put("AU",auScore);
+        map2.put("SE",seScore);
+        map2.put("EC",ecScore);
+        map2.put("SV",svScore);
+        map2.put("CH",chScore);
+        map2.put("LS",lsScore);
+        String diskMax = getDiskMax(map2);
+        String star1 = "";
+        String star2 = "";
+        String star3 = "";
+        String star4 = "";
+        String star5 = "";
+        String star6 = "";
+        String star7 = "";
+        String star8 = "";
+        if("TF".equals(diskMax)){
+            star1 = "★";
         }
+        if("GM".equals(diskMax)){
+            star2 = "★";
+        }
+        if("AU".equals(diskMax)){
+            star3 = "★";
+        }
+        if("SE".equals(diskMax)){
+            star4 = "★";
+        }
+        if("EC".equals(diskMax)){
+            star5 = "★";
+        }
+        if("SV".equals(diskMax)){
+            star6 = "★";
+        }
+        if("CH".equals(diskMax)){
+            star7 = "★";
+        }
+        if("LS".equals(diskMax)){
+            star7 = "★";
+        }
+        TbPaCaReport tbPaCaReport =  paCaReportService.getPaCaReportByProfessionCode(diskMax);
+        String characterSummarize = tbPaCaReport.getCharacterSummarize();
+        String characterDesc = tbPaCaReport.getCharacterDesc();
         
         //根据所属类型替换相对应的信息
         String personInfoTemplate = this.getClass().getClassLoader().getResource("/template/REPORT_PA_CA.html").getPath();
-		String contentPA_EC = PdfUtil.readToString(personInfoTemplate);
-		contentPA_EC.replace("${pa_ec_score}", pa_ec_score+"");
-		contentPA_EC.replace("${sectionDesc}", sectionDesc);
-		return contentPA_EC;
+		String contentPA_CA = PdfUtil.readToString(personInfoTemplate);
+		contentPA_CA.replace("${star1}",star1);
+		contentPA_CA.replace("${star2}",star2);
+		contentPA_CA.replace("${star3}",star3);
+		contentPA_CA.replace("${star4}",star4);
+		contentPA_CA.replace("${star5}",star5);
+		contentPA_CA.replace("${star6}",star6);
+		contentPA_CA.replace("${star7}",star7);
+		contentPA_CA.replace("${star8}",star8);
+		contentPA_CA.replace("${characterSummarize}",characterSummarize);
+		contentPA_CA.replace("${characterDesc}",characterDesc);
+		return contentPA_CA;
 	}
 	
 	/**
@@ -728,5 +817,29 @@ public class AdminHandler {
 		String contentPA_ADVISE = PdfUtil.readToString(personInfoTemplate);
 		return contentPA_ADVISE;
 	}
+	
+	/**
+     * 求Map里的最大值并且返回key
+     * @param map
+     * @return
+     */
+    private String getDiskMax(Map<String, Integer> map) {
+        List<Integer> list = new ArrayList<Integer>();
+        for (String temp : map.keySet()) {
+            Integer value = map.get(temp);
+            list.add(value);
+        }
+        Integer max = 0;
+        for (int i = 0; i < list.size(); i++) {
+            Integer size = list.get(i);
+            max = (max>size)?max:size;
+        }
+        for (String key : map.keySet()) {
+            if (max == map.get(key)) {
+                return key;
+            }
+        }
+        return null;
+    }
 	
 }

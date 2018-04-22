@@ -1,10 +1,11 @@
 package com.atguigu.survey.component.service.m;
 
-import com.atguigu.survey.component.dao.i.TbPaCaReportMapper;
-import com.atguigu.survey.component.service.i.PaPcReportService;
-import com.atguigu.survey.entities.zhyq.TbPaPcReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.atguigu.survey.component.dao.i.TbPaPcReportMapper;
+import com.atguigu.survey.component.service.i.PaPcReportService;
+import com.atguigu.survey.entities.zhyq.TbPaPcReport;
 
 /**
  * Using IntelliJ IDEA.
@@ -15,10 +16,9 @@ import org.springframework.stereotype.Service;
 public class PaPcReportServiceImpl implements PaPcReportService {
 
     @Autowired
-    TbPaCaReportMapper paCaReportMapper;
+    TbPaPcReportMapper paPcReportMapper;
 
     public TbPaPcReport getPaPcDetailByStyleTypeCode(String styleTypeCode) {
-        TbPaPcReport result =  paCaReportMapper.getPaPcDetailByStyleTypeCode(styleTypeCode);
-        return null;
+    	return paPcReportMapper.getPaPcDetailByStyleTypeCode(styleTypeCode);
     }
 }

@@ -43,8 +43,12 @@ public class CustomerTestHandler {
 
     @RequestMapping("guest/customerTestHandler/selectCustomerTestPaperByUesrId/{userId}")
     public String selectCustomerTestPaperByUesrId(Map<String, Object> map, @PathVariable("userId") Integer userId){
-        TbCustomerTest customerTest =  customerTestService.selectCustomerTestPaperByUesrId(userId);
-        String testPaperIds = customerTest.getTestPaperIds();
+        
+    	TbCustomerTest customerTest =  customerTestService.selectCustomerTestPaperByUesrId(userId);
+    	if(customerTest==null) {
+            return "zhyq/paper_list";
+        }
+    	String testPaperIds = customerTest.getTestPaperIds();
         String[] split = testPaperIds.split("@");
         List<String> strings = Arrays.asList(split);
         List<Integer> ids = new ArrayList<Integer>();

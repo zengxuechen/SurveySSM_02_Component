@@ -10,7 +10,5 @@ import com.atguigu.survey.entities.zhyq.TbPaPcReport;
  */
 public interface TbPaCaReportMapper {
 
-    TbPaPcReport getPaPcDetailByStyleTypeCode(String styleTypeCode);
-
     TbPaCaReport getPaCaReportByProfessionCode(String diskMax);
 }
