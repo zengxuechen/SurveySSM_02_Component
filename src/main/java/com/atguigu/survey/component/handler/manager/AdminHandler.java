@@ -257,15 +257,15 @@ public class AdminHandler {
             // PA_PC("PA_PC", "人才测评_职业性格")
             if(PA_PC.getCode().equals(custTestPaper.getTestTypeCode())){
             	// 2-1.替换职业性格信息
-         		String contentPA_PC = makeContentPA_PC(questionIds, testResult);
+         		/*String contentPA_PC = makeContentPA_PC(questionIds, testResult);
          		personInfoContent = personInfoContent + contentPA_PC;
-         		pdpFlg = false;
+         		pdpFlg = false;*/
             }
             // PA_PH("PA_PH", "人才测评_心理健康"),
             if(PA_PH.getCode().equals(custTestPaper.getTestTypeCode())){
             	// 2-2.替换心理健康信息
-         		String contentPA_PH = makeContentPA_PH(questionIds, testResult);
-         		personInfoContent = personInfoContent + contentPA_PH;
+            	/*String contentPA_PH = makeContentPA_PH(questionIds, testResult);
+         		personInfoContent = personInfoContent + contentPA_PH;*/
             }
             // PA_EC("PA_EC", "人才测评_情绪能力"),
             if(PA_EC.getCode().equals(custTestPaper.getTestTypeCode())){
