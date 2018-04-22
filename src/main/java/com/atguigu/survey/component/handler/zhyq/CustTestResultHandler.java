@@ -635,7 +635,7 @@ public class CustTestResultHandler {
     @RequestMapping("manager/custTestResultHandler/exportPDF/{userId}")
     public void exportPDFFromManagerByUserId(@PathVariable("userId") String userId){
         //1。通过userId查询结果表（tb_cust_test_result）
-        List<TbCustTestResult> resultLists = custTestResultService.getTbCustTestResultListByUserId(userId);
+        List<TbCustTestResult> resultLists = custTestResultService.getTbCustTestResultListByUserId(Integer.parseInt(userId));
 
         //2。获取resultList的第一个值来获取 客户id字段 通过多表关联 查出 公司 部门 个人信息
         TbCustTestResult tbCustTestResultByTestPaperId = resultLists.get(0);

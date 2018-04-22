@@ -136,6 +136,7 @@
            r.USER_NAME_CN as userName,
            c.COMPANY_NAME_EN as companyNameEN,
            c.COMPANY_NAME_CN as companyNameCN,
+           c.COMPANY_LOGO as companyLogo,
            d.DEPARTMENT_NAME as departmentName,
            p.POSITION_NAME as positionName
         from

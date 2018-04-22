@@ -6,7 +6,7 @@
 		<result column="RULE_TYPE_CODE" property="ruleTypeCode" jdbcType="VARCHAR" />
 		<result column="RULE_TYPE_NAME" property="ruleTypeName" jdbcType="VARCHAR" />
 		<result column="QUESTION_ID" property="questionId" jdbcType="INTEGER" />
-		<result column="OPTION" property="option" jdbcType="VARCHAR" />
+		<result column="'OPTION'" property="option" jdbcType="VARCHAR" />
 		<result column="ANSWER_BITMAP" property="answerBitmap" jdbcType="VARCHAR" />
 		<result column="ANSWER_ANALYSIS" property="answerAnalysis" jdbcType="VARCHAR" />
 	</resultMap>
@@ -15,7 +15,7 @@
 		<if test="ruleTypeCode != null and ruleTypeCode !=''"> and RULE_TYPE_CODE= #{ruleTypeCode}</if>
 		<if test="ruleTypeName != null and ruleTypeName !=''"> and RULE_TYPE_NAME= #{ruleTypeName}</if>
 		<if test="questionId != null"> and QUESTION_ID= #{questionId}</if>	
-		<if test="option != null and option !=''"> and OPTION= #{option}</if>
+		<if test="option != null and option !=''"> and 'OPTION'= #{option}</if>
 		<if test="answerBitmap != null and answerBitmap !=''"> and ANSWER_BITMAP= #{answerBitmap}</if>
 		<if test="answerAnalysis != null and answerAnalysis !=''"> and ANSWER_ANALYSIS= #{answerAnalysis}</if>
 	</sql>
@@ -24,7 +24,7 @@
 		RULE_TYPE_CODE ,
 		RULE_TYPE_NAME ,
 		QUESTION_ID ,
-		OPTION ,
+		'OPTION' ,
 		ANSWER_BITMAP ,
 		ANSWER_ANALYSIS 
 	</sql>
@@ -50,7 +50,7 @@
 			<if test="ruleTypeCode != null and ruleTypeCode !=''">RULE_TYPE_CODE,</if>
 			<if test="ruleTypeName != null and ruleTypeName !=''">RULE_TYPE_NAME,</if>
 			<if test="questionId != null">QUESTION_ID,</if>	
-			<if test="option != null and option !=''">OPTION,</if>
+			<if test="option != null and option !=''">'OPTION',</if>
 			<if test="answerBitmap != null and answerBitmap !=''">ANSWER_BITMAP,</if>
 			<if test="answerAnalysis != null and answerAnalysis !=''">ANSWER_ANALYSIS,</if>
 		</trim>
@@ -93,7 +93,7 @@
 				QUESTION_ID= #{questionId,jdbcType=INTEGER},
 			</if>
 			<if test="option != null and option !=''">
-				OPTION= #{option,jdbcType=VARCHAR},
+				'OPTION'= #{option,jdbcType=VARCHAR},
 			</if>
 			<if test="answerBitmap != null and answerBitmap !=''">
 				ANSWER_BITMAP= #{answerBitmap,jdbcType=VARCHAR},
