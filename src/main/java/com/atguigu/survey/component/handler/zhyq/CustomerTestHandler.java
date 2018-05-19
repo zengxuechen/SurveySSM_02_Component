@@ -61,7 +61,10 @@ public class CustomerTestHandler {
         		ids.add(Integer.parseInt(id));
         	}
         }
-        List<TbCustTestPaper> resultList =  custTestPaperService.getCustTestPaperList(ids);
+        List<TbCustTestPaper> resultList = new ArrayList<TbCustTestPaper>();
+        if(ids.size()> 0) {
+        	resultList = custTestPaperService.getCustTestPaperList(ids);
+        }
         map.put("paperList", resultList);
         return "zhyq/paper_list";
     }
