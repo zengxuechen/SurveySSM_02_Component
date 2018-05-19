@@ -242,6 +242,8 @@ public class AdminHandler {
 		CustomerDetailVo user = customerRelationService.getRelationInfoByUserId(userId);
 		// userId查询结果表（tb_cust_test_result）
         List<TbCustTestResult> resultLists = custTestResultService.getTbCustTestResultListByUserId(userId);
+        // 获取所有结果集
+        List<TbPaAnswerRule> paAnswerRuleList = paAnswerRuleService.getAllPaAnswerRule();
 		// 当前时间
         LocalDateTime now = LocalDateTime.now();
         
@@ -260,27 +262,51 @@ public class AdminHandler {
             
             // PA_PC("PA_PC", "人才测评_职业性格")
             if(PA_PC.getCode().equals(custTestPaper.getTestTypeCode())){
+            	List<TbPaAnswerRule> paAnswer= new ArrayList<TbPaAnswerRule>();
+            	for(TbPaAnswerRule p : paAnswerRuleList) {
+            		if("PA_PC".equals(p.getRuleTypeCode().substring(0, 5))) {
+            			paAnswer.add( p);
+            		}
+            	}
             	// 2-1.替换职业性格信息
-         		String contentPA_PC = makeContentPA_PC(questionIds, testResult);
+         		String contentPA_PC = makeContentPA_PC(paAnswer,questionIds, testResult);
          		personInfoContent = personInfoContent + contentPA_PC;
          		pdpFlg = false;
             }
             // PA_PH("PA_PH", "人才测评_心理健康"),
             if(PA_PH.getCode().equals(custTestPaper.getTestTypeCode())){
+            	List<TbPaAnswerRule> paAnswer= new ArrayList<TbPaAnswerRule>();
+            	for(TbPaAnswerRule p : paAnswerRuleList) {
+            		if("PA_PH".equals(p.getRuleTypeCode().substring(0, 5))) {
+            			paAnswer.add( p);
+            		}
+            	}
             	// 2-2.替换心理健康信息
-            	String contentPA_PH = makeContentPA_PH(questionIds, testResult);
+            	String contentPA_PH = makeContentPA_PH(paAnswer,questionIds, testResult);
          		personInfoContent = personInfoContent + contentPA_PH;
             }
             // PA_EC("PA_EC", "人才测评_情绪能力"),
             if(PA_EC.getCode().equals(custTestPaper.getTestTypeCode())){
+            	List<TbPaAnswerRule> paAnswer= new ArrayList<TbPaAnswerRule>();
+            	for(TbPaAnswerRule p : paAnswerRuleList) {
+            		if("PA_EC".equals(p.getRuleTypeCode().substring(0, 5))) {
+            			paAnswer.add(p);
+            		}
+            	}
             	// 2-3.替换情绪能力信息
-         		String contentPA_EC = makeContentPA_EC(questionIds, testResult);
+         		String contentPA_EC = makeContentPA_EC(paAnswer,questionIds, testResult);
          		personInfoContent = personInfoContent + contentPA_EC;
             }
             // PA_CA("PA_CA", "人才测评_职业锚");*/
             if(PA_CA.getCode().equals(custTestPaper.getTestTypeCode())){
+            	List<TbPaAnswerRule> paAnswer= new ArrayList<TbPaAnswerRule>();
+            	for(TbPaAnswerRule p : paAnswerRuleList) {
+            		if("PA_CA".equals(p.getRuleTypeCode().substring(0, 5))) {
+            			paAnswer.add(p);
+            		}
+            	}
             	// 2-4.替换职业锚信息
-         		String contentPA_CA = makeContentPA_CA(questionIds, testResult);
+         		String contentPA_CA = makeContentPA_CA(paAnswer,questionIds, testResult);
          		personInfoContent = personInfoContent + contentPA_CA;
             }
             personInfoContent = personInfoContent.replace("${chapter}", CHAPTER[i]);
@@ -352,14 +378,14 @@ public class AdminHandler {
 	
 	/**
 	 * 生成PA_PC报告
+	 * @param answerList 
 	 * @param questionIds
 	 * @param testResult
 	 * @return
 	 */
-	private String makeContentPA_PC(String questionIds, String testResult) {
+	private String makeContentPA_PC(List<TbPaAnswerRule> answerList, String questionIds, String testResult) {
 		String[] questionIdArr = questionIds.split("@");
 		String[] resultArr = testResult.split("@");
-		
 		int jCount = 0; //J的数量
         int pCount = 0; //P的数量
         int tCount = 0; //T的数量
@@ -370,7 +396,7 @@ public class AdminHandler {
         int iCount = 0; //I的数量
         for( int i = 0 ; i <  questionIdArr.length ; i++){
             //通过试题编号 从测评解读表（tb_pa_answer_rule）中取出相应的解析
-            List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(Integer.parseInt(questionIdArr[i]));
+        	//List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(Integer.parseInt(questionIdArr[i]));
             for(TbPaAnswerRule pa : answerList){
                 String answerBitmap = pa.getAnswerBitmap(); //标准答案
                 if(answerBitmap.equals(resultArr[i])){
@@ -438,11 +464,12 @@ public class AdminHandler {
 	
 	/**
 	 * 生成PA_PH报告
+	 * @param answerList 
 	 * @param questionIds
 	 * @param testResult
 	 * @return
 	 */
-	private String makeContentPA_PH(String questionIds, String testResult) {
+	private String makeContentPA_PH(List<TbPaAnswerRule> answerList, String questionIds, String testResult) {
 		String[] questionIdArr = questionIds.split("@");
 		String[] resultArr = testResult.split("@");
 		
@@ -472,7 +499,7 @@ public class AdminHandler {
         int positiveScore =0;//阳性症状分数
         for(int i = 0; i< questionIdArr.length ;i++){
             //通过试题编号 从测评解读表（tb_pa_answer_rule）中取出相应的解析
-            List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(Integer.parseInt(questionIdArr[i]));
+            //List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(Integer.parseInt(questionIdArr[i]));
             for(TbPaAnswerRule pa : answerList){
                 String s = resultArr[i];//测试结果
                 String answerBitmap = pa.getAnswerBitmap(); //标准答案
@@ -649,18 +676,19 @@ public class AdminHandler {
 	
 	/**
 	 * 生成PA_EC报告
+	 * @param answerList 
 	 * @param questionIds
 	 * @param testResult
 	 * @return
 	 */
-	private String makeContentPA_EC(String questionIds, String testResult) {
+	private String makeContentPA_EC(List<TbPaAnswerRule> answerList, String questionIds, String testResult) {
 		String[] questionIdArr = questionIds.split("@");
 		String[] resultArr = testResult.split("@");
 		
 		int pa_ec_score = 0;
         for(int i = 0; i< questionIdArr.length ;i++) {
             //通过试题编号 从测评解读表（tb_pa_answer_rule）中取出相应的解析
-            List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(Integer.parseInt(questionIdArr[i]));
+            //List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(Integer.parseInt(questionIdArr[i]));
             for (TbPaAnswerRule pa : answerList) {
                 String s = resultArr[i];//测试结果
                 String answerBitmap = pa.getAnswerBitmap(); //标准答案
@@ -688,11 +716,12 @@ public class AdminHandler {
 	
 	/**
 	 * 生成PA_CA报告
+	 * @param answerList 
 	 * @param questionIds
 	 * @param testResult
 	 * @return
 	 */
-	private String makeContentPA_CA(String questionIds, String testResult) {
+	private String makeContentPA_CA(List<TbPaAnswerRule> answerList, String questionIds, String testResult) {
 		String[] questionIdArr = questionIds.split("@");
 		String[] resultArr = testResult.split("@");
 		
@@ -707,7 +736,7 @@ public class AdminHandler {
         for(int i = 0; i< questionIdArr.length ;i++) {
             //通过试题编号 从测评解读表（tb_pa_answer_rule）中取出相应的解析
             Integer questionId = Integer.parseInt(questionIdArr[i]);
-            List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(questionId);
+            //List<TbPaAnswerRule> answerList = paAnswerRuleService.getPaAnswerRuleByQuestionId(questionId);
             for (TbPaAnswerRule pa : answerList) {
                 String s = resultArr[i];//测试结果
                 String answerBitmap = pa.getAnswerBitmap(); //标准答案

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atguigu.survey.component.dao.i.TbCustFunctionLevelMapMapper">
 	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCustFunctionLevelMap">
+	    <id column="FUNCTION_ID" property="functionId" jdbcType="INTEGER" />
 		<result column="DEPARTMENT_ID" property="departmentId" jdbcType="INTEGER" />
-		<id column="FUNCTION_ID" property="functionId" jdbcType="INTEGER" />
 		<result column="FUNCTION_LEVEL" property="functionLevel" jdbcType="VARCHAR" />
 		<result column="FUNCTION_NAME" property="functionName" jdbcType="VARCHAR" />
 		<result column="FUNCTION_CONTENT" property="functionContent" jdbcType="VARCHAR" />
@@ -145,7 +145,7 @@
 		</foreach>
 	</select>
 	
-	<select id="getFunctionListByFunctionId" parameterType="java.util.Map"resultMap="BaseResultMap">
+	<select id="getFunctionListByFunctionId" parameterType="java.util.Map" resultMap="BaseResultMap">
 	    select
 		<include refid="Base_Column_List" />
 	    from tb_cust_function_level_map

@@ -13,4 +13,6 @@ public interface PaAnswerRuleService {
 
     List<TbPaAnswerRule> getPaAnswerRuleByQuestionId(Integer questionId);
 
+	List<TbPaAnswerRule> getAllPaAnswerRule();
+
 }

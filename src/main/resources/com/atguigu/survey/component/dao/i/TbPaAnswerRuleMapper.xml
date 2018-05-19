@@ -139,4 +139,10 @@
         where
         QUESTION_ID = #{id,jdbcType=INTEGER}
     </select>
+    
+    <select id="getAllPaAnswerRule" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_pa_answer_rule
+	</select>
 </mapper>

@@ -23,4 +23,9 @@ public class PaAnswerRuleServiceImpl implements PaAnswerRuleService{
         List<TbPaAnswerRule> result = paAnswerRuleMapper.getPaAnswerRuleByQuestionId(questionId);
         return result;
     }
+
+	public List<TbPaAnswerRule> getAllPaAnswerRule() {
+		List<TbPaAnswerRule> list = paAnswerRuleMapper.getAllPaAnswerRule();
+		return list;
+	}
 }
