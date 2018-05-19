@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="TbCustFunctionLevelMapMapper">
+<mapper namespace="com.atguigu.survey.component.dao.i.TbCustFunctionLevelMapMapper">
 	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCustFunctionLevelMap">
 		<id column="ID" property="id" jdbcType="INTEGER" />
 		<result column="DEPARTMENT_ID" property="departmentId" jdbcType="INTEGER" />
