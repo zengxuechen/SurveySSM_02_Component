@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.TbFunctionLevelMapMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbFunctionLevelMap">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="FUNCTION_NAME" property="functionName" jdbcType="VARCHAR" />
+		<result column="FUNCTION_CONTENT" property="functionContent" jdbcType="VARCHAR" />
+		<result column="FUNCTION_LEVEL" property="functionLevel" jdbcType="VARCHAR" />
+		<result column="UP_ID" property="upId" jdbcType="INTEGER" />
+		<result column="UP_FUNCTION_NAME" property="upFunctionName" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="id != null"> and ID= #{id}</if>	
+		<if test="functionName != null and functionName !=''"> and FUNCTION_NAME= #{functionName}</if>
+		<if test="functionContent != null and functionContent !=''"> and FUNCTION_CONTENT= #{functionContent}</if>
+		<if test="functionLevel != null and functionLevel !=''"> and FUNCTION_LEVEL= #{functionLevel}</if>
+		<if test="upId != null"> and UP_ID= #{upId}</if>	
+		<if test="upFunctionName != null and upFunctionName !=''"> and UP_FUNCTION_NAME= #{upFunctionName}</if>
+	</sql>
+	<sql id="Base_Column_List">
+		ID ,
+		FUNCTION_NAME ,
+		FUNCTION_CONTENT ,
+		FUNCTION_LEVEL ,
+		UP_ID ,
+		UP_FUNCTION_NAME 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_function_level_map
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_function_level_map
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbFunctionLevelMap">
+		insert into tb_function_level_map
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">ID,</if>	
+			<if test="functionName != null and functionName !=''">FUNCTION_NAME,</if>
+			<if test="functionContent != null and functionContent !=''">FUNCTION_CONTENT,</if>
+			<if test="functionLevel != null and functionLevel !=''">FUNCTION_LEVEL,</if>
+			<if test="upId != null">UP_ID,</if>	
+			<if test="upFunctionName != null and upFunctionName !=''">UP_FUNCTION_NAME,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="functionName != null and functionName !=''">
+				#{functionName,jdbcType=VARCHAR},
+			</if>
+			<if test="functionContent != null and functionContent !=''">
+				#{functionContent,jdbcType=VARCHAR},
+			</if>
+			<if test="functionLevel != null and functionLevel !=''">
+				#{functionLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="upId != null">
+				#{upId,jdbcType=INTEGER},
+			</if>
+			<if test="upFunctionName != null and upFunctionName !=''">
+				#{upFunctionName,jdbcType=VARCHAR},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbFunctionLevelMap">
+		update tb_function_level_map
+		<set>
+			<if test="functionName != null and functionName !=''">
+				FUNCTION_NAME= #{functionName,jdbcType=VARCHAR},
+			</if>
+			<if test="functionContent != null and functionContent !=''">
+				FUNCTION_CONTENT= #{functionContent,jdbcType=VARCHAR},
+			</if>
+			<if test="functionLevel != null and functionLevel !=''">
+				FUNCTION_LEVEL= #{functionLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="upId != null">
+				UP_ID= #{upId,jdbcType=INTEGER},
+			</if>
+			<if test="upFunctionName != null and upFunctionName !=''">
+				UP_FUNCTION_NAME= #{upFunctionName,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_function_level_map where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_function_level_map where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_function_level_map where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_function_level_map where ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>

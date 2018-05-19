@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.TbCustPositionMapMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCustPositionMap">
+		<id column="DEPARTMENT_ID" property="departmentId" jdbcType="INTEGER" />
+		<id column="POSITION_ID" property="positionId" jdbcType="INTEGER" />
+		<result column="POSITION_NAME" property="positionName" jdbcType="VARCHAR" />
+		<result column="FIRST_FUCNTION_ID" property="firstFucntionId" jdbcType="INTEGER" />
+		<result column="FIRST_FUNCTION_NAME" property="firstFunctionName" jdbcType="VARCHAR" />
+		<result column="FIRST_FUNCTION_CONTENT" property="firstFunctionContent" jdbcType="VARCHAR" />
+		<result column="SECOND_FUCNTION_ID" property="secondFucntionId" jdbcType="INTEGER" />
+		<result column="SECOND_FUNCTION_NAME" property="secondFunctionName" jdbcType="VARCHAR" />
+		<result column="SECOND_FUNCTION_CONTENT" property="secondFunctionContent" jdbcType="VARCHAR" />
+		<result column="THIRD_FUCNTION_ID" property="thirdFucntionId" jdbcType="INTEGER" />
+		<result column="THIRD_FUNCTION_NAME" property="thirdFunctionName" jdbcType="VARCHAR" />
+		<result column="THIRD_FUNCTION_CONTENT" property="thirdFunctionContent" jdbcType="VARCHAR" />
+		<result column="FOURTH_FUCNTION_ID" property="fourthFucntionId" jdbcType="INTEGER" />
+		<result column="FOURTH_FUNCTION_NAME" property="fourthFunctionName" jdbcType="VARCHAR" />
+		<result column="FOURTH_FUNCTION_CONTENT" property="fourthFunctionContent" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="departmentId != null"> and DEPARTMENT_ID= #{departmentId}</if>	
+		<if test="positionId != null"> and POSITION_ID= #{positionId}</if>	
+		<if test="positionName != null and positionName !=''"> and POSITION_NAME= #{positionName}</if>
+		<if test="firstFucntionId != null"> and FIRST_FUCNTION_ID= #{firstFucntionId}</if>	
+		<if test="firstFunctionName != null and firstFunctionName !=''"> and FIRST_FUNCTION_NAME= #{firstFunctionName}</if>
+		<if test="firstFunctionContent != null and firstFunctionContent !=''"> and FIRST_FUNCTION_CONTENT= #{firstFunctionContent}</if>
+		<if test="secondFucntionId != null"> and SECOND_FUCNTION_ID= #{secondFucntionId}</if>	
+		<if test="secondFunctionName != null and secondFunctionName !=''"> and SECOND_FUNCTION_NAME= #{secondFunctionName}</if>
+		<if test="secondFunctionContent != null and secondFunctionContent !=''"> and SECOND_FUNCTION_CONTENT= #{secondFunctionContent}</if>
+		<if test="thirdFucntionId != null"> and THIRD_FUCNTION_ID= #{thirdFucntionId}</if>	
+		<if test="thirdFunctionName != null and thirdFunctionName !=''"> and THIRD_FUNCTION_NAME= #{thirdFunctionName}</if>
+		<if test="thirdFunctionContent != null and thirdFunctionContent !=''"> and THIRD_FUNCTION_CONTENT= #{thirdFunctionContent}</if>
+		<if test="fourthFucntionId != null"> and FOURTH_FUCNTION_ID= #{fourthFucntionId}</if>	
+		<if test="fourthFunctionName != null and fourthFunctionName !=''"> and FOURTH_FUNCTION_NAME= #{fourthFunctionName}</if>
+		<if test="fourthFunctionContent != null and fourthFunctionContent !=''"> and FOURTH_FUNCTION_CONTENT= #{fourthFunctionContent}</if>
+	</sql>
+	<sql id="Base_Column_List">
+		DEPARTMENT_ID ,
+		POSITION_ID ,
+		POSITION_NAME ,
+		FIRST_FUCNTION_ID ,
+		FIRST_FUNCTION_NAME ,
+		FIRST_FUNCTION_CONTENT ,
+		SECOND_FUCNTION_ID ,
+		SECOND_FUNCTION_NAME ,
+		SECOND_FUNCTION_CONTENT ,
+		THIRD_FUCNTION_ID ,
+		THIRD_FUNCTION_NAME ,
+		THIRD_FUNCTION_CONTENT ,
+		FOURTH_FUCNTION_ID ,
+		FOURTH_FUNCTION_NAME ,
+		FOURTH_FUNCTION_CONTENT 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_cust_position_map
+		where
+		DEPARTMENT_ID = #{departmentId,jdbcType=INTEGER}
+		POSITION_ID = #{positionId,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_cust_position_map
+		where
+		DEPARTMENT_ID = #{departmentId,jdbcType=INTEGER}
+		POSITION_ID = #{positionId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustPositionMap">
+		insert into tb_cust_position_map
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="departmentId != null">DEPARTMENT_ID,</if>	
+			<if test="positionId != null">POSITION_ID,</if>	
+			<if test="positionName != null and positionName !=''">POSITION_NAME,</if>
+			<if test="firstFucntionId != null">FIRST_FUCNTION_ID,</if>	
+			<if test="firstFunctionName != null and firstFunctionName !=''">FIRST_FUNCTION_NAME,</if>
+			<if test="firstFunctionContent != null and firstFunctionContent !=''">FIRST_FUNCTION_CONTENT,</if>
+			<if test="secondFucntionId != null">SECOND_FUCNTION_ID,</if>	
+			<if test="secondFunctionName != null and secondFunctionName !=''">SECOND_FUNCTION_NAME,</if>
+			<if test="secondFunctionContent != null and secondFunctionContent !=''">SECOND_FUNCTION_CONTENT,</if>
+			<if test="thirdFucntionId != null">THIRD_FUCNTION_ID,</if>	
+			<if test="thirdFunctionName != null and thirdFunctionName !=''">THIRD_FUNCTION_NAME,</if>
+			<if test="thirdFunctionContent != null and thirdFunctionContent !=''">THIRD_FUNCTION_CONTENT,</if>
+			<if test="fourthFucntionId != null">FOURTH_FUCNTION_ID,</if>	
+			<if test="fourthFunctionName != null and fourthFunctionName !=''">FOURTH_FUNCTION_NAME,</if>
+			<if test="fourthFunctionContent != null and fourthFunctionContent !=''">FOURTH_FUNCTION_CONTENT,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="departmentId != null">
+				#{departmentId,jdbcType=INTEGER},
+			</if>
+			<if test="positionId != null">
+				#{positionId,jdbcType=INTEGER},
+			</if>
+			<if test="positionName != null and positionName !=''">
+				#{positionName,jdbcType=VARCHAR},
+			</if>
+			<if test="firstFucntionId != null">
+				#{firstFucntionId,jdbcType=INTEGER},
+			</if>
+			<if test="firstFunctionName != null and firstFunctionName !=''">
+				#{firstFunctionName,jdbcType=VARCHAR},
+			</if>
+			<if test="firstFunctionContent != null and firstFunctionContent !=''">
+				#{firstFunctionContent,jdbcType=VARCHAR},
+			</if>
+			<if test="secondFucntionId != null">
+				#{secondFucntionId,jdbcType=INTEGER},
+			</if>
+			<if test="secondFunctionName != null and secondFunctionName !=''">
+				#{secondFunctionName,jdbcType=VARCHAR},
+			</if>
+			<if test="secondFunctionContent != null and secondFunctionContent !=''">
+				#{secondFunctionContent,jdbcType=VARCHAR},
+			</if>
+			<if test="thirdFucntionId != null">
+				#{thirdFucntionId,jdbcType=INTEGER},
+			</if>
+			<if test="thirdFunctionName != null and thirdFunctionName !=''">
+				#{thirdFunctionName,jdbcType=VARCHAR},
+			</if>
+			<if test="thirdFunctionContent != null and thirdFunctionContent !=''">
+				#{thirdFunctionContent,jdbcType=VARCHAR},
+			</if>
+			<if test="fourthFucntionId != null">
+				#{fourthFucntionId,jdbcType=INTEGER},
+			</if>
+			<if test="fourthFunctionName != null and fourthFunctionName !=''">
+				#{fourthFunctionName,jdbcType=VARCHAR},
+			</if>
+			<if test="fourthFunctionContent != null and fourthFunctionContent !=''">
+				#{fourthFunctionContent,jdbcType=VARCHAR},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustPositionMap">
+		update tb_cust_position_map
+		<set>
+			<if test="positionName != null and positionName !=''">
+				POSITION_NAME= #{positionName,jdbcType=VARCHAR},
+			</if>
+			<if test="firstFucntionId != null">
+				FIRST_FUCNTION_ID= #{firstFucntionId,jdbcType=INTEGER},
+			</if>
+			<if test="firstFunctionName != null and firstFunctionName !=''">
+				FIRST_FUNCTION_NAME= #{firstFunctionName,jdbcType=VARCHAR},
+			</if>
+			<if test="firstFunctionContent != null and firstFunctionContent !=''">
+				FIRST_FUNCTION_CONTENT= #{firstFunctionContent,jdbcType=VARCHAR},
+			</if>
+			<if test="secondFucntionId != null">
+				SECOND_FUCNTION_ID= #{secondFucntionId,jdbcType=INTEGER},
+			</if>
+			<if test="secondFunctionName != null and secondFunctionName !=''">
+				SECOND_FUNCTION_NAME= #{secondFunctionName,jdbcType=VARCHAR},
+			</if>
+			<if test="secondFunctionContent != null and secondFunctionContent !=''">
+				SECOND_FUNCTION_CONTENT= #{secondFunctionContent,jdbcType=VARCHAR},
+			</if>
+			<if test="thirdFucntionId != null">
+				THIRD_FUCNTION_ID= #{thirdFucntionId,jdbcType=INTEGER},
+			</if>
+			<if test="thirdFunctionName != null and thirdFunctionName !=''">
+				THIRD_FUNCTION_NAME= #{thirdFunctionName,jdbcType=VARCHAR},
+			</if>
+			<if test="thirdFunctionContent != null and thirdFunctionContent !=''">
+				THIRD_FUNCTION_CONTENT= #{thirdFunctionContent,jdbcType=VARCHAR},
+			</if>
+			<if test="fourthFucntionId != null">
+				FOURTH_FUCNTION_ID= #{fourthFucntionId,jdbcType=INTEGER},
+			</if>
+			<if test="fourthFunctionName != null and fourthFunctionName !=''">
+				FOURTH_FUNCTION_NAME= #{fourthFunctionName,jdbcType=VARCHAR},
+			</if>
+			<if test="fourthFunctionContent != null and fourthFunctionContent !=''">
+				FOURTH_FUNCTION_CONTENT= #{fourthFunctionContent,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where
+		DEPARTMENT_ID = #{departmentId,jdbcType=INTEGER}
+		POSITION_ID = #{positionId,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_cust_position_map where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_cust_position_map where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_cust_position_map where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_cust_position_map where DEPARTMENT_IDPOSITION_ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>
