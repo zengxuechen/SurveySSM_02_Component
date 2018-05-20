@@ -20,5 +20,7 @@ public interface CustFunctionLevelMapService {
 
 	Integer deleteFunction(TbCustFunctionLevelMap custFunctionLevelMap);
 
+	TbCustFunctionLevelMap getFunction(Map<String, Object> map);
+
 
 }

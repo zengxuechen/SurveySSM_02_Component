@@ -47,4 +47,9 @@ public class CustFunctionLevelMapServiceImpl implements CustFunctionLevelMapServ
 		return deleteByPrimaryKey;
 	}
 
+	public TbCustFunctionLevelMap getFunction(Map<String, Object> map) {
+		TbCustFunctionLevelMap result = custFunctionLevelMapMapper.getFunction(map);
+		return result;
+	}
+
 }

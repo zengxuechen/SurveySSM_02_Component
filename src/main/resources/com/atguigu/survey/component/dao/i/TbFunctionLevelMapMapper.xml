@@ -121,5 +121,12 @@
 			#{item}
 		</foreach>
 	</select>
+	
+	<select id="getStandardFunctionList" parameterType="java.util.Map" resultMap="BaseResultMap">
+	    select
+		<include refid="Base_Column_List" />
+		from tb_function_level_map 
+		where UP_ID = #{functionId}
+	</select>
 
 </mapper>
