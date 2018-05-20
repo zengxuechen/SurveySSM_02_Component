@@ -211,5 +211,10 @@
 			#{item}
 		</foreach>
 	</select>
+	
+	<select id="selectPositionFunction" resultMap="BaseResultMap" parameterType="map">
+	    select
+		<include refid="Base_Column_List" />
+	</select>
 
 </mapper>
