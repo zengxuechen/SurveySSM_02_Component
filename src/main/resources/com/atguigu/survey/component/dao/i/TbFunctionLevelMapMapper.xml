@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="TbFunctionLevelMapMapper">
-	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbFunctionLevelMap">
+<mapper namespace="com.atguigu.survey.component.dao.i.TbFunctionLevelMapMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbFunctionLevelMap">
 		<id column="ID" property="id" jdbcType="INTEGER" />
 		<result column="FUNCTION_NAME" property="functionName" jdbcType="VARCHAR" />
 		<result column="FUNCTION_CONTENT" property="functionContent" jdbcType="VARCHAR" />
@@ -43,7 +43,7 @@
 		ID = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbFunctionLevelMap">
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbFunctionLevelMap">
 		insert into tb_function_level_map
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
@@ -80,7 +80,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbFunctionLevelMap">
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbFunctionLevelMap">
 		update tb_function_level_map
 		<set>
 			<if test="functionName != null and functionName !=''">

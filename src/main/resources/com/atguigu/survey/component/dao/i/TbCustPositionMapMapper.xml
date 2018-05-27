@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="TbCustPositionMapMapper">
-	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.model.TbCustPositionMap">
+<mapper namespace="com.atguigu.survey.component.dao.i.TbCustPositionMapMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbCustPositionMap">
 		<id column="ID" property="id" jdbcType="INTEGER" />
 		<result column="DEPARTMENT_ID" property="departmentId" jdbcType="INTEGER" />
 		<result column="POSITION_ID" property="positionId" jdbcType="VARCHAR" />
@@ -70,7 +70,7 @@
 		ID = #{id,jdbcType=INTEGER}
 	</delete>
 
-	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustPositionMap">
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustPositionMap">
 		insert into tb_cust_position_map
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">ID,</if>	
@@ -143,7 +143,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.model.TbCustPositionMap">
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustPositionMap">
 		update tb_cust_position_map
 		<set>
 			<if test="departmentId != null">
