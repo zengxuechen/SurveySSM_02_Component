@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -48,11 +49,22 @@ public class UserHandler {
 			admin.setAdminPwd(userPwd);
 			Admin adminDB = adminService.loginForAdmin(admin);
 			session.setAttribute(GlobalNames.LOGIN_Admin, adminDB);
+			if(!StringUtils.isEmpty(session.getAttribute(GlobalNames.LOGIN_USER))) {
+				session.removeAttribute(GlobalNames.LOGIN_USER);
+			}
 			return "redirect:/manager/admin/toMainUI";
 		}else {
 			User user = userService.login(userName,userPwd);		
 			session.setAttribute(GlobalNames.LOGIN_USER, user);
-			return "redirect:/guest/customerTestHandler/selectCustomerTestPaperByUesrId/"+user.getUserId();
+			if(!StringUtils.isEmpty(session.getAttribute(GlobalNames.LOGIN_Admin))) {
+				session.removeAttribute(GlobalNames.LOGIN_Admin);
+			}
+			if(user.getCompany()) {
+				return "redirect:/guest/customerTestHandler/selectCustomerTestPaperByUesrId/"+user.getUserId();
+			}else {
+				return "redirect:/guest/customerTestHandler/selectCustomerTestPaperByUesrId/"+user.getUserId();
+			}
+			
 		}
 		
 	}

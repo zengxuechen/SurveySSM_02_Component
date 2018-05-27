@@ -42,7 +42,8 @@ public class CustomerRelationHandler {
         User user = new User();
         user.setUserName(customerRelationInfoVo.getUserName());
         user.setUserPwd(customerRelationInfoVo.getPassword());
-        user.setCompany(false); //个人
+        user.setCompany(customerRelationInfoVo.isCompany());
+        //user.setCompany(false); //个人
         //保存到用户表（guest_user）中 并返回主键Id
         userService.regist(user);
 
