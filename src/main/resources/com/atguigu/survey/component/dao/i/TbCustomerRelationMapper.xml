@@ -134,6 +134,7 @@
 	 <select id="getRelationInfoByUserId" parameterType="java.lang.Integer" resultType="com.atguigu.survey.vo.CustomerDetailVo">
         select
            r.USER_NAME_CN as userName,
+           c.ID as companyId,
            c.COMPANY_NAME_EN as companyNameEN,
            c.COMPANY_NAME_CN as companyNameCN,
            c.COMPANY_LOGO as companyLogo,

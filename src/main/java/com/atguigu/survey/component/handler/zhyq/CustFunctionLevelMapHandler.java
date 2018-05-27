@@ -35,12 +35,13 @@ public class CustFunctionLevelMapHandler {
 	 * 2018年5月19日
 	 */
 	@RequestMapping("guest/custFunctionLevelMapHandler/getFunctionListByFunctionId")
-	public List<TbCustFunctionLevelMap> getFunctionListByFunctionId(Integer departmentId,String functionId) {
+	public String getFunctionListByFunctionId(Map<String, Object> mv, Integer departmentId,String functionId) {
 		List<TbCustFunctionLevelMap> resultList = 
 				new ArrayList<TbCustFunctionLevelMap>();
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("departmentId", departmentId);
 		map.put("functionId", functionId);
+		String level = "";
 		//先判断是不是标准职能
 		if(functionId != null && functionId.contains("B")) {
 			List<TbFunctionLevelMap> tbFunctionLevelMapList = 
@@ -68,7 +69,12 @@ public class CustFunctionLevelMapHandler {
 		    	resultList  = functionListByFunctionId;
 		    }
 		}
-		return resultList;
+		if(resultList.size()>0) {
+			level = resultList.get(0).getFunctionLevel();
+		}
+		mv.put("functionList", resultList);
+		mv.put("level", level);
+		return "zhyq/function_list";
 	}
 	
 	/**

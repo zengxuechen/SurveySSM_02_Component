@@ -68,7 +68,7 @@ public class UserHandler {
 				session.removeAttribute(GlobalNames.LOGIN_Admin);
 			}
 			if(user.getCompany()) {
-				return "redirect:/guest/customerTestHandler/selectCustomerTestPaperByUesrId/"+user.getUserId();
+				return "redirect:/guest/departmentHandler/showDepartmentListByCompanyId";
 			}else {
 				return "redirect:/guest/customerTestHandler/selectCustomerTestPaperByUesrId/"+user.getUserId();
 			}

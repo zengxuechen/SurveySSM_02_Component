@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.atguigu.survey.component.service.i.DepartmentService;
 import com.atguigu.survey.entities.zhyq.TbDepartment;
+import com.atguigu.survey.utils.GlobalNames;
+import com.atguigu.survey.vo.CustomerDetailVo;
 
 /**
  * Using IntelliJ IDEA.
@@ -50,6 +54,21 @@ public class DepartmentHandler {
         }else{
             return "zhyq/addDepartment_error";
         }
+    }
+    
+    /**
+     * 根据公司Id返回部门List
+     * @param companyId
+     * @return
+     */
+    @RequestMapping("/guest/departmentHandler/showDepartmentListByCompanyId")
+    public String showDepartmentList(Map<String, Object> map, HttpSession session){
+        
+    	Integer companyId = ((CustomerDetailVo)session.getAttribute(GlobalNames.USER_RELATION)).getCompanyId();
+    	List<TbDepartment> selectList = departmentService.getDepartmentListByCompanyId(companyId);
+        
+        map.put("departmentList", selectList);
+        return "zhyq/department_list";
     }
 
 }
