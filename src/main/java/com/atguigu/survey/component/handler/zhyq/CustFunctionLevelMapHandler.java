@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.atguigu.survey.IdGenerator.SnowflakeIdGen;
@@ -39,8 +40,8 @@ public class CustFunctionLevelMapHandler {
 	 * 李小鑫 
 	 * 2018年5月19日
 	 */
-	@RequestMapping("guest/custFunctionLevelMapHandler/getFunctionListByFunctionId")
-	public String getFunctionListByFunctionId(Map<String, Object> mv, Integer departmentId,String functionId) {
+	@RequestMapping("guest/custFunctionLevelMapHandler/getFunctionListByFunctionId/{departmentId}/{functionId}")
+	public String getFunctionListByFunctionId(Map<String, Object> mv, @PathVariable("departmentId") Integer departmentId, @PathVariable("functionId") String functionId) {
 		List<TbCustFunctionLevelMap> resultList = 
 				new ArrayList<TbCustFunctionLevelMap>();
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -57,7 +58,7 @@ public class CustFunctionLevelMapHandler {
 			if(convert2Cust !=null && convert2Cust.size() >0) {
 				resultList = convert2Cust;
 			}
-		}else if(functionId == null ) {
+		}else if(functionId == null || "0".equals(functionId)) {
 			//查询所有标准职能
 			List<TbFunctionLevelMap> tbFunctionLevelMapList = 
 					functionLevelMapService.getAll(map);
