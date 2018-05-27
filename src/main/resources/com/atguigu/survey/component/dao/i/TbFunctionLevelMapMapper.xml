@@ -139,7 +139,7 @@
 		from tb_function_level_map
 		<if test="functionId != null and functionId !=''">
 				FUNCTION_ID= #{functionId,jdbcType=VARCHAR}
-			</if>
+		</if>
 	</select>
 
 </mapper>

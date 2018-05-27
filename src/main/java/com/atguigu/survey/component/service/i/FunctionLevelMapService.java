@@ -14,4 +14,6 @@ public interface FunctionLevelMapService {
 
 	List<TbFunctionLevelMap> getStandardFunctionList(Map<String, Object> map);
 
+	List<TbFunctionLevelMap> getAll(Map<String, Object> map);
+
 }

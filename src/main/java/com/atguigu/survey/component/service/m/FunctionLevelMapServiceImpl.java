@@ -20,6 +20,11 @@ public class FunctionLevelMapServiceImpl implements FunctionLevelMapService{
 		List<TbFunctionLevelMap> result = tbFunctionLevelMapMapper.getStandardFunctionList(map);
 		return result;
 	}
+
+	public List<TbFunctionLevelMap> getAll(Map<String, Object> map) {
+		List<TbFunctionLevelMap> result = tbFunctionLevelMapMapper.getAll(map);
+		return result;
+	}
 	
 	
 
