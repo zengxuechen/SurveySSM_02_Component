@@ -37,14 +37,13 @@ public class CustFunctionLevelMapHandler {
 	public List<TbCustFunctionLevelMap> getFunctionListByFunctionId(Integer departmentId,String functionId) {
 		List<TbCustFunctionLevelMap> resultList = 
 				new ArrayList<TbCustFunctionLevelMap>();
-
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("departmentId", departmentId);
 		map.put("functionId", functionId);
 		//先判断是不是标准职能
 		TbCustFunctionLevelMap result = custFunctionLevelMapService.getFunction(map);
 		if(result != null) { //判空
-			if(result.getStandardId() != null) {
+			if(result.getFunctionId().contains("B")) {
 				List<TbFunctionLevelMap> tbFunctionLevelMapList = 
 						functionLevelMapService.getStandardFunctionList(map);
 				//convert转换为TbCustFunctionLevelMap返回
@@ -116,7 +115,6 @@ public class CustFunctionLevelMapHandler {
 			tbCustFunctionLevelMap.setFunctionName(t.getFunctionName());
 			tbCustFunctionLevelMap.setUpFunctionName(t.getUpFunctionName());
 			tbCustFunctionLevelMap.setUpId(t.getUpId());
-			tbCustFunctionLevelMap.setStandardId(t.getId());
 			resultList.add(tbCustFunctionLevelMap);
 		}
 		

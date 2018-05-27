@@ -14,7 +14,7 @@ public interface TbCustFunctionLevelMapMapper {
 
 	Integer updateByPrimaryKeySelective(TbCustFunctionLevelMap custFunctionLevelMap);
 
-	Integer deleteByPrimaryKey(Integer functionId);
+	Integer deleteByPrimaryKey(String functionId);
 
 	TbCustFunctionLevelMap getFunction(Map<String, Object> map);
 
