@@ -1,13 +1,9 @@
 package com.atguigu.survey.component.handler.zhyq;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.crypto.NoSuchPaddingException;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +16,6 @@ import com.atguigu.survey.component.service.i.FunctionLevelMapService;
 import com.atguigu.survey.entities.zhyq.TbCustFunctionLevelMap;
 import com.atguigu.survey.entities.zhyq.TbFunctionLevelMap;
 import com.atguigu.survey.utils.EncrypDESUtil;
-import com.atguigu.survey.vo.CustFunctionVo;
 
 /**
  * @author 李小鑫
@@ -41,11 +36,19 @@ public class CustFunctionLevelMapHandler {
 	 * 2018年5月19日
 	 */
 	@RequestMapping("guest/custFunctionLevelMapHandler/getFunctionListByFunctionId/{departmentId}/{functionId}")
-	public String getFunctionListByFunctionId(Map<String, Object> mv, @PathVariable("departmentId") Integer departmentId, @PathVariable("functionId") String functionId) {
+	public String getFunctionListByFunctionId(Map<String, Object> mv, @PathVariable("departmentId") String departmentId, @PathVariable("functionId") String functionId) {
 		List<TbCustFunctionLevelMap> resultList = 
 				new ArrayList<TbCustFunctionLevelMap>();
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("departmentId", departmentId);
+		Integer decDepartmentId = 0;
+		try {
+			EncrypDESUtil encrypDESUtil = new EncrypDESUtil();
+			byte[] decryptor = encrypDESUtil.Decryptor(departmentId.getBytes());
+			decDepartmentId = Integer.parseInt(decryptor.toString());
+		}  catch (Exception e) {
+			e.printStackTrace();
+		} 
+		map.put("departmentId", decDepartmentId);
 		map.put("functionId", functionId);
 		String level = "";
 		//先判断是不是标准职能
