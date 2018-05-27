@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.atguigu.survey.component.service.i.AdminService;
+import com.atguigu.survey.component.service.i.CustomerRelationService;
 import com.atguigu.survey.component.service.i.UserService;
 import com.atguigu.survey.entities.guest.User;
 import com.atguigu.survey.entities.manager.Admin;
 import com.atguigu.survey.utils.GlobalNames;
+import com.atguigu.survey.vo.CustomerDetailVo;
 
 @Controller
 public class UserHandler {
@@ -22,6 +24,9 @@ public class UserHandler {
 	
 	@Autowired
 	private AdminService adminService ;
+	
+	@Autowired
+	private CustomerRelationService customerRelationService;
 	
 	@RequestMapping("/guest/user/logout")
 	public String logout(HttpSession session){		
@@ -56,6 +61,9 @@ public class UserHandler {
 		}else {
 			User user = userService.login(userName,userPwd);		
 			session.setAttribute(GlobalNames.LOGIN_USER, user);
+			CustomerDetailVo relationInfoByUserId = 
+					customerRelationService.getRelationInfoByUserId(user.getUserId());
+			session.setAttribute(GlobalNames.USER_RELATION, relationInfoByUserId);
 			if(!StringUtils.isEmpty(session.getAttribute(GlobalNames.LOGIN_Admin))) {
 				session.removeAttribute(GlobalNames.LOGIN_Admin);
 			}
