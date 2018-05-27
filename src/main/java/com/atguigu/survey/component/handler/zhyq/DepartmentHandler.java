@@ -1,9 +1,11 @@
 package com.atguigu.survey.component.handler.zhyq;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.atguigu.survey.component.service.i.DepartmentService;
 import com.atguigu.survey.entities.zhyq.TbDepartment;
+import com.atguigu.survey.utils.EncrypDESUtil;
 import com.atguigu.survey.utils.GlobalNames;
 import com.atguigu.survey.vo.CustomerDetailVo;
 
@@ -66,6 +69,17 @@ public class DepartmentHandler {
         
     	Integer companyId = ((CustomerDetailVo)session.getAttribute(GlobalNames.USER_RELATION)).getCompanyId();
     	List<TbDepartment> selectList = departmentService.getDepartmentListByCompanyId(companyId);
+    	for (int i = 0; i < selectList.size(); i++) {
+    		try {
+				EncrypDESUtil encrypDESUtil = new EncrypDESUtil();
+				byte[] encrytor = 
+						encrypDESUtil.Encrytor(selectList.get(i).getId().toString());
+				String string = encrytor.toString();
+				selectList.get(i).setDepartmentId(string);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
         
         map.put("departmentList", selectList);
         return "zhyq/department_list";

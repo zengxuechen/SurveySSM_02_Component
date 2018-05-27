@@ -49,11 +49,7 @@ public class CustFunctionLevelMapHandler {
 			EncrypDESUtil encrypDESUtil = new EncrypDESUtil();
 			byte[] decryptor = encrypDESUtil.Decryptor(departmentId.getBytes());
 			decDepartmentId = Integer.parseInt(decryptor.toString());
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
+		}  catch (Exception e) {
 			e.printStackTrace();
 		} 
 		map.put("departmentId", decDepartmentId);
