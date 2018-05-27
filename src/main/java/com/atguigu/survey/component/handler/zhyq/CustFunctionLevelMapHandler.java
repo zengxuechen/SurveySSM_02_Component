@@ -40,11 +40,23 @@ public class CustFunctionLevelMapHandler {
 	 * 2018年5月19日
 	 */
 	@RequestMapping("guest/custFunctionLevelMapHandler/getFunctionListByFunctionId")
-	public String getFunctionListByFunctionId(Map<String, Object> mv, Integer departmentId,String functionId) {
+	public String getFunctionListByFunctionId(Map<String, Object> mv, String departmentId,String functionId) {
 		List<TbCustFunctionLevelMap> resultList = 
 				new ArrayList<TbCustFunctionLevelMap>();
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("departmentId", departmentId);
+		Integer decDepartmentId = 0;
+		try {
+			EncrypDESUtil encrypDESUtil = new EncrypDESUtil();
+			byte[] decryptor = encrypDESUtil.Decryptor(departmentId.getBytes());
+			decDepartmentId = Integer.parseInt(decryptor.toString());
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		map.put("departmentId", decDepartmentId);
 		map.put("functionId", functionId);
 		String level = "";
 		//先判断是不是标准职能
