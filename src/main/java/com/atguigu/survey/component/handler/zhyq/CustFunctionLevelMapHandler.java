@@ -1,9 +1,13 @@
 package com.atguigu.survey.component.handler.zhyq;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +18,7 @@ import com.atguigu.survey.component.service.i.CustFunctionLevelMapService;
 import com.atguigu.survey.component.service.i.FunctionLevelMapService;
 import com.atguigu.survey.entities.zhyq.TbCustFunctionLevelMap;
 import com.atguigu.survey.entities.zhyq.TbFunctionLevelMap;
+import com.atguigu.survey.utils.EncrypDESUtil;
 import com.atguigu.survey.vo.CustFunctionVo;
 
 /**
@@ -77,7 +82,9 @@ public class CustFunctionLevelMapHandler {
 	 * 2018年5月19日
 	 */
 	public String addFunctionByDepartmentId(TbCustFunctionLevelMap custFunctionLevelMap) {
-		custFunctionLevelMap.setFunctionId(SnowflakeIdGen.createFunctionId("A"));
+		if(custFunctionLevelMap.getFunctionId() == null) {
+			custFunctionLevelMap.setFunctionId(SnowflakeIdGen.createFunctionId("A"));
+		}
 		Integer addFunction = custFunctionLevelMapService.addFunction(custFunctionLevelMap);
 		if(addFunction==1) {
 			return "zhyq/saveFunction_success";
