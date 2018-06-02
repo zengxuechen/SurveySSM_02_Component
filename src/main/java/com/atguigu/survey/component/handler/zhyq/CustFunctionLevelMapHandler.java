@@ -1,10 +1,12 @@
 package com.atguigu.survey.component.handler.zhyq;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,6 +59,18 @@ public class CustFunctionLevelMapHandler {
 				resultList = convert2Cust;
 			}
 		}else if(functionId == null || "0".equals(functionId)) {
+			//先查询对应的部门下有没有第一级职能
+			List<TbCustFunctionLevelMap> functionListByFunctionId = 
+					custFunctionLevelMapService.getFunctionListByFunctionId(map);
+			//如果在客户表中查到有数据则返回
+			if(functionListByFunctionId != null && functionListByFunctionId.size() >0) {
+				resultList = functionListByFunctionId;
+			}else {
+				//在标准表中进行第一级职能查询
+				map.put("functionLevel", 1);
+				List<TbFunctionLevelMap> tbFunctionLevelMapList = 
+						functionLevelMapService.getAll(map);
+			}
 			//查询所有标准职能
 			List<TbFunctionLevelMap> tbFunctionLevelMapList = 
 					functionLevelMapService.getAll(map);

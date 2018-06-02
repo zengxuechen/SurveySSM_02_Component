@@ -18,4 +18,7 @@ public interface TbCustFunctionLevelMapMapper {
 
 	TbCustFunctionLevelMap getFunction(Map<String, Object> map);
 
+	List<TbCustFunctionLevelMap> getAll(Map<String, Object> map);
+	
+
 }

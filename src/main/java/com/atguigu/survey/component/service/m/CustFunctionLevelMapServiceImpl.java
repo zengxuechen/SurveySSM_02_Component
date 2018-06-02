@@ -24,7 +24,7 @@ public class CustFunctionLevelMapServiceImpl implements CustFunctionLevelMapServ
 	public List<TbCustFunctionLevelMap> getFunctionListByFunctionId(Map<String, Object> map) {
 		
 		List<TbCustFunctionLevelMap> list = 
-				custFunctionLevelMapMapper.getFunctionListByFunctionId(map);
+				custFunctionLevelMapMapper.getAll(map);
 		
 		return list;
 	}
