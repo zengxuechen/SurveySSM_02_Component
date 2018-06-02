@@ -17,6 +17,7 @@ import com.atguigu.survey.component.service.i.DepartmentService;
 import com.atguigu.survey.entities.zhyq.TbDepartment;
 import com.atguigu.survey.utils.EncrypDESUtil;
 import com.atguigu.survey.utils.GlobalNames;
+import com.atguigu.survey.utils.SimpleEncrypUtil;
 import com.atguigu.survey.vo.CustomerDetailVo;
 
 /**
@@ -72,10 +73,9 @@ public class DepartmentHandler {
     	for (int i = 0; i < selectList.size(); i++) {
     		try {
 				EncrypDESUtil encrypDESUtil = new EncrypDESUtil();
-				byte[] encrytor = 
-						encrypDESUtil.Encrytor(selectList.get(i).getId().toString());
-				String string = encrytor.toString();
-				selectList.get(i).setDepartmentId(string);
+				String encrypt = 
+						SimpleEncrypUtil.Encrypt(selectList.get(i).getId().toString(), 2018);
+				selectList.get(i).setDepartmentId(encrypt);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

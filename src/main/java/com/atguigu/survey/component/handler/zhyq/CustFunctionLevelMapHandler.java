@@ -16,6 +16,7 @@ import com.atguigu.survey.component.service.i.FunctionLevelMapService;
 import com.atguigu.survey.entities.zhyq.TbCustFunctionLevelMap;
 import com.atguigu.survey.entities.zhyq.TbFunctionLevelMap;
 import com.atguigu.survey.utils.EncrypDESUtil;
+import com.atguigu.survey.utils.SimpleEncrypUtil;
 
 /**
  * @author 李小鑫
@@ -40,14 +41,8 @@ public class CustFunctionLevelMapHandler {
 		List<TbCustFunctionLevelMap> resultList = 
 				new ArrayList<TbCustFunctionLevelMap>();
 		Map<String,Object> map = new HashMap<String,Object>();
-		Integer decDepartmentId = 0;
-		try {
-			EncrypDESUtil encrypDESUtil = new EncrypDESUtil();
-			byte[] decryptor = encrypDESUtil.Decryptor(departmentId.getBytes());
-			decDepartmentId = Integer.parseInt(decryptor.toString());
-		}  catch (Exception e) {
-			e.printStackTrace();
-		} 
+		String decrypt = SimpleEncrypUtil.Decrypt(departmentId, 2018);
+		Integer decDepartmentId = Integer.parseInt(decrypt);
 		map.put("departmentId", decDepartmentId);
 		map.put("functionId", functionId);
 		String level = "";
