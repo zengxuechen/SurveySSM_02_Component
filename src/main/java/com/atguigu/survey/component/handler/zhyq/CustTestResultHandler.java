@@ -381,7 +381,7 @@ public class CustTestResultHandler {
             BigDecimal end = pa.getStandardValueEnd();
             String code = pa.getSymptomTypeCode();
             String symptomDesc = pa.getSymptomDesc();
-            if(PA_PH_ALL_ALL_AVERAGE.getCode().equals(code)){//总症状
+            if(PA_PH_ALL_AVERAGE.getCode().equals(code)){//总症状
                 if(allAverageScoreBD.compareTo(begin) > 0 && allAverageScoreBD.compareTo(end) < 0 ){
                     desc_ALL_AVERAGE = symptomDesc;
                 }
@@ -900,7 +900,7 @@ public class CustTestResultHandler {
             BigDecimal end = pa.getStandardValueEnd();
             String code = pa.getSymptomTypeCode();
             String symptomDesc = pa.getSymptomDesc();
-            if(PA_PH_ALL_ALL_AVERAGE.getCode().equals(code)){//总症状
+            if(PA_PH_ALL_AVERAGE.getCode().equals(code)){//总症状
                 if(allAverageScoreBD.compareTo(begin) > 0 && allAverageScoreBD.compareTo(end) < 0 ){
                     desc_ALL_AVERAGE = symptomDesc;
                 }

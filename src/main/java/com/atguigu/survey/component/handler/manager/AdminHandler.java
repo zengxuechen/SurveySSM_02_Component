@@ -8,7 +8,7 @@ import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_LS;
 import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_SE;
 import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_SV;
 import static com.atguigu.survey.constant.RuleTypeEnum.PA_CA_TF;
-import static com.atguigu.survey.constant.RuleTypeEnum.PA_PH_ALL_ALL_AVERAGE;
+import static com.atguigu.survey.constant.RuleTypeEnum.PA_PH_ALL_AVERAGE;
 import static com.atguigu.survey.constant.RuleTypeEnum.PA_PH_ANXIOUS;
 import static com.atguigu.survey.constant.RuleTypeEnum.PA_PH_DEPRESSED;
 import static com.atguigu.survey.constant.RuleTypeEnum.PA_PH_HOSTILE;
@@ -586,7 +586,7 @@ public class AdminHandler {
             BigDecimal end = pa.getStandardValueEnd();
             String code = pa.getSymptomTypeCode();
             String symptomDesc = pa.getSymptomDesc();
-            if(PA_PH_ALL_ALL_AVERAGE.getCode().equals(code)){//总症状
+            if(PA_PH_ALL_AVERAGE.getCode().equals(code)){//总症状
                 if(allAverageScore.compareTo(begin) > 0 && allAverageScore.compareTo(end) < 0 ){
                     desc_ALL_AVERAGE = symptomDesc;
                 }

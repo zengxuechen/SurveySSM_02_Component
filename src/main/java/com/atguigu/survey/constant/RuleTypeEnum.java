@@ -23,7 +23,7 @@ public enum RuleTypeEnum{
 	PA_PH_PARANOID("PA_PH_PARANOID", "人才测评_心理健康_偏执"),
 	PA_PH_PSYCHOSIS("PA_PH_PSYCHOSIS", "人才测评_心理健康_精神病性"),
 	PA_PH_OTHER("PA_PH_OTHER", "人才测评_心理健康_其他（睡眠及饮食情况）"),
-    PA_PH_ALL_ALL_AVERAGE("PA_PH_ALL_ALL_AVERAGE","人才测评_心理健康_总均分"),
+    PA_PH_ALL_AVERAGE("PA_PH_ALL_AVERAGE","人才测评_心理健康_总均分"),
 	PA_EC("PA_EC", "人才测评_情绪能力"),
 	PA_CA_TF("PA_CA_TF", "人才测评_职业锚_技术/职能型"),
 	PA_CA_GM("PA_CA_GM", "人才测评_职业锚_管理型"),
