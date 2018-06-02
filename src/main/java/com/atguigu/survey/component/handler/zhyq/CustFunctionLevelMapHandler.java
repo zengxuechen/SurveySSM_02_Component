@@ -70,15 +70,12 @@ public class CustFunctionLevelMapHandler {
 				map.put("functionLevel", 1);
 				List<TbFunctionLevelMap> tbFunctionLevelMapList = 
 						functionLevelMapService.getAll(map);
-			}
-			//查询所有标准职能
-			List<TbFunctionLevelMap> tbFunctionLevelMapList = 
-					functionLevelMapService.getAll(map);
-			//convert转换为TbCustFunctionLevelMap返回
-			List<TbCustFunctionLevelMap> convert2Cust = 
-					convert2Cust(tbFunctionLevelMapList);
-			if(convert2Cust !=null && convert2Cust.size() >0) {
-				resultList = convert2Cust;
+				//convert转换为TbCustFunctionLevelMap返回
+				List<TbCustFunctionLevelMap> convert2Cust = 
+						convert2Cust(tbFunctionLevelMapList);
+				if(convert2Cust !=null && convert2Cust.size() >0) {
+					resultList = convert2Cust;
+				}
 			}
 		}else if(departmentId !=null && functionId != null && functionId.contains("A")) {
 			List<TbCustFunctionLevelMap> functionListByFunctionId = 
