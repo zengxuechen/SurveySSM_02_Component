@@ -12,7 +12,8 @@ public enum TestTypeEnum{
 	PA_PC("PA_PC", "人才测评_职业性格"),
 	PA_PH("PA_PH", "人才测评_心理健康"),
 	PA_EC("PA_EC", "人才测评_情绪能力"),
-	PA_CA("PA_CA", "人才测评_职业锚");
+	PA_CA("PA_CA", "人才测评_职业锚"),
+	MN_PT("MN_PT", "管理测评_管理潜力");
 	
     // 成员变量  
 	private String code;

@@ -34,8 +34,8 @@ public class SelectQuestionLibHandler {
      * @param questionIds
      * @return
      */
-    @RequestMapping("guest/selectQuestionLib/queryExQuestionByIds/{typeCode}/{paperId}/{questionIds}/{pageNoStr}/{result}")
-    public String queryExQuestionByIds(@PathVariable("typeCode") String typeCode, @PathVariable("paperId") String paperId, @PathVariable("questionIds") String questionIds, HttpSession session, Map<String, Object> map, @PathVariable("pageNoStr") String pageNoStr, @PathVariable("result") String result){
+    @RequestMapping("guest/selectQuestionLib/queryExQuestionByIds/{typeCode}/{paperId}/{questionIds}/{pageNoStr}/{result}/{isDescShow}")
+    public String queryExQuestionByIds(@PathVariable("typeCode") String typeCode, @PathVariable("paperId") String paperId, @PathVariable("questionIds") String questionIds, HttpSession session, Map<String, Object> map, @PathVariable("pageNoStr") String pageNoStr, @PathVariable("result") String result, @PathVariable("isDescShow") String isDescShow){
         String[] ids = questionIds.split("@");
         List<String> idList = Arrays.asList(ids);
         List<Integer> idIntList = new ArrayList<Integer>();
@@ -50,6 +50,7 @@ public class SelectQuestionLibHandler {
         map.put("user",user);
         map.put("questionIds",questionIds);
         map.put("paperId",paperId);
+        map.put(isDescShow, isDescShow);
         if("null".equals(result)) {
         	int length = questionIds.split("@").length;
         	result = "";
