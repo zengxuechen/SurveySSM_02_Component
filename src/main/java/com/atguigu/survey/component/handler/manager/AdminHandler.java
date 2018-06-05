@@ -250,7 +250,7 @@ public class AdminHandler {
         // 1.替换用户信息
  		String personInfoContent = makePersonInfoContent(user, now);
      		
-        // 2.考试结果报告信息
+        // 2.测评结果报告信息
  		// 是否含有PDP标志
  		boolean pdpFlg = true;
  		int i;
