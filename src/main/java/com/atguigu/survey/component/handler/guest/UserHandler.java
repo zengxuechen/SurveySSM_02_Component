@@ -70,7 +70,7 @@ public class UserHandler {
 			if(user.getCompany()) {
 				return "redirect:/guest/departmentHandler/showDepartmentListByCompanyId";
 			}else {
-				return "redirect:/guest/customerTestHandler/selectCustomerTestPaperByUesrId/"+user.getUserId();
+				return "redirect:/guest/customerTestHandler/selectCustomerTestPaperByUesrId";
 			}
 			
 		}

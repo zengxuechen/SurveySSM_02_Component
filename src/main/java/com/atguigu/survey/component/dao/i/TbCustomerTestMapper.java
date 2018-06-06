@@ -13,4 +13,6 @@ public interface TbCustomerTestMapper {
     Integer saveCustomerTestPaperIds(Map<String,Object> map);
 
     TbCustomerTest selectCustomerTestPaperByUesrId(Integer userId);
+    
+    Integer updateByPrimaryKeySelective(TbCustomerTest tbCustomerTest);
 }

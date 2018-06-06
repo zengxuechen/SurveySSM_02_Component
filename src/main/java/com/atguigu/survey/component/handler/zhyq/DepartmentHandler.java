@@ -1,21 +1,19 @@
 package com.atguigu.survey.component.handler.zhyq;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.atguigu.survey.component.service.i.DepartmentService;
 import com.atguigu.survey.entities.zhyq.TbDepartment;
-import com.atguigu.survey.utils.EncrypDESUtil;
 import com.atguigu.survey.utils.GlobalNames;
 import com.atguigu.survey.utils.SimpleEncrypUtil;
 import com.atguigu.survey.vo.CustomerDetailVo;
@@ -72,7 +70,6 @@ public class DepartmentHandler {
     	List<TbDepartment> selectList = departmentService.getDepartmentListByCompanyId(companyId);
     	for (int i = 0; i < selectList.size(); i++) {
     		try {
-				EncrypDESUtil encrypDESUtil = new EncrypDESUtil();
 				String encrypt = 
 						SimpleEncrypUtil.Encrypt(selectList.get(i).getId().toString(), 2018);
 				selectList.get(i).setDepartmentId(encrypt);
@@ -83,6 +80,19 @@ public class DepartmentHandler {
         
         map.put("departmentList", selectList);
         return "zhyq/department_list";
+    }
+    
+    
+    /**
+     * 查询出所有部门集合
+     * @param typeCode
+     */
+    @RequestMapping("manager/departmentHandler/queryAll")
+    public String queryAll(Map<String,Object> map, @Param("userId") Integer userId, @RequestParam ("companyId") Integer companyId){
+    	List<TbDepartment> selectList = departmentService.getDepartmentListByCompanyId(companyId);
+        map.put("departmentList", selectList);
+        map.put("userId",userId);
+        return "zhyq/department_toDispatcherUI";
     }
 
 }

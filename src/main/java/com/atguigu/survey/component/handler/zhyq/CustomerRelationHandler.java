@@ -1,18 +1,27 @@
 package com.atguigu.survey.component.handler.zhyq;
 
-import com.atguigu.survey.component.service.i.CustomerRelationService;
-import com.atguigu.survey.component.service.i.DepartmentService;
-import com.atguigu.survey.component.service.i.UserService;
-import com.atguigu.survey.entities.guest.User;
-import com.atguigu.survey.entities.zhyq.TbCustomerRelation;
-import com.atguigu.survey.vo.CustomerRelationInfoVo;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-import java.util.Map;
+import com.atguigu.survey.component.service.i.CustTestPaperService;
+import com.atguigu.survey.component.service.i.CustTestResultService;
+import com.atguigu.survey.component.service.i.CustomerRelationService;
+import com.atguigu.survey.component.service.i.CustomerTestService;
+import com.atguigu.survey.component.service.i.DepartmentService;
+import com.atguigu.survey.component.service.i.UserService;
+import com.atguigu.survey.entities.guest.User;
+import com.atguigu.survey.entities.zhyq.TbCustTestPaper;
+import com.atguigu.survey.entities.zhyq.TbCustomerRelation;
+import com.atguigu.survey.entities.zhyq.TbCustomerTest;
+import com.atguigu.survey.vo.CustomerRelationInfoVo;
 
 /**
  * Using IntelliJ IDEA.
@@ -27,6 +36,15 @@ public class CustomerRelationHandler {
 
     @Autowired
     CustomerRelationService customerRelationService;
+    
+    @Autowired
+    CustomerTestService customerTestService;
+    
+    @Autowired
+    CustTestResultService custTestResultService;
+    
+    @Autowired
+    CustTestPaperService custTestPaperService;
 
     @Autowired
     UserService userService;
@@ -49,7 +67,7 @@ public class CustomerRelationHandler {
 
         TbCustomerRelation customerRelation = new TbCustomerRelation();
         customerRelation.setUserId(user.getUserId());
-        customerRelation.setUserNameCn(customerRelationInfoVo.getUserName());
+        customerRelation.setUserNameCn(customerRelationInfoVo.getUserNameCn());
         customerRelation.setDepartmentId(customerRelationInfoVo.getDepartmentId());
         customerRelation.setPositionId(customerRelationInfoVo.getPositionId());
         customerRelation.setEmail(customerRelationInfoVo.getEmail());
@@ -86,6 +104,25 @@ public class CustomerRelationHandler {
     @RequestMapping("manager/customerRelationHandler/getAllUser")
     public String getAllUser(Map<String, Object> map){
         List<CustomerRelationInfoVo> resultList =  customerRelationService.getAllUser();
+        
+        for(int i=0; i<resultList.size(); i++) {
+        	CustomerRelationInfoVo vo = resultList.get(i);
+        	Integer userId = Integer.parseInt(vo.getUserId());
+    		TbCustomerTest customerTest =  customerTestService.selectCustomerTestPaperByUesrId(userId);
+        	if(customerTest==null) {
+        		vo.setPaperList(null); 
+            }else {
+            	String testPaperIds = customerTest.getTestPaperIds();
+                String[] split = testPaperIds.split("@");
+                List<String> strings = Arrays.asList(split);
+                List<Integer> ids = new ArrayList<Integer>();
+                for(String id : strings ){
+            		ids.add(Integer.parseInt(id));
+                }
+            	List<TbCustTestPaper> paperList = custTestPaperService.getCustTestPaperList(ids);
+            	vo.setPaperList(paperList); 
+            }
+    	}
         map.put("userList", resultList);
         return "zhyq/admin_showGuestList";
     }

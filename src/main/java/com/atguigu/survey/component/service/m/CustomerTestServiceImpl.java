@@ -25,7 +25,14 @@ public class CustomerTestServiceImpl implements CustomerTestService {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("userId",userId);
         map.put("testPaperIds",testPaperIds);
-        Integer count = customerTestMapper.saveCustomerTestPaperIds(map);
+        TbCustomerTest test = customerTestMapper.selectCustomerTestPaperByUesrId(userId);
+        Integer count;
+        if(test!=null) {
+        	test.setTestPaperIds(testPaperIds);
+        	count = customerTestMapper.updateByPrimaryKeySelective(test);
+        }else {
+        	count = customerTestMapper.saveCustomerTestPaperIds(map);
+        }
         return count;
     }
 

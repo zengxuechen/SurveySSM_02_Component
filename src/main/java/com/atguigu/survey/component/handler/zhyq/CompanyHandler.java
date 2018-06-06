@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.atguigu.survey.component.service.i.CompanyService;
 import com.atguigu.survey.entities.zhyq.TbCompany;
+import com.atguigu.survey.entities.zhyq.TbCustTestPaper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -86,6 +87,16 @@ public class CompanyHandler {
     }
     
     
+    /**
+     * 查询出所有公司集合
+     * @param typeCode
+     */
+    @RequestMapping("manager/companyHandler/queryAll/{userId}")
+    public String queryAll(Map<String,Object> map, @PathVariable("userId") Integer userId){
+    	List<TbCompany> resultList =  companyService.getAllCompany();
+        map.put("companyList", resultList);
+        map.put("userId",userId);
+        return "zhyq/company_toDispatcherUI";
+    }
     
-
 }
