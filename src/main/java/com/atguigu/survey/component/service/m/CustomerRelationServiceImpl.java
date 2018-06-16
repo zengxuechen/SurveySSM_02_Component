@@ -40,4 +40,8 @@ public class CustomerRelationServiceImpl implements CustomerRelationService {
     	List<CustomerRelationInfoVo> resultList = customerRelationMapper.getAllUser();
         return resultList;
     }
+    
+    public Integer updateCustomerRelationInfo(TbCustomerRelation tcr){
+    	return customerRelationMapper.updateCustomerRelationInfo(tcr);
+    }
 }

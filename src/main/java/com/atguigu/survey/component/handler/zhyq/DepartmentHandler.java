@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.atguigu.survey.component.service.i.CustomerRelationService;
 import com.atguigu.survey.component.service.i.DepartmentService;
+import com.atguigu.survey.entities.zhyq.TbCustomerRelation;
 import com.atguigu.survey.entities.zhyq.TbDepartment;
 import com.atguigu.survey.utils.GlobalNames;
 import com.atguigu.survey.utils.SimpleEncrypUtil;
@@ -28,6 +30,9 @@ public class DepartmentHandler {
 
     @Autowired
     DepartmentService departmentService;
+    
+    @Autowired
+    CustomerRelationService customerRelationService;
 
     /**
      * 根据公司Id返回部门List
@@ -93,6 +98,19 @@ public class DepartmentHandler {
         map.put("departmentList", selectList);
         map.put("userId",userId);
         return "zhyq/department_toDispatcherUI";
+    }
+    
+    /**
+     * 保存部门Id
+     * @param typeCode
+     */
+    @RequestMapping("manager/departmentHandler/saveDepartment")
+    public String saveDepartment(Map<String,Object> map, @Param("userId") Integer userId, @RequestParam ("departmentId") Integer departmentId){
+    	TbCustomerRelation tcr = new TbCustomerRelation();
+    	tcr.setUserId(userId);
+    	tcr.setDepartmentId(departmentId);
+    	customerRelationService.updateCustomerRelationInfo(tcr);
+    	return "redirect:/manager/customerRelationHandler/getAllUser";
     }
 
 }

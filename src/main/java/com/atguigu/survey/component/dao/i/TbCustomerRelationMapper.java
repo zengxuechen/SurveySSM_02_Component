@@ -20,4 +20,6 @@ public interface TbCustomerRelationMapper {
     List<CustomerRelationInfoVo> getAllUserInfoByDepartmentId(Integer departmentId);
 
 	List<CustomerRelationInfoVo> getAllUser();
+	
+	Integer updateCustomerRelationInfo(TbCustomerRelation tcr);
 }
