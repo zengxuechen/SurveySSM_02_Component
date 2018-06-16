@@ -113,7 +113,7 @@ public class AdminHandler {
 	@Autowired
 	PaCaReportService paCaReportService;
 	
-	static final String[] CHAPTER = {"一", "二", "三", "四", "五"};
+	static final String[] CHAPTER = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
 
 	@RequestMapping("/manager/admin/doDispatcherRole")
 	public String doDispatcherRole(
