@@ -80,12 +80,9 @@
 		</trim>
 	</insert>
 
-	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
+	<update id="updateCustomerRelationInfo" parameterType="com.atguigu.survey.entities.zhyq.TbCustomerRelation">
 		update tb_customer_relation
 		<set>
-			<if test="userId != null">
-				USER_ID= #{userId,jdbcType=INTEGER},
-			</if>
 			<if test="departmentId != null">
 				DEPARTMENT_ID= #{departmentId,jdbcType=INTEGER},
 			</if>
@@ -103,7 +100,7 @@
 			</if>
 		</set>
 		where
-		ID = #{id,jdbcType=INTEGER}
+		USER_ID = #{userId,jdbcType=INTEGER}
 	</update>
 
 	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
@@ -142,9 +139,9 @@
            p.POSITION_NAME as positionName
         from
            tb_customer_relation r
-           inner join  tb_department d on r.DEPARTMENT_ID = d.ID
-           inner join  tb_company c on c.ID = d.COMPANY_ID
-           inner join  tb_position p on r.POSITION_ID = p.ID
+           left join  tb_department d on r.DEPARTMENT_ID = d.ID
+           left join  tb_company c on c.ID = d.COMPANY_ID
+           left join  tb_position p on r.POSITION_ID = p.ID
         where
            r.USER_ID =  #{id}
     </select>
