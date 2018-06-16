@@ -37,7 +37,7 @@ public enum ManagementPotentialEnum{
     }
     
     // 普通方法  
-    public static String getNCode(String name) {  
+    public static String getCode(String name) {  
         for (ManagementPotentialEnum c : ManagementPotentialEnum.values()) {  
             if (c.getName().equals(name)) {  
                 return c.code;  

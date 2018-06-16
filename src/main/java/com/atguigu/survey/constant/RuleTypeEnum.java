@@ -55,7 +55,7 @@ public enum RuleTypeEnum{
     }
     
     // 普通方法  
-    public static String getNCode(String name) {  
+    public static String getCode(String name) {  
         for (RuleTypeEnum c : RuleTypeEnum.values()) {  
             if (c.getName().equals(name)) {  
                 return c.code;  

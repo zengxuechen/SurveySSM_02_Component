@@ -47,7 +47,7 @@ public enum StyleTypeEnum{
     }
     
     // 普通方法  
-    public static String getNCode(String name) {  
+    public static String getCode(String name) {  
         for (StyleTypeEnum c : StyleTypeEnum.values()) {  
             if (c.getName().equals(name)) {  
                 return c.code;  

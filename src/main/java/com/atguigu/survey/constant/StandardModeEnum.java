@@ -33,7 +33,7 @@ public enum StandardModeEnum{
     }
     
     // 普通方法  
-    public static String getNCode(String name) {  
+    public static String getCode(String name) {  
         for (StandardModeEnum c : StandardModeEnum.values()) {  
             if (c.getName().equals(name)) {  
                 return c.code;  

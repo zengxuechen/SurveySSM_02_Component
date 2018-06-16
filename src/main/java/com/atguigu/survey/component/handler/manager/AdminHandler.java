@@ -58,6 +58,7 @@ import com.atguigu.survey.component.service.i.PaPcReportService;
 import com.atguigu.survey.component.service.i.PaPhReportService;
 import com.atguigu.survey.component.service.i.RoleService;
 import com.atguigu.survey.component.service.i.UserService;
+import com.atguigu.survey.constant.ManagementPotentialEnum;
 import com.atguigu.survey.e.RemoveAdminFailedException;
 import com.atguigu.survey.e.RemoveAuthFailedException;
 import com.atguigu.survey.entities.guest.User;
@@ -872,18 +873,59 @@ public class AdminHandler {
 	private String makeContentMN_PT(List<TbPaAnswerRule> answerList, String questionIds, String testResult) {
 		String[] questionIdArr = questionIds.split("@");
 		String[] resultArr = testResult.split("@");
-		
+		//总体潜力分析得分
+		int mnPtTotalScore= 0;
+		//提高自己的时间回报得分
+		int mnPtTimeScore= 0;
+		//激发他人及培养他人得分
+		int mnPtOtherScore= 0;
+		//成为创意及执行大师得分
+		int mnPtMasterScore= 0;
+		//研究客户、对手及环境得分
+		int mnPtSearchScore= 0;
+		//提高思考及判断能力得分
+		int mnPtThinkScore= 0;
+		//描述
 		for (int i = 0; i < questionIdArr.length; i++) {
 			// 通过试题编号 从测评解读表（tb_pa_answer_rule）中取出相应的解析
 			Integer questionId = Integer.parseInt(questionIdArr[i]);
 			String s = resultArr[i];// 测试结果
+			//第一步：计算出所有需要计算的分数
 			for (TbPaAnswerRule pa : answerList) {
 				if (pa.getQuestionId() == questionId) {
 					String answerBitmap = pa.getAnswerBitmap(); // 标准答案
 					if (answerBitmap.equals(s)) {
-                         
+						//总体潜力分析得分
+						int count = Integer.parseInt(pa.getAnswerAnalysis());
+						if(ManagementPotentialEnum.MN_PT_TOTAL.getCode().equals(pa.getRuleTypeCode())) {
+							mnPtTotalScore += count;
+						}
+						//提高自己的时间回报得分
+                        if(ManagementPotentialEnum.MN_PT_TIME.getCode().equals(pa.getRuleTypeCode())) {
+                        	mnPtTimeScore += count;
+                        }
+                        //激发他人及培养他人得分
+                        if(ManagementPotentialEnum.MN_PT_OTHER.getCode().equals(pa.getRuleTypeCode())) {
+                        	mnPtOtherScore += count;
+                        }
+                        //成为创意及执行大师得分
+                        if(ManagementPotentialEnum.MN_PT_MASTER.getCode().equals(pa.getRuleTypeCode())) {
+                        	mnPtMasterScore += count;
+                        }
+                        //研究客户、对手及环境得分
+                        if(ManagementPotentialEnum.MN_PT_SEARCH.getCode().equals(pa.getRuleTypeCode())) {
+                        	mnPtSearchScore += count;
+                        }
+                        //提高思考及判断能力得分
+                        if(ManagementPotentialEnum.MN_PT_THINK.getCode().equals(pa.getRuleTypeCode())) {
+                        	mnPtThinkScore += count;
+                        }
 					}
 				}
+			}
+			//第二步：根据计算得出的分数来进行参数的封装
+			for (TbPaAnswerRule pa : answerList) {
+				
 			}
 		}
 		// 根据所属类型替换相对应的信息

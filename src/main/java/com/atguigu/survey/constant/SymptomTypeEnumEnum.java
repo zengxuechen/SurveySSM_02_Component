@@ -44,7 +44,7 @@ public enum SymptomTypeEnumEnum{
     }
     
     // 普通方法  
-    public static String getNCode(String name) {  
+    public static String getCode(String name) {  
         for (SymptomTypeEnumEnum c : SymptomTypeEnumEnum.values()) {  
             if (c.getName().equals(name)) {  
                 return c.code;  
