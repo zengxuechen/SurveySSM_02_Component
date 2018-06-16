@@ -972,6 +972,19 @@ public class AdminHandler {
 						mnPtOtherDescription = mp.getPtTips();
 					}
 				}
+				if(mnPtTimeScore >= 20) {
+					mnPtOtherTips = "无";
+				}else{
+					for (TbMnPtReport mp1 : tbMnPtReportList) {
+						if (ManagementPotentialEnum.MN_PT_TIME.getCode().equals(mp1.getPtTypeCode())
+								|| ManagementPotentialEnum.MN_PT_OTHER.getCode().equals(mp1.getPtTypeCode())
+								|| ManagementPotentialEnum.MN_PT_MASTER.getCode().equals(mp1.getPtTypeCode())
+								|| ManagementPotentialEnum.MN_PT_SEARCH.getCode().equals(mp1.getPtTypeCode())
+								|| ManagementPotentialEnum.MN_PT_THINK.getCode().equals(mp1.getPtTypeCode())) {
+							mnPtOtherTips += mp1.getPtTips();
+						}
+					}
+				}
 				// 如果最大的值小于15
 			} else if (j5 < 15) {
 				mnPtOtherDescription = "你的弱项在于：";
@@ -983,6 +996,7 @@ public class AdminHandler {
 							|| ManagementPotentialEnum.MN_PT_SEARCH.getCode().equals(mp1.getPtTypeCode())
 							|| ManagementPotentialEnum.MN_PT_THINK.getCode().equals(mp1.getPtTypeCode())) {
 						mnPtOtherDescription += "\"" + mp1.getPtTypeName() + "\"";
+						mnPtOtherTips += mp1.getPtTips();
 						if (count < 5) {
 							mnPtOtherDescription += ",";
 							count++;
@@ -1000,7 +1014,11 @@ public class AdminHandler {
 					Integer value = entry.getValue();
 					if(value == j5) {
 						for (TbMnPtReport mp1 : tbMnPtReportList) {
-							if(key.equals(mp1.getPtTypeCode())) {
+							if(key.equals(mp1.getPtTypeCode()) && ManagementPotentialEnum.MN_PT_TIME.getCode().equals(mp1.getPtTypeCode())
+									|| ManagementPotentialEnum.MN_PT_OTHER.getCode().equals(mp1.getPtTypeCode())
+									|| ManagementPotentialEnum.MN_PT_MASTER.getCode().equals(mp1.getPtTypeCode())
+									|| ManagementPotentialEnum.MN_PT_SEARCH.getCode().equals(mp1.getPtTypeCode())
+									|| ManagementPotentialEnum.MN_PT_THINK.getCode().equals(mp1.getPtTypeCode())) {
 								if(count != 1) {
 									mnPtOtherDescription += ",";
 									count++;
@@ -1010,12 +1028,17 @@ public class AdminHandler {
 						}
 					}else if(value == j1) {
 						for (TbMnPtReport mp1 : tbMnPtReportList) {
-							if(key.equals(mp1.getPtTypeCode())) {
+							if(key.equals(mp1.getPtTypeCode()) && ManagementPotentialEnum.MN_PT_TIME.getCode().equals(mp1.getPtTypeCode())
+									|| ManagementPotentialEnum.MN_PT_OTHER.getCode().equals(mp1.getPtTypeCode())
+									|| ManagementPotentialEnum.MN_PT_MASTER.getCode().equals(mp1.getPtTypeCode())
+									|| ManagementPotentialEnum.MN_PT_SEARCH.getCode().equals(mp1.getPtTypeCode())
+									|| ManagementPotentialEnum.MN_PT_THINK.getCode().equals(mp1.getPtTypeCode())) {
 								if(count1 != 1) {
 									mnPtOtherDescription += ",";
 									count1++;
 								}
 								mnPtOtherDescription1 += "\"" + mp1.getPtTypeName() + "\"";
+								mnPtOtherTips += mp1.getPtTips();
 							}
 						}
 					}
@@ -1027,12 +1050,15 @@ public class AdminHandler {
 		String personInfoTemplate = this.getClass().getClassLoader().getResource("/template/REPORT_MN_PT.html")
 				.getPath();
 		String contentMN_PT = PdfUtil.readToString(personInfoTemplate);
-		contentMN_PT = contentMN_PT.replace("${star1}", "");
-		contentMN_PT = contentMN_PT.replace("${star2}", "");
-		contentMN_PT = contentMN_PT.replace("${star3}", "");
-		contentMN_PT = contentMN_PT.replace("${star4}", "");
-		contentMN_PT = contentMN_PT.replace("${star5}", "");
-		contentMN_PT = contentMN_PT.replace("${star6}", "");
+		contentMN_PT = contentMN_PT.replace("${score_MN_PT_TOTAL}",mnPtTotalScore+"");
+		contentMN_PT = contentMN_PT.replace("${desc_MN_PT_TOTAL}", mnPtTotalDescription);
+		contentMN_PT = contentMN_PT.replace("${desc_MN_PT}", mnPtOtherDescription);
+		contentMN_PT = contentMN_PT.replace("${score_MN_PT_TIME}", mnPtTimeScore+"");
+		contentMN_PT = contentMN_PT.replace("${score_MN_PT_OTHER}", mnPtOtherScore+"");
+		contentMN_PT = contentMN_PT.replace("${score_MN_PT_MASTER}", mnPtMasterScore+"");
+		contentMN_PT = contentMN_PT.replace("${score_MN_PT_SEARCH}", mnPtSearchScore+"");
+		contentMN_PT = contentMN_PT.replace("${score_MN_PT_THINK}", mnPtThinkScore+"");
+		contentMN_PT = contentMN_PT.replace("${tips_MN_PT}", mnPtOtherTips);
 
 		return contentMN_PT;
 	}
