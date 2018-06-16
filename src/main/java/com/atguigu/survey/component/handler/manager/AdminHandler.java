@@ -872,8 +872,32 @@ public class AdminHandler {
 	private String makeContentMN_PT(List<TbPaAnswerRule> answerList, String questionIds, String testResult) {
 		String[] questionIdArr = questionIds.split("@");
 		String[] resultArr = testResult.split("@");
+		
+		for (int i = 0; i < questionIdArr.length; i++) {
+			// 通过试题编号 从测评解读表（tb_pa_answer_rule）中取出相应的解析
+			Integer questionId = Integer.parseInt(questionIdArr[i]);
+			String s = resultArr[i];// 测试结果
+			for (TbPaAnswerRule pa : answerList) {
+				if (pa.getQuestionId() == questionId) {
+					String answerBitmap = pa.getAnswerBitmap(); // 标准答案
+					if (answerBitmap.equals(s)) {
+                         
+					}
+				}
+			}
+		}
+		// 根据所属类型替换相对应的信息
+		String personInfoTemplate = this.getClass().getClassLoader().getResource("/template/REPORT_MN_PT.html")
+				.getPath();
+		String contentMN_PT = PdfUtil.readToString(personInfoTemplate);
+		contentMN_PT = contentMN_PT.replace("${star1}", "");
+		contentMN_PT = contentMN_PT.replace("${star2}", "");
+		contentMN_PT = contentMN_PT.replace("${star3}", "");
+		contentMN_PT = contentMN_PT.replace("${star4}", "");
+		contentMN_PT = contentMN_PT.replace("${star5}", "");
+		contentMN_PT = contentMN_PT.replace("${star6}", "");
 
-		return "";
+		return contentMN_PT;
 	}
 
 	/**
