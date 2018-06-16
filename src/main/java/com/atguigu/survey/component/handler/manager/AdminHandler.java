@@ -51,6 +51,7 @@ import com.atguigu.survey.component.service.i.AdminService;
 import com.atguigu.survey.component.service.i.CustTestPaperService;
 import com.atguigu.survey.component.service.i.CustTestResultService;
 import com.atguigu.survey.component.service.i.CustomerRelationService;
+import com.atguigu.survey.component.service.i.MnPtReportService;
 import com.atguigu.survey.component.service.i.PaAnswerRuleService;
 import com.atguigu.survey.component.service.i.PaCaReportService;
 import com.atguigu.survey.component.service.i.PaEcReportService;
@@ -66,11 +67,13 @@ import com.atguigu.survey.entities.manager.Admin;
 import com.atguigu.survey.entities.manager.Role;
 import com.atguigu.survey.entities.zhyq.TbCustTestPaper;
 import com.atguigu.survey.entities.zhyq.TbCustTestResult;
+import com.atguigu.survey.entities.zhyq.TbMnPtReport;
 import com.atguigu.survey.entities.zhyq.TbPaAnswerRule;
 import com.atguigu.survey.entities.zhyq.TbPaCaReport;
 import com.atguigu.survey.entities.zhyq.TbPaEcReport;
 import com.atguigu.survey.entities.zhyq.TbPaPcReport;
 import com.atguigu.survey.entities.zhyq.TbPaPhReport;
+import com.atguigu.survey.utils.BubbleSort;
 import com.atguigu.survey.utils.GlobalMessage;
 import com.atguigu.survey.utils.GlobalNames;
 import com.atguigu.survey.utils.PdfUtil;
@@ -113,6 +116,9 @@ public class AdminHandler {
 
 	@Autowired
 	PaCaReportService paCaReportService;
+
+	@Autowired
+	MnPtReportService mnPtReportService;
 
 	static final String[] CHAPTER = { "一", "二", "三", "四", "五", "六", "七", "八", "九", "十" };
 
@@ -873,59 +879,148 @@ public class AdminHandler {
 	private String makeContentMN_PT(List<TbPaAnswerRule> answerList, String questionIds, String testResult) {
 		String[] questionIdArr = questionIds.split("@");
 		String[] resultArr = testResult.split("@");
-		//总体潜力分析得分
-		int mnPtTotalScore= 0;
-		//提高自己的时间回报得分
-		int mnPtTimeScore= 0;
-		//激发他人及培养他人得分
-		int mnPtOtherScore= 0;
-		//成为创意及执行大师得分
-		int mnPtMasterScore= 0;
-		//研究客户、对手及环境得分
-		int mnPtSearchScore= 0;
-		//提高思考及判断能力得分
-		int mnPtThinkScore= 0;
-		//描述
+		// 总体潜力分析得分
+		int mnPtTotalScore = 0;
+		// 提高自己的时间回报得分
+		int mnPtTimeScore = 0;
+		// 激发他人及培养他人得分
+		int mnPtOtherScore = 0;
+		// 成为创意及执行大师得分
+		int mnPtMasterScore = 0;
+		// 研究客户、对手及环境得分
+		int mnPtSearchScore = 0;
+		// 提高思考及判断能力得分
+		int mnPtThinkScore = 0;
+		// 潜力分析描述
+		String mnPtTotalDescription = "";
+		// 剩余潜力描述
+		String mnPtOtherDescription = "";
+		// 提升重点
+		String mnPtOtherTips = "";
 		for (int i = 0; i < questionIdArr.length; i++) {
 			// 通过试题编号 从测评解读表（tb_pa_answer_rule）中取出相应的解析
 			Integer questionId = Integer.parseInt(questionIdArr[i]);
 			String s = resultArr[i];// 测试结果
-			//第一步：计算出所有需要计算的分数
+			// 第一步：计算出所有需要计算的分数
 			for (TbPaAnswerRule pa : answerList) {
 				if (pa.getQuestionId() == questionId) {
 					String answerBitmap = pa.getAnswerBitmap(); // 标准答案
 					if (answerBitmap.equals(s)) {
-						//总体潜力分析得分
+						// 总体潜力分析得分
 						int count = Integer.parseInt(pa.getAnswerAnalysis());
-						if(ManagementPotentialEnum.MN_PT_TOTAL.getCode().equals(pa.getRuleTypeCode())) {
+						if (ManagementPotentialEnum.MN_PT_TOTAL.getCode().equals(pa.getRuleTypeCode())) {
 							mnPtTotalScore += count;
 						}
-						//提高自己的时间回报得分
-                        if(ManagementPotentialEnum.MN_PT_TIME.getCode().equals(pa.getRuleTypeCode())) {
-                        	mnPtTimeScore += count;
-                        }
-                        //激发他人及培养他人得分
-                        if(ManagementPotentialEnum.MN_PT_OTHER.getCode().equals(pa.getRuleTypeCode())) {
-                        	mnPtOtherScore += count;
-                        }
-                        //成为创意及执行大师得分
-                        if(ManagementPotentialEnum.MN_PT_MASTER.getCode().equals(pa.getRuleTypeCode())) {
-                        	mnPtMasterScore += count;
-                        }
-                        //研究客户、对手及环境得分
-                        if(ManagementPotentialEnum.MN_PT_SEARCH.getCode().equals(pa.getRuleTypeCode())) {
-                        	mnPtSearchScore += count;
-                        }
-                        //提高思考及判断能力得分
-                        if(ManagementPotentialEnum.MN_PT_THINK.getCode().equals(pa.getRuleTypeCode())) {
-                        	mnPtThinkScore += count;
-                        }
+						// 提高自己的时间回报得分
+						if (ManagementPotentialEnum.MN_PT_TIME.getCode().equals(pa.getRuleTypeCode())) {
+							mnPtTimeScore += count;
+						}
+						// 激发他人及培养他人得分
+						if (ManagementPotentialEnum.MN_PT_OTHER.getCode().equals(pa.getRuleTypeCode())) {
+							mnPtOtherScore += count;
+						}
+						// 成为创意及执行大师得分
+						if (ManagementPotentialEnum.MN_PT_MASTER.getCode().equals(pa.getRuleTypeCode())) {
+							mnPtMasterScore += count;
+						}
+						// 研究客户、对手及环境得分
+						if (ManagementPotentialEnum.MN_PT_SEARCH.getCode().equals(pa.getRuleTypeCode())) {
+							mnPtSearchScore += count;
+						}
+						// 提高思考及判断能力得分
+						if (ManagementPotentialEnum.MN_PT_THINK.getCode().equals(pa.getRuleTypeCode())) {
+							mnPtThinkScore += count;
+						}
 					}
 				}
 			}
-			//第二步：根据计算得出的分数来进行参数的封装
-			for (TbPaAnswerRule pa : answerList) {
-				
+			// 第二步：根据计算得出的分数来进行参数的封装
+			int[] array = new int[] { mnPtTimeScore, mnPtOtherScore, mnPtMasterScore, mnPtSearchScore, mnPtThinkScore };
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			map.put(ManagementPotentialEnum.MN_PT_TIME.getCode(), mnPtTimeScore);
+			map.put(ManagementPotentialEnum.MN_PT_OTHER.getCode(), mnPtOtherScore);
+			map.put(ManagementPotentialEnum.MN_PT_MASTER.getCode(), mnPtMasterScore);
+			map.put(ManagementPotentialEnum.MN_PT_SEARCH.getCode(), mnPtSearchScore);
+			map.put(ManagementPotentialEnum.MN_PT_THINK.getCode(), mnPtThinkScore);
+			// 获取所有的report结果数据
+			HashMap<String, Object> hashMap = new HashMap<String, Object>();
+			List<TbMnPtReport> tbMnPtReportList = mnPtReportService.getAll(hashMap);
+			for (TbMnPtReport mp : tbMnPtReportList) {
+				String mnPtTotalcode = ManagementPotentialEnum.MN_PT_TOTAL.getCode();
+				int standardValueBgn = mp.getStandardValueBgn();
+				int standardValueEnd = mp.getStandardValueEnd();
+				String ptTypeCode = mp.getPtTypeCode();
+				// 总体潜力分析
+				if (mnPtTotalcode.equals(ptTypeCode) && mnPtTotalScore > standardValueBgn
+						&& mnPtTotalScore <= standardValueEnd) {
+					// 总体潜力描述
+					mnPtTotalDescription = mp.getPtDesc();
+				}
+			}
+
+			// 其他潜力描述
+			int j1 = BubbleSort.bubbleSort(array)[0];
+			int j2 = BubbleSort.bubbleSort(array)[1];
+			int j3 = BubbleSort.bubbleSort(array)[2];
+			int j4 = BubbleSort.bubbleSort(array)[3];
+			int j5 = BubbleSort.bubbleSort(array)[4];
+			if (mnPtTimeScore == mnPtOtherScore && mnPtOtherScore == mnPtMasterScore
+					&& mnPtMasterScore == mnPtSearchScore && mnPtSearchScore == mnPtThinkScore) {
+				// 其他潜力描述
+				for (TbMnPtReport mp : tbMnPtReportList) {
+					if (mnPtTimeScore > mp.getStandardValueBgn() && mnPtTimeScore <= mp.getStandardValueEnd()) {
+						mnPtOtherDescription = mp.getPtTips();
+					}
+				}
+				// 如果最大的值小于15
+			} else if (j5 < 15) {
+				mnPtOtherDescription = "你的弱项在于：";
+				int count = 1;
+				for (TbMnPtReport mp1 : tbMnPtReportList) {
+					if (ManagementPotentialEnum.MN_PT_TIME.getCode().equals(mp1.getPtTypeCode())
+							|| ManagementPotentialEnum.MN_PT_OTHER.getCode().equals(mp1.getPtTypeCode())
+							|| ManagementPotentialEnum.MN_PT_MASTER.getCode().equals(mp1.getPtTypeCode())
+							|| ManagementPotentialEnum.MN_PT_SEARCH.getCode().equals(mp1.getPtTypeCode())
+							|| ManagementPotentialEnum.MN_PT_THINK.getCode().equals(mp1.getPtTypeCode())) {
+						mnPtOtherDescription += "\"" + mp1.getPtTypeName() + "\"";
+						if (count < 5) {
+							mnPtOtherDescription += ",";
+							count++;
+						}
+					}
+				}
+				// 最大值大于等于15
+			} else {
+				int count = 1;
+				int count1 = 1;
+				mnPtOtherDescription = "相对来说，你的强项在于：";
+				String mnPtOtherDescription1 = ",你的弱项在于：";
+				for (Map.Entry<String, Integer> entry : map.entrySet()) {
+					String key = entry.getKey();
+					Integer value = entry.getValue();
+					if(value == j5) {
+						for (TbMnPtReport mp1 : tbMnPtReportList) {
+							if(key.equals(mp1.getPtTypeCode())) {
+								if(count != 1) {
+									mnPtOtherDescription += ",";
+									count++;
+								}
+								mnPtOtherDescription += "\"" + mp1.getPtTypeName() + "\"";
+							}
+						}
+					}else if(value == j1) {
+						for (TbMnPtReport mp1 : tbMnPtReportList) {
+							if(key.equals(mp1.getPtTypeCode())) {
+								if(count1 != 1) {
+									mnPtOtherDescription += ",";
+									count1++;
+								}
+								mnPtOtherDescription1 += "\"" + mp1.getPtTypeName() + "\"";
+							}
+						}
+					}
+				}
+				mnPtOtherDescription += mnPtOtherDescription1;
 			}
 		}
 		// 根据所属类型替换相对应的信息

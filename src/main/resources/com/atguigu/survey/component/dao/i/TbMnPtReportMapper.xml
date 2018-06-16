@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.survey.component.dao.i.TbMnPtReportMapper">
+	<resultMap id="BaseResultMap" type="com.atguigu.survey.entities.zhyq.TbMnPtReport">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="PT_TYPE_CODE" property="ptTypeCode" jdbcType="VARCHAR" />
+		<result column="PT_TYPE_NAME" property="ptTypeName" jdbcType="VARCHAR" />
+		<result column="STANDARD_VALUE_BGN" property="standardValueBgn" jdbcType="INT" />
+		<result column="STANDARD_VALUE_END" property="standardValueEnd" jdbcType="INT" />
+		<result column="PT_DESC" property="ptDesc" jdbcType="VARCHAR" />
+		<result column="PT_TIPS" property="ptTips" jdbcType="VARCHAR" />
+		<result column="ADVICE" property="advice" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Where">
+		<if test="id != null"> and ID= #{id}</if>	
+		<if test="ptTypeCode != null and ptTypeCode !=''"> and PT_TYPE_CODE= #{ptTypeCode}</if>
+		<if test="ptTypeName != null and ptTypeName !=''"> and PT_TYPE_NAME= #{ptTypeName}</if>
+		<if test="standardValueBgn != null"> and STANDARD_VALUE_BGN= #{standardValueBgn}</if>	
+		<if test="standardValueEnd != null"> and STANDARD_VALUE_END= #{standardValueEnd}</if>	
+		<if test="ptDesc != null and ptDesc !=''"> and PT_DESC= #{ptDesc}</if>
+		<if test="ptTips != null and ptTips !=''"> and PT_TIPS= #{ptTips}</if>
+		<if test="advice != null and advice !=''"> and ADVICE= #{advice}</if>
+	</sql>
+	<sql id="Base_Column_List">
+		ID ,
+		PT_TYPE_CODE ,
+		PT_TYPE_NAME ,
+		STANDARD_VALUE_BGN ,
+		STANDARD_VALUE_END ,
+		PT_DESC ,
+		PT_TIPS ,
+		ADVICE 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tb_mn_pt_report
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tb_mn_pt_report
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.atguigu.survey.entities.zhyq.TbMnPtReport">
+		insert into tb_mn_pt_report
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">ID,</if>	
+			<if test="ptTypeCode != null and ptTypeCode !=''">PT_TYPE_CODE,</if>
+			<if test="ptTypeName != null and ptTypeName !=''">PT_TYPE_NAME,</if>
+			<if test="standardValueBgn != null">STANDARD_VALUE_BGN,</if>	
+			<if test="standardValueEnd != null">STANDARD_VALUE_END,</if>	
+			<if test="ptDesc != null and ptDesc !=''">PT_DESC,</if>
+			<if test="ptTips != null and ptTips !=''">PT_TIPS,</if>
+			<if test="advice != null and advice !=''">ADVICE,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="ptTypeCode != null and ptTypeCode !=''">
+				#{ptTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="ptTypeName != null and ptTypeName !=''">
+				#{ptTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="standardValueBgn != null">
+				#{standardValueBgn,jdbcType=INT},
+			</if>
+			<if test="standardValueEnd != null">
+				#{standardValueEnd,jdbcType=INT},
+			</if>
+			<if test="ptDesc != null and ptDesc !=''">
+				#{ptDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="ptTips != null and ptTips !=''">
+				#{ptTips,jdbcType=VARCHAR},
+			</if>
+			<if test="advice != null and advice !=''">
+				#{advice,jdbcType=VARCHAR},
+			</if>
+			
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.atguigu.survey.entities.zhyq.TbMnPtReport">
+		update tb_mn_pt_report
+		<set>
+			<if test="ptTypeCode != null and ptTypeCode !=''">
+				PT_TYPE_CODE= #{ptTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="ptTypeName != null and ptTypeName !=''">
+				PT_TYPE_NAME= #{ptTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="standardValueBgn != null">
+				STANDARD_VALUE_BGN= #{standardValueBgn,jdbcType=INT},
+			</if>
+			<if test="standardValueEnd != null">
+				STANDARD_VALUE_END= #{standardValueEnd,jdbcType=INT},
+			</if>
+			<if test="ptDesc != null and ptDesc !=''">
+				PT_DESC= #{ptDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="ptTips != null and ptTips !=''">
+				PT_TIPS= #{ptTips,jdbcType=VARCHAR},
+			</if>
+			<if test="advice != null and advice !=''">
+				ADVICE= #{advice,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where
+		ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_mn_pt_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="map">
+		select count(1) from tb_mn_pt_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+	<select id="pageData" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_mn_pt_report where 1=1
+		<include refid="Base_Where" />
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_mn_pt_report where ID in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>
